@@ -1,0 +1,29 @@
+{
+    "user":{
+        "notNull":"Dữ liệu đang bị bỏ trống"
+    },
+    "signup":{
+        "success":"Tài khoản được tạo thành công!",
+        "duplicateAccount":"Tên tài khoản đã được sử dụng!",
+        "pass_equal_pass":"Mật khẩu lặp lại chưa trùng khớp!"
+        
+    },
+    "signin":{
+        "us_psnull":"Vui lòng nhập dữ liệu!",
+        "namenull":"Tên đăng nhập không được để trống!",
+        "passnull":"Mật khẩu không được để trống!",
+        "username":"Tên đăng nhập không tồn tại!",
+        "password":"Mật khẩu không đúng!"
+    },
+    "forgot_pw":{
+        "pass_equal_pass":"Mật khẩu lặp lại chưa trùng khớp!",
+        "username":"Tên đăng nhập không tồn tại!",
+        "email_false":"Email không đúng, vui lòng kiểm tra lại!"
+    },
+    "update_password":{
+        "password_false":"Mật khẩu hiện tại không đúng!",
+        "pass_equal_pass":"Mật khẩu lặp lại chưa trùng khớp!",
+        "success":"Đổi mật khẩu thành công!"
+    }
+
+}

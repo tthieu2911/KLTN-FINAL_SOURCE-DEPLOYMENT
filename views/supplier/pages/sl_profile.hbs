@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Trang thông tin cá nhân</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Custom fonts for this template-->
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+      <!-- Home button -->
+      <div>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/supplier"></a>
+      </div>
+
+      <!-- Topbar Navbar -->
+      <ul class="navbar-nav ml-auto">
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+
+          <a class="nav-link dropdown-toggle" href="/supplier" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Supplier</span>
+            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+          </a>
+          <!-- Dropdown - User Information -->
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            
+            <a class="dropdown-item" href="/supplier/manacontract">
+              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí đơn hàng
+            </a>
+            <a class="dropdown-item" href="/supplier/product">
+              <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí kho
+            </a>
+            <a class="dropdown-item" href="/supplier/market">
+              <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
+              Mua sản phẩm
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">
+              <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+  <div class="container">
+    {{#if message}}
+    <div class="alert alert-danger text-center" role="alert">
+      {{this.message}}
+    </div>
+    {{/if}}
+     {{#if success}}
+    <div class="alert alert-success text-center" role="alert">
+      {{this.success}}
+    </div>
+    {{/if}}
+    <h1>Thông tin cá nhân</h1>
+
+    <form action="/update_profile" method="POST">
+      <!-- Edit profile Buttons -->
+      <button type="button" id="btnEditProfile" class="btn btn-primary" style="margin-bottom:20px;">
+        <div>Cập nhật thông tin</div>
+      </button>
+
+      <button type="submit" id="btnAcceptProfile" class="btn btn-primary btn-success" style="margin-bottom:20px;">
+        <div>Xác nhận cập nhật</div>
+      </button>
+      <button type="button" id="btnCancelProfile" class="btn btn-primary btn-danger" style="margin-bottom:20px;">
+        <div>Hủy</div>
+      </button>
+
+      {{# each users}}
+      {{# each this}}
+      <table class="table">
+        <tr>
+          <th>Họ và tên</th>
+          <td colspan="2">
+            <div id="txtNameSample">{{this.fullName}}</div>
+            <input type="text" id="txtFullName" name="fullName" class="form-input"  style="display: none;" value={{this.fullName}} >
+            </input>
+          </td>
+        </tr>
+        <tr>
+          <th>Số điện thoại</th>
+          <td colspan="2">
+            <div id="txtPhoneSample">{{this.phone}}</div>
+            <input type="number" id="txtPhone" name="phone" class="form-input" style="display: none;" value={{this.phone}}>
+            </input>
+          </td>
+        </tr>
+        <tr>
+          <th>Địa chỉ</th>
+          <td colspan="2">
+            <div id="txtAddressSample">{{this.address}}</div>
+            <input type="text" id="txtAddress" name="address" style="display: none;" class="form-input" value={{this.address}}>
+            </input>
+          </td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td colspan="2">
+            <div id="txtEmailSample">{{this.email}}</div>
+            <input type="email" id="txtEmail" name="email" class="form-input" style="display: none;" value={{this.email}}>
+            </input>
+          </td>
+        </tr>
+    </form>
+      <form action="/change_password" method="POST">
+          <tr>
+            <th>Tên Đăng nhập</th>
+            <td colspan="2">{{this.username}}
+            </td>
+          </tr>
+          <input type="hidden" name="type" value="{{this.type}}">
+          <tr>
+            <th>Mật khẩu</th>
+            <td>
+              <div id="txtPasswordSample">*******</div>
+              <input type="password" id="txtPassword" required name="passWord" class="form-input" placeholder="Mật khẩu" style="display: none;">
+              </input>
+              <input type="password" id="txtNewPassword" required name="passWord_new" class="form-input" placeholder="Mật khẩu mới"
+                style="display: none;">
+              </input>
+            </td>
+            <td>
+              <!-- Change password Buttons -->
+              <button type="button" id="btnEditPassword" class="btn btn-primary" style="margin-bottom:20px;">
+                Đổi mật khẩu
+              </button>
+
+              <button type="submit" id="btnAcceptPassword" class="btn btn-primary btn-success"
+                style="margin-bottom:20px;">
+                Cập nhật mật khẩu
+              </button>
+              <button type="button" id="btnCancelPassword" class="btn btn-primary btn-danger"
+                style="margin-bottom:20px;">
+                Hủy
+              </button>
+            </td>
+          </tr>
+        </form>
+      </table>
+      {{/each}}
+      {{/each}}
+    </form>
+     <div class="container-fluid ">
+      <h3 class="text-center">Lịch sử mua hàng</h3>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Người giao hàng</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Thao tác</th>
+          </tr>
+        </thead>
+        {{# each contract}}
+        {{# each this}}
+        <tbody>
+          <tr>
+            <td>{{this.product_id.name}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.shipper_id.fullName}}</td>
+            <td>{{this.status}}</td>
+            <td>
+              <a href="/supplier/detail/{{this._id}}"><button type="" class="btn btn-info">Chi Tiết</button></a>
+              {{!-- <button id="btnDetail" value="{{this._id}}" class="btn btn-info">Chi tiết</button> --}}
+            </td>
+          </tr>
+        </tbody>
+        {{/each}}
+        {{/each}}
+      </table>
+       <nav aria-label="Page navigation example">
+      {{{paginateHelper pagination}}}
+      </nav>
+    </div>
+  </div>
+
+  <!-- Jquery handling -->
+  <script>
+    
+  $(document).ready(function () {
+    $("#btnCancelProfile").hide();
+    $("#btnAcceptProfile").hide();
+    $("#btnCancelPassword").hide();
+    $("#btnAcceptPassword").hide();
+
+    $("#txtFullName").hide();
+    $("#txtPhone").hide();
+    $("#txtAddress").hide();
+    $("#txtEmail").hide();
+
+    //-- Update profile --//
+    $("#btnEditProfile").on('click', function () {
+      $("#txtNameSample").hide(1000);
+      $("#txtPhoneSample").hide(1000);
+      $("#txtEmailSample").hide(1000);
+      $("#txtAddressSample").hide(1000);
+      $("#txtFullName").show(1000);
+      $("#txtPhone").show(1000);
+      $("#txtAddress").show(1000);
+      $("#txtEmail").show(1000);
+
+      $("#btnEditProfile").hide();
+      $("#btnAcceptProfile").show(1000);
+      $("#btnCancelProfile").show(1000);
+    });
+
+    $("#btnCancelProfile").on('click', function () {
+      $("#txtNameSample").show(1000);
+      $("#txtPhoneSample").show(1000);
+      $("#txtEmailSample").show(1000);
+      $("#txtAddressSample").show(1000);
+      $("#txtFullName").hide(1000);
+      $("#txtPhone").hide(1000);
+      $("#txtAddress").hide(1000);
+      $("#txtEmail").hide(1000);
+
+      $("#btnEditProfile").show(1000);
+      $("#btnAcceptProfile").hide();
+      $("#btnCancelProfile").hide();
+    });
+
+
+    //-- Change Password --//
+    $("#btnEditPassword").on('click', function () {
+      $("#txtPasswordSample").hide(1000);
+      $("#txtPassword").show(1000);
+      $("#txtNewPassword").show(1000);
+
+      $("#btnEditPassword").hide();
+      $("#btnCancelPassword").show(1000);
+      $("#btnAcceptPassword").show(1000);
+    });
+
+    $("#btnCancelPassword").on('click', function () {
+      $("#txtPasswordSample").show(1000);
+      $("#txtPassword").hide(1000);
+      $("#txtNewPassword").hide(1000);
+
+      $("#btnEditPassword").show(1000);
+      $("#btnCancelPassword").hide();
+      $("#btnAcceptPassword").hide();
+    });
+
+
+  });
+
+  
+  </script>
+
+</body>
+
+</html>

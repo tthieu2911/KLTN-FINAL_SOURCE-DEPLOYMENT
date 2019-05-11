@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Quản lí đơn hàng</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Custom fonts for this template-->
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
+  <script lang="javascript" src="../assets/js/script.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <div class="container">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+      <!-- Home button -->
+      <div>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/customer"></a>
+      </div>
+
+      <!-- Topbar Navbar -->
+      <ul class="navbar-nav ml-auto">
+
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="/customer" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Customer</span>
+            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+          </a>
+          <!-- Dropdown - User Information -->
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="/customer/profile">
+              <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+              Cá nhân
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">
+              <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+  <div class="container">
+    <h1>Quản lí thông tin đơn hàng</h1>
+    <hr>
+    <br>
+    <div class="container-fluid ">
+      <h3 class="text-center">Danh sách đơn hàng</h3>
+      <table id="contract-list" class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Giá trị</th>
+            <th scope="col">Người giao hàng</th>
+            <th scope="col">Trạng thái</th>
+            <th colspan="4" scope="col">Thao tác</th>
+          </tr>
+        </thead>
+        {{# each contracts}}
+        {{# each this}}
+        <tbody>
+          <tr>
+            <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
+            <td>{{this.product_id.name}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.shipper_id.fullName}}</td>
+            <td>{{this.status}}</td>
+            <td>
+              <a href="/customer/cancel/{{this._id}}" onclick="return check()"><button type="" class="btn btn-danger btnCancel">Hủy</button></a>
+            </td>
+            <td>
+              <a href="/customer/accept/{{this._id}}"onclick="return check()"><button type="" class="btn btn-success btnAccept" >Chấp nhận</button></a>
+            </td>
+            <td>
+              <a href="/customer/done/{{this._id}}" ><button type="" class="btn btn-warning btnReceive">Đã nhận</button></a>
+            </td>  
+            <td>
+             <a href="/customer/detail/{{this._id}}"><button type="" class="btn btn-info btnDetail">Chi Tiết</button></a>
+            </td>
+          </tr>
+        </tbody>
+        {{/each}}
+        {{/each}}
+      </table>
+      
+      <nav aria-label="Page navigation example">
+      {{{paginateHelper pagination}}}
+      </nav>
+      
+   
+      
+    </div>
+
+  </div>
+
+  <!-- Jquery handling -->
+  <script>
+
+    $(document).ready(function () {
+
+      $("#contract-list tr").each(function(){
+        var stt = $(this).find(".hdnStatus").val();
+
+        //handle button Receive product
+        if(stt == "Đang vận chuyển"){
+          $(this).find(".btnReceive").show();
+        }
+        else{
+          $(this).find(".btnReceive").hide();
+        }
+
+        //handle button Accept price
+        if(stt == "Báo giá"){
+          $(this).find(".btnAccept").show();
+        }
+        else{
+          $(this).find(".btnAccept").hide();
+        }
+
+        //handle button Cancel
+        if(stt == "Đang vận chuyển"){
+          $(this).find(".btnCancel").hide();
+        }
+        else{
+          $(this).find(".btnCancel").show();
+        }
+
+        //handle buttons
+        if(stt == "Hủy" || stt == "Đã nhận hàng"){
+          $(this).find(".btnCancel").hide();
+          $(this).find(".btnAccept").hide();
+          $(this).find(".btnReceive").hide();
+        }
+        
+      })
+
+    });
+  </script>
+  
+</body>
+
+</html>
