@@ -94,7 +94,7 @@
     </nav>
   </div>
 
-  <div class="container">
+  <div class="container-fluid">
 
     <table ID="contract-list" class="table table-striped ">
       <thead class="thead-dark">
@@ -103,7 +103,7 @@
           <th scope="col">Khách Hàng</th>
           <th scope="col">Người giao hàng</th>
           <th scope="col">Tình trạng</th>
-          <th colspan="4" scope="col">Thao tác</th>
+          <th colspan="4" scope="col" class="text-center">Thao tác</th>
         </tr>
       </thead>
       <tbody>
@@ -117,8 +117,7 @@
           <td>{{this.status}}</td>
           <td class="text-center">
             <a href="/supplier/contract/delete/{{this.id}}">
-              <button type="" class="btn btn-danger btnDelete">
-                <i class="fa fa-trash"></i></button>
+              <button type="" class="btn btn-danger btnDelete">Xóa</i></button>
             </a>
           </td>
           <td>
@@ -172,7 +171,7 @@
         }
 
         // handle for button Delete
-        if (stt == "Đã nhận hàng" || stt == "Đang vận chuyển") {
+        if (stt == "Đã nhận hàng" || stt == "Đang vận chuyển" || stt == "Hủy") {
           $(this).find(".btnDelete").hide();
         }
         else {

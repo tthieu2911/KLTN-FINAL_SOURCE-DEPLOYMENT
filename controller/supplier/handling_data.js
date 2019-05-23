@@ -177,7 +177,7 @@ var edit_product = (req,res,next)=>{
             doc.name =  nameproduct;
             doc.desription = description;
             doc.save().then(()=>{
-                console.log('Update product done success')
+                console.log('Update product successfully')
             });
           
          res.redirect('/supplier/product'); 

@@ -5,6 +5,9 @@ var load_page = require('./../controller/user/load_page');
 var handling = require('./../controller/user/handling_user')
 var csrfProtection = csrf();
 // app.use(csrfProtection); 
+
+var ctm_handling_payment = require('../controller/payment/handling_payment');
+
 //Custommer
 var ctm_load_data = require('../controller/customer/load_data')
 var ctm_handling = require('../controller/customer/handling_data')
@@ -17,6 +20,11 @@ app.get('/customer/done/:id',ctm_handling.done_contract)
 app.get('/customer/detail/:id',ctm_load_data.load_detail_contract)
 app.get('/customer/profile',ctm_load_data.load_profile)
 app.get('/customer/manacontract',ctm_load_data.load_contract_manager)
+
+app.get('/customer/create-payment/:id',ctm_load_data.load_contract_for_payment);
+app.post('/customer/create-payment/:id',ctm_handling_payment.create_payment_transaction);
+app.get('/customer/execute-payment/:id',ctm_handling_payment.execute_payment_transaction);
+
 //Supplier
 var sl_load_data = require('../controller/supplier/load_data')
 var sl_handling = require('../controller/supplier/handling_data')

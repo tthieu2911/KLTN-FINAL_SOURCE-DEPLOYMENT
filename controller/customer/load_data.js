@@ -80,10 +80,25 @@ var load_detail_contract = async (req,res,next)=>
         res.render('customer/pages/ctm_detail',{contracts:contractChunks});
     }).populate('product_id shipper_id customer_id supplier_id')
 }
- 
+
+var load_contract_for_payment = async (req,res,next)=> 
+{
+    var id_contract =req.params.id;
+    console.log(id_contract);
+    await contractSchema.find({_id:id_contract},(err,docs)=>{
+        var contractChunks =[];
+        var chunkSize =3;
+        for (var i=0; i<docs.length;i+= chunkSize){
+            contractChunks.push(docs.slice(i,i+chunkSize));
+        }
+        res.render('customer/pages/ctm_payment',{contracts:contractChunks});
+    }).populate('product_id shipper_id customer_id supplier_id')
+}
+
 module.exports = { 
     load_product,
     load_profile,
     load_contract_manager,
     load_detail_contract,
+    load_contract_for_payment
 }
