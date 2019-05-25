@@ -27,7 +27,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-
 </head>
 
 <body>
@@ -73,7 +72,7 @@
             </a>
             <a class="dropdown-item" href="/supplier/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn hàng
+              Quản lí đơn mua hàng
             </a>
             <a class="dropdown-item" href="/supplier/product">
               <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -92,17 +91,19 @@
         </li>
       </ul>
     </nav>
-  </div>
 
-  <div class="container-fluid">
-
+    <!-- Incoming Contract -->
+    <h3> Danh sách đơn hàng chờ xử lý</h3>
+    <br>
     <table ID="contract-list" class="table table-striped ">
       <thead class="thead-dark">
         <tr>
           <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Khách Hàng</th>
-          <th scope="col">Người giao hàng</th>
-          <th scope="col">Tình trạng</th>
+          <th scope="col">Người mua hàng</th>
+          <th scope="col">Người vận chuyển</th>
+          <th scope="col">Giá trị</th>
+          <th scope="col">Đơn vị tính</th>
+          <th scope="col">Trạng thái</th>
           <th colspan="4" scope="col" class="text-center">Thao tác</th>
         </tr>
       </thead>
@@ -112,27 +113,37 @@
         <tr>
           <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
           <td>{{this.product_id.name}}</td>
-          <td>{{this.customer_id.username}}</td>
-          <td>{{this.shipper_id.username}}</td>
+          <td>{{this.customer_id.fullName}}</td>
+          <td>{{this.shipper_id.fullName}}</td>
+          <td>{{this.price}}</td>
+          <td>USD</td>
           <td>{{this.status}}</td>
           <td class="text-center">
             <a href="/supplier/contract/delete/{{this.id}}">
-              <button type="" class="btn btn-danger btnDelete">Xóa</i></button>
+              <button type="" class="btn btn-danger btnDelete">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
             </a>
           </td>
-          <td>
+          <td class="text-center">
             <a href="/supplier/contract/{{this.id}}">
-              <button type="" class="btn btn-success btnPrice">Định giá</button>
+              <button type="" class="btn btn-success btnPrice">
+                <i class="fas fa-tag" aria-hidden="true"></i>
+              </button>
             </a>
           </td>
-          <td>
+          <td class="text-center">
             <a href="/supplier/contract/delivery/{{this.id}}">
-              <button type="" class="btn btn-warning btnShip">Giao hàng</button>
+            <button type="" class="btn btn-warning btnShip">
+              <i class="fas fa-truck" aria-hidden="true"></i>
+            </button>
             </a>
           </td>
-          <td>
+          <td class="text-center">
             <a href="/supplier/detail/{{this.id}}">
-              <button type="" class="btn btn-info btnDetail">Chi tiết</button>
+              <button type="" class="btn btn-info btnDetail">
+                <i class="fas fa-info" aria-hidden="true"></i>
+              </button>
             </a>
           </td>
         </tr>
@@ -140,11 +151,14 @@
         {{/each}}
       </tbody>
     </table>
-     <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
-      </nav>
-      
+    </nav>
+
+
   </div>
+
+
 
   <!-- Jquery handling -->
   <script>
@@ -154,29 +168,37 @@
       $("#contract-list tr").each(function () {
         var stt = $(this).find(".hdnStatus").val();
 
-        // handle for button Send Price
-        if (stt == "Đặt hàng") {
+        // Disable all button
+        $(this).find(".btnDelete").hide();
+        $(this).find(".btnPrice").hide();
+        $(this).find(".btnShip").hide();
+
+        $(this).find(".btnDetail").show();
+
+        // handle for Delete button
+        if (stt == "0" || stt == "1" ) {
+          $(this).find(".btnDelete").show();
+        }
+        else {
+          $(this).find(".btnDelete").hide();
+        }
+
+        // handle for Send price button
+        if (stt == "0") {
           $(this).find(".btnPrice").show();
         }
         else {
           $(this).find(".btnPrice").hide();
         }
 
-        // handle for button order Ship
-        if (stt == "Chấp nhận") {
+        // handle for Send price button
+        if (stt == "2") {
           $(this).find(".btnShip").show();
         }
         else {
           $(this).find(".btnShip").hide();
         }
 
-        // handle for button Delete
-        if (stt == "Đã nhận hàng" || stt == "Đang vận chuyển" || stt == "Hủy") {
-          $(this).find(".btnDelete").hide();
-        }
-        else {
-          $(this).find(".btnDelete").show();
-        }
       })
 
     });

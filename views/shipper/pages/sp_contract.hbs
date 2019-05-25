@@ -92,43 +92,56 @@
       </ul>
     </nav>
 
-  </div>
-  <div class="container">
-    <h1>Quản lí thông tin đơn hàng</h1>
+    <h1>Danh sách các đơn hàng đang xử lí</h1>
     <br>
-    <div class="container-fluid ">
-      <h3 class="text-center">Danh sách các đơn hàng đang xử lí</h3>
-      <table id="contract-list" class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Tên sản phẩm</th>
-            <th scope="col">Giá</th>
-            <th scope="col">Địa chỉ</th>
-            <th scope="col">Trạng thái</th>
-            <th colspan="2" scope="col">Thao tác</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{# each contracts}}
-          {{# each this}}
-          <tr>
-            <td>{{this.product_id.name}}</td>
-            <td>{{this.price}}</td>
-            <td>{{this.customer_id.address}}</td>
-            <td>{{this.status}}</td>
-            <td class="text-center">
-              <a href="/shipper/cancel/{{this._id}}"><button type="" class="btn btn-danger">Hủy giao hàng</button></a>
-              <a href="/shipper/detail/{{this._id}}"><button type="" class="btn btn-success">Chi tiết</button></a>
-            </td>
-          </tr>
-          {{/each}}
-          {{/each}}
-        </tbody>
-      </table>
-       <nav aria-label="Page navigation example">
+
+    <table id="contract-list" class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Tên sản phẩm</th>
+          <th scope="col">Người bán hàng</th>
+          <th scope="col">Địa chỉ nhận hàng</th>
+          <th scope="col">Người mua hàng</th>
+          <th scope="col">Địa chỉ giao hàng</th>
+          <th scope="col">Giá trị</th>
+          <th scope="col">Đơn vị tính</th>
+          <th scope="col" colspan="2" class="text-center">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{# each contracts}}
+        {{# each this}}
+        <tr>
+          <td>{{this.product_id.name}}</td>
+          <td>{{this.supplier_id.fullName}}</td>
+          <td>{{this.supplier_id.address}}</td>
+          <td>{{this.customer_id.fullName}}</td>
+          <td>{{this.customer_id.address}}</td>
+          <td>{{this.price}}</td>
+          <td>USD</td>
+          <td class="text-center">
+            <a href="/shipper/cancel/{{this._id}}">
+              <button type="" class="btn btn-danger">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="/shipper/detail/{{this._id}}">
+              <button type="" class="btn btn-success">
+                <i class="fas fa-info" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+        </tr>
+        {{/each}}
+        {{/each}}
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
-      </nav>
-    </div>
+    </nav>
+
   </div>
 
   <!-- Jquery handling -->

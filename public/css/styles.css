@@ -78,8 +78,8 @@
   background-color: #ffffff;
 }
 
-.product-text h1 {
-  height: 120;
+.product-text h3 {
+  height: 40px;
   color: #474747;
 }
 
@@ -90,7 +90,7 @@
 
 .product-text h2 {
   font-size: 18px;
-  height: 60px;
+  height: 40px;
   font-family: 'Raleway', sans-serif;
   font-weight: 400;
   text-transform: uppercase;
@@ -99,7 +99,7 @@
 }
 
 .product-text p {
-  height: 100px;
+  height: 130px;
   text-align: left;
   font-family: 'Playfair Display', serif;
   color: #8d8d8d;
@@ -118,11 +118,11 @@
 .product-price-btn button {
   display: inline-block;
   height: 50px;
-  width: 176px;
+  width: 65px;
   margin: 0 40px 0 16px;
   box-sizing: border-box;
   border: transparent;
-  border-radius: 60px;
+  border-radius: 25px;
   font-family: 'Raleway', sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -137,6 +137,7 @@
 .product-price-btn button:hover {
   background-color: #79b0a1;
 }
+
 
 /* Input */
 .form-input {
@@ -156,4 +157,15 @@
   transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+
+/* button */
+
+.btn {
+  width: 55px;
+}
+
+i {
+  font-size: 17px;
 }

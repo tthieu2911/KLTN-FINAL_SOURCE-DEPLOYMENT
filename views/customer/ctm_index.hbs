@@ -39,7 +39,7 @@
       <div>
         <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/customer"></a>
       </div>
-      
+
       <!-- Topbar Search -->
       <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
         <div class="input-group">
@@ -60,7 +60,7 @@
         <li class="nav-item dropdown no-arrow">
           <a class="nav-link dropdown-toggle" href="/customer" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-           <span class="mr-2 d-none d-lg-inline text-gray-600 small">Customer</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Customer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
           <!-- Dropdown - User Information -->
@@ -83,8 +83,6 @@
       </ul>
     </nav>
 
-  </div>
-  <div class="container">
     <div class="container-fluid border"></div>
     <br>
     <h1 class="text-center">Sản phẩm</h1>
@@ -95,22 +93,35 @@
       {{# each this}}
       <div class="col-sm-6 col-md-6">
         <form action="/customer/contract" method="post" onsubmit="return accept_form()">
-          <div class="thumbnail container row">
-            <div class="wrapper">
-              <div class="product-img col-sm-6 col-md-6">
-                <img src="https://source.unsplash.com/random/200x300">
-              </div>
-              <div class="product-info col-sm-6 col-md-6">
-                <div class="product-text">
-                  <h3>{{this.name}}</h3>
-                  <h2 class="card-title">{{this.supplier_id.fullName}}</h2> 
-                  
-                  <p class="card-text">
-                    Nhà phân phối: {{this.supplier_id.fullName}} <br>
-                    Mô tả sản phẩm: {{this.desription}}</p> 
+          <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+              <!-- Nested Row within Card Body -->
+              <div class="row">
+                <div class="col-lg-6 d-none d-lg-block">
+                  <img src="https://source.unsplash.com/random/250x380">
                 </div>
-                <div class="product-price-btn">
-                  <button type="submit">Chọn mua</button>
+                <!-- Product Info -->
+                <div class="col-lg-6 d-none d-lg-block row">
+
+                  <h4 style="font-weight:bold; text-align:center; margin-top:8%">Thông tin sản phẩm</h4>
+                  <hr>
+                  <div class="product-text text-center">
+                    <h3>{{this.name}}</h3>
+                    <h2>{{this.supplier_id.fullName}}</h2>
+
+                    <p class="card-text">
+                      Nhà sản xuất: <br>
+                      Nhà phân phối: {{this.supplier_id.fullName}} <br>
+                      Mô tả sản phẩm: {{this.desription}}
+                    </p>
+                  </div>
+                  <br>
+                  <div class="col-lg-12 text-right">
+                    <button type="submit" class="btn btn-success">
+                      <i class="fas fa-cart-plus" aria-hidden="true"></i>
+                    </button>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -125,9 +136,9 @@
       {{/each}}
       {{/each}}
     </div>
-     <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
-      </nav>
+    </nav>
   </div>
 </body>
 

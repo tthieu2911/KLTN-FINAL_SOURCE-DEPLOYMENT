@@ -18,7 +18,7 @@ var create_payment_transaction = (req, res) => {
     var id_contract = req.params.id;
     console.log(id_contract);
 
-    contractSchema.findOne({ _id: id_contract, status: "Báo giá" }, function (err, doc) {
+    contractSchema.findOne({ _id: id_contract, status: "1" }, function (err, doc) {
         if (doc == null) {
             res.redirect('/customer/manacontract');
         }
@@ -82,7 +82,7 @@ var execute_payment_transaction = (req, res) => {
     var id_contract = req.params.id;
     console.log(id_contract);
 
-    contractSchema.findOne({ _id: id_contract, status: "Báo giá" }, function (err, doc) {
+    contractSchema.findOne({ _id: id_contract, status: "1" }, function (err, doc) {
         if (doc == null) {
             res.redirect('/customer/manacontract');
         }
@@ -118,7 +118,7 @@ var execute_payment_transaction = (req, res) => {
                                 console.log(error.response);
                                 throw error;
                             } else {
-                                doc.status = "Chấp nhận";
+                                doc.status = "2";
                                 doc.save().then(() => {
                                     console.log('Update contract status accept success')
                                 });

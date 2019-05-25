@@ -90,39 +90,52 @@
       </ul>
     </nav>
 
-  </div>
-  <div class="container">
-    <div class="container-fluid "></div>
+    <div class="container-fluid border"></div>
+    <br>
     <h1 class="text-center">Sản phẩm</h1>
+
     <!-- Product card -->
     <div class="row">
       {{# each products}}
       {{# each this}}
       <div class="col-sm-6 col-md-6">
-        <form action="/supplier/contract/buy" method="post" onsubmit="return accept_form()">
-          <div class="thumbnail container row">
-            <div class="wrapper">
-              <div class="product-img col-sm-6 col-md-6">
-                <img src="https://source.unsplash.com/random/200x300">
-              </div>
-              <div class="product-info col-sm-6 col-md-6">
-                <div class="product-text">
-                  <h3>{{this.name}}</h3>
-                  <h2 class="card-title">{{this.supplier_id.fullName}}</h2> 
-                  
-                  <p class="card-text">
-                    Nhà phân phối: {{this.supplier_id.fullName}} <br>
-                    Mô tả sản phẩm: {{this.desription}}</p> 
+        <form action="/customer/contract" method="post" onsubmit="return accept_form()">
+          <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+              <!-- Nested Row within Card Body -->
+              <div class="row">
+                <div class="col-lg-6 d-none d-lg-block">
+                  <img src="https://source.unsplash.com/random/250x380">
                 </div>
-                <div class="product-price-btn">
-                  <button type="submit">Chọn mua</button>
+                <!-- Product Info -->
+                <div class="col-lg-6 d-none d-lg-block row">
+
+                  <h4 style="font-weight:bold; text-align:center; margin-top:8%">Thông tin sản phẩm</h4>
+                  <hr>
+                  <div class="product-text text-center">
+                    <h3>{{this.name}}</h3>
+                    <h2>{{this.supplier_id.fullName}}</h2>
+
+                    <p class="card-text">
+                      Nhà sản xuất: <br>
+                      Nhà phân phối: {{this.supplier_id.fullName}} <br>
+                      Mô tả sản phẩm: {{this.desription}}
+                    </p>
+                  </div>
+                  <br>
+                  <div class="col-lg-12 text-right">
+                    <button type="submit" class="btn btn-success">
+                      <i class="fas fa-cart-plus" aria-hidden="true"></i>
+                    </button>
+                  </div>
+
                 </div>
               </div>
             </div>
 
             <input type="hidden" name="product_id" value="{{this._id}}">
             <input type="hidden" name="product_name" value="{{this.name}}">
-            <input type="hidden" name="supplier_name" value="{{this.supplier_id._id}}">
+            <input type="hidden" name="supplier_id" value="{{this.supplier_id._id}}">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
           </div>
         </form>
@@ -130,9 +143,9 @@
       {{/each}}
       {{/each}}
     </div>
-     <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
-      </nav>
+    </nav>
   </div>
 
   <!-- Jquery handling -->

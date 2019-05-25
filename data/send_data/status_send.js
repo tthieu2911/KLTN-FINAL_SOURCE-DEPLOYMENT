@@ -5,12 +5,12 @@ mongoose.connect(DBurl.url)
 var status =[
     new statuSchema({
         _id:1,
-        name:'Đặt hàng',
+        name:'0',
         
     }),
     new statuSchema({
         _id:2,
-        name:'Báo giá',
+        name:'1',
         
     }),
     new statuSchema({
@@ -25,7 +25,7 @@ var status =[
     }),
     new statuSchema({
         _id:5,
-        name:'Giao hàng',
+        name:'3',
         
     }),
     new statuSchema({
@@ -35,7 +35,7 @@ var status =[
     }),
     new statuSchema({
         _id:7,
-        name:'Hủy',
+        name:'6',
         
     })
     

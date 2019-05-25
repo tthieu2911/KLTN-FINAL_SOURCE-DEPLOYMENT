@@ -19,9 +19,9 @@ var load_contract = async(req,res,next)=>{
         contractChunks= contractChunks.slice(start,end)
         res.render('supplier/sl_index',{contracts:contractChunks, pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
     }).populate('customer_id product_id shipper_id')
-    
 }
-// load dữ liệu product để mua
+
+// load dữ liệu sản phẩm để mua
 var load_product_to_buy = async(req,res,next)=>{
     await productSchema.find({supplier_id:{$ne:req.session.userId},del:true},(err,docs)=>{
         var productChunks =[];
@@ -29,8 +29,8 @@ var load_product_to_buy = async(req,res,next)=>{
         for (var i=0; i<docs.length;i+= chunkSize){
             productChunks.push(docs.slice(i,i+chunkSize));
         }
-        var page = parseInt(req.query.page) ||1;
-        var perPage = 5;
+        var page = parseInt(req.query.page) || 1;
+        var perPage = 6;
         var start = (page -1)*perPage;
         var end = page*perPage;
         var num_page= Math.ceil(docs.length/perPage)
@@ -39,7 +39,7 @@ var load_product_to_buy = async(req,res,next)=>{
     }).populate('supplier_id')
 }
 
-// load dữ liệu product của supplier đang đăng nhập
+// load dữ liệu sản phẩm của supplier đang đăng nhập
 var load_product = async(req,res,next)=>{
     await productSchema.find({supplier_id:req.session.userId,del:true},(err,docs)=>{
         var productChunks =[];
@@ -57,10 +57,10 @@ var load_product = async(req,res,next)=>{
     }).populate('supplier_id')
 }
 
-// load dữ liệu cho trang báo giá giá sản phẩm
+// load dữ liệu báo giá sản phẩm
 var load_price = async (req,res)=>{
     var id = req.params.id;
-    contractSchema.find({ _id: id,status:'Đặt hàng' }, async (err, doc)=>{
+    contractSchema.find({ _id: id,status:'0' }, async (err, doc)=>{
         if (doc==null){
             res.redirect('/supplier'); 
         }
@@ -75,6 +75,7 @@ var load_price = async (req,res)=>{
             }).populate('product_id customer_id')
         }})
 }
+
 // load dữ liệu supplier
 var load_profile = async(req,res,next)=>{
     await userSchema.find({_id:req.session.userId},async(err,docs)=>{
@@ -99,9 +100,10 @@ var load_profile = async(req,res,next)=>{
     }).populate('product_id')
     
 })}
+
 //Load dữ liệu theo dõi tình trạng đơn hàng đã đặt
 var load_contract_manager = async(req,res,next)=>{
-    await contractSchema.find({ customer_id:req.session.userId,$or:[{'status':"Đặt hàng"},{'status':"Báo giá"},{'status':"Chấp nhận"}, {'status':"Hủy"},{'status':'Giao hàng'},{'status':'Đang vận chuyển'}]},(err,docs)=>{
+    await contractSchema.find({ customer_id:req.session.userId,$or:[{'status':"0"},{'status':"1"},{'status':"2"}, {'status':"6"},{'status':'3'},{'status':'4'}]},(err,docs)=>{
         var contractChunks =[];
         var chunkSize =1;
         for (var i=0; i<docs.length;i+= chunkSize){
@@ -114,8 +116,9 @@ var load_contract_manager = async(req,res,next)=>{
         var num_page= Math.ceil(docs.length/perPage)
         contractChunks= contractChunks.slice(start,end)  
         res.render('supplier/pages/sl_contract',{contracts:contractChunks,pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
-    }).populate('product_id shipper_id')
+    }).populate('product_id shipper_id supplier_id')
 }
+
 // load chi tiết đơn hàng đã được tạo bởi customer
 var load_detail_contract = async (req,res,next)=>
 {
@@ -130,6 +133,7 @@ var load_detail_contract = async (req,res,next)=>
         res.render('supplier/pages/sl_detail',{contracts:contractChunks});
     }).populate('product_id shipper_id customer_id supplier_id')
 }
+
 // load chi tiết đơn hàng đã mua từ supplier khác
 var load_detail_contract_supplier = async (req,res,next)=>
 {
@@ -144,6 +148,7 @@ var load_detail_contract_supplier = async (req,res,next)=>
         res.render('supplier/pages/sl_detail',{contracts:contractChunks});
     }).populate('product_id shipper_id customer_id supplier_id')
 }
+
 // load dữ liệu cho trang update sản phẩm
 var load_update_product = async (req,res)=>{
     var id = req.params.id;
@@ -160,6 +165,7 @@ var load_update_product = async (req,res)=>{
             res.render('supplier/pages/sl_edit_product',{products:productChunks}); 
         }})
 }
+
 module.exports ={
     load_contract,
     load_product_to_buy,

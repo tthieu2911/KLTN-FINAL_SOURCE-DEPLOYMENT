@@ -72,7 +72,7 @@
             </a>
             <a class="dropdown-item" href="/supplier/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn hàng
+              Quản lí đơn mua hàng
             </a>
             <a class="dropdown-item" href="/supplier/market">
               <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -93,7 +93,7 @@
     <h2>Quản lý Hàng Hóa</h2>
 
     <button id="btnCreateProduct" class="btn btn-primary" style="margin-bottom:20px;">
-      <div>Tạo sản phẩm</div>
+      <i class="fas fa-plus" aria-hidden="true"></i>
     </button>
 
     <!-- Create product window -->
@@ -141,6 +141,7 @@
       <thead class="thead-dark text-center">
         <tr>
           <th scope="col">Tên sản phẩm</th>
+          <th scope="col">Nhà cung cấp</th>
           <th scope="col">Mô tả</th>
           <th scope="col">Số lượng trong kho</th>
           <th colspan="2" scope="col" >Thao tác</th>
@@ -151,16 +152,21 @@
         {{# each this}}
         <tr>
           <td>{{this.name}}</td>
+          <td>{{this.supplier_id.fullName}}</td>
           <td>{{this.desription}}</td>
           <td>{{this.quatity}}</td>
           <td class="text-center">
             <a id="delete" href="/supplier/product/delete/{{this.id}}" onclick="return check()">
-              <button type="button" class="btn btn-danger">Xóa</button>
+              <button type="button" class="btn btn-danger">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
             </a>
           </td>
           <td class="text-center">
             <a id="edit" href="/supplier/product/edit/{{this.id}}">
-              <button type="button" class="btn btn-info">Chỉnh sửa</button>
+              <button type="button" class="btn btn-info">
+                <i class="fas fa-edit" aria-hidden="true"></i>
+              </button>
             </a>
           </td>
         </tr>

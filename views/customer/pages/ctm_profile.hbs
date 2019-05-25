@@ -51,7 +51,7 @@
           </a>
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-             <a class="dropdown-item" href="/customer/manacontract">
+            <a class="dropdown-item" href="/customer/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
               Quản lí đơn hàng
             </a>
@@ -72,7 +72,7 @@
       {{this.message}}
     </div>
     {{/if}}
-     {{#if success}}
+    {{#if success}}
     <div class="alert alert-success text-center" role="alert">
       {{this.success}}
     </div>
@@ -82,14 +82,14 @@
     <form action="/update_profile" method="POST">
       <!-- Edit profile Buttons -->
       <button type="button" id="btnEditProfile" class="btn btn-primary" style="margin-bottom:20px;">
-        <div>Cập nhật thông tin</div>
+        <i class="fas fa-edit" aria-hidden="true"></i>
       </button>
 
       <button type="submit" id="btnAcceptProfile" class="btn btn-primary btn-success" style="margin-bottom:20px;">
-        <div>Xác nhận cập nhật</div>
+        <i class="fas fa-check" aria-hidden="true"></i>
       </button>
       <button type="button" id="btnCancelProfile" class="btn btn-primary btn-danger" style="margin-bottom:20px;">
-        <div>Hủy</div>
+        <i class="fas fa-times" aria-hidden="true"></i>
       </button>
 
       {{# each users}}
@@ -99,7 +99,8 @@
           <th>Họ và tên</th>
           <td colspan="2">
             <div id="txtNameSample">{{this.fullName}}</div>
-            <input type="text" id="txtFullName" name="fullName" class="form-input"  style="display: none;" value={{this.fullName}} >
+            <input type="text" id="txtFullName" name="fullName" class="form-input" style="display: none;"
+              value={{this.fullName}} required>
             </input>
           </td>
         </tr>
@@ -107,7 +108,8 @@
           <th>Số điện thoại</th>
           <td colspan="2">
             <div id="txtPhoneSample">{{this.phone}}</div>
-            <input type="number" id="txtPhone" name="phone" class="form-input" style="display: none;" value={{this.phone}}>
+            <input type="number" id="txtPhone" name="phone" class="form-input" style="display: none;"
+              value={{this.phone}} required>
             </input>
           </td>
         </tr>
@@ -115,7 +117,8 @@
           <th>Địa chỉ</th>
           <td colspan="2">
             <div id="txtAddressSample">{{this.address}}</div>
-            <input type="text" id="txtAddress" name="address" style="display: none;" class="form-input" value={{this.address}}>
+            <input type="text" id="txtAddress" name="address" style="display: none;" class="form-input"
+              value={{this.address}} required>
             </input>
           </td>
         </tr>
@@ -123,156 +126,161 @@
           <th>Email</th>
           <td colspan="2">
             <div id="txtEmailSample">{{this.email}}</div>
-            <input type="email" id="txtEmail" name="email" class="form-input" style="display: none;" value={{this.email}}>
+            <input type="email" id="txtEmail" name="email" class="form-input" style="display: none;"
+              value={{this.email}} required>
             </input>
           </td>
         </tr>
     </form>
-      <form action="/change_password" method="POST">
-          <tr>
-            <th>Tên Đăng nhập</th>
-            <td colspan="2">{{this.username}}
-            </td>
-          </tr>
-          <input type="hidden" name="type" value="{{this.type}}">
-          <tr>
-            <th>Mật khẩu</th>
-            <td>
-              <div id="txtPasswordSample">*******</div>
-              <input type="password" id="txtPassword" required name="passWord" class="form-input" placeholder="Mật khẩu" style="display: none;">
-              </input>
-              <input type="password" id="txtNewPassword" required name="passWord_new" class="form-input" placeholder="Mật khẩu mới"
-                style="display: none;">
-              </input>
-            </td>
-            <td>
-              <!-- Change password Buttons -->
-              <button type="button" id="btnEditPassword" class="btn btn-primary" style="margin-bottom:20px;">
-                Đổi mật khẩu
-              </button>
+    <form action="/change_password" method="POST">
+      <tr>
+        <th>Tên Đăng nhập</th>
+        <td colspan="2">{{this.username}}
+        </td>
+      </tr>
+      <input type="hidden" name="type" value="{{this.type}}">
+      <tr>
+        <th>Mật khẩu</th>
+        <td>
+          <div id="txtPasswordSample">*******</div>
+          <input type="password" id="txtPassword" required name="passWord" class="form-input"
+            placeholder="Mật khẩu hiện tại" style="display: none;" required>
+          </input>
+          <input type="password" id="txtNewPassword" required name="passWord_new" class="form-input"
+            placeholder="Mật khẩu mới" style="display: none;" required>
+          </input>
+        </td>
+        <td>
+          <!-- Change password Buttons -->
+          <button type="button" id="btnEditPassword" class="btn btn-primary" style="margin-bottom:20px;">
+            <i class="fas fa-key" aria-hidden="true"></i>
+          </button>
 
-              <button type="submit" id="btnAcceptPassword" class="btn btn-primary btn-success"
-                style="margin-bottom:20px;">
-                Cập nhật mật khẩu
-              </button>
-              <button type="button" id="btnCancelPassword" class="btn btn-primary btn-danger"
-                style="margin-bottom:20px;">
-                Hủy
-              </button>
-            </td>
-          </tr>
-       </form> 
-      </table>
+          <button type="submit" id="btnAcceptPassword" class="btn btn-primary btn-success" style="margin-bottom:20px;">
+            <i class="fas fa-check" aria-hidden="true"></i>
+          </button>
+          <button type="button" id="btnCancelPassword" class="btn btn-primary btn-danger" style="margin-bottom:20px;">
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+    </form>
+    </table>
+    {{/each}}
+    {{/each}}
+
+
+    <h3 class="text-center">Lịch sử mua hàng</h3>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Tên sản phẩm</th>
+          <th scope="col">Giá trị</th>
+          <th scope="col">Đơn vị tính</th>
+          <th scope="col">Người bán hàng</th>
+          <th scope="col">Người vận chuyển</th>
+          <th scope="col">Trạng thái</th>
+          <th scope="col">Thao tác</th>
+        </tr>
+      </thead>
+      {{# each contract}}
+      {{# each this}}
+      <tbody>
+        <tr>
+          <td>{{this.product_id.name}}</td>
+          <td>{{this.price}}</td>
+          <td>USD</td>
+          <td>{{this.supplier_id.fullName}}</td>
+          <td>{{this.shipper_id.fullName}}</td>
+          <td>{{this.status}}</td>
+          <td class="text-center">
+            <a href="/customer/detail/{{this._id}}"><button type="button" class="btn btn-info">
+                <i class="fas fa-info" aria-hidden="true"></i>
+              </button></a>
+          </td>
+        </tr>
+      </tbody>
       {{/each}}
       {{/each}}
-   
-    <div class="container-fluid ">
-      <h3 class="text-center">Lịch sử mua hàng</h3>
-      <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Tên sản phẩm</th>
-            <th scope="col">Giá</th>
-            <th scope="col">Người giao hàng</th>
-            <th scope="col">Trạng thái</th>
-            <th scope="col">Thao tác</th>
-          </tr>
-        </thead>
-        {{# each contract}}
-        {{# each this}}
-        <tbody>
-          <tr>
-            <td>{{this.product_id.name}}</td>
-            <td>{{this.price}}</td>
-            <td>{{this.shipper_id.fullName}}</td>
-            <td>{{this.status}}</td>
-            <td>
-              <a href="/customer/detail/{{this._id}}"><button type="button" class="btn btn-info">Chi Tiết</button></a>
-              {{!-- <button id="btnDetail" value="{{this._id}}" class="btn btn-info">Chi tiết</button> --}}
-            </td>
-          </tr>
-        </tbody>
-        {{/each}}
-        {{/each}}
-      </table>
-       <nav aria-label="Page navigation example">
+    </table>
+    <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
-      </nav>
-      
-    </div>
+    </nav>
+
+
   </div>
 
   <!-- Jquery handling -->
   <script>
-    
-  $(document).ready(function () {
-    $("#btnCancelProfile").hide();
-    $("#btnAcceptProfile").hide();
-    $("#btnCancelPassword").hide();
-    $("#btnAcceptPassword").hide();
 
-    $("#txtFullName").hide();
-    $("#txtPhone").hide();
-    $("#txtAddress").hide();
-    $("#txtEmail").hide();
-
-    //-- Update profile --//
-    $("#btnEditProfile").on('click', function () {
-      $("#txtNameSample").hide(1000);
-      $("#txtPhoneSample").hide(1000);
-      $("#txtEmailSample").hide(1000);
-      $("#txtAddressSample").hide(1000);
-      $("#txtFullName").show(1000);
-      $("#txtPhone").show(1000);
-      $("#txtAddress").show(1000);
-      $("#txtEmail").show(1000);
-
-      $("#btnEditProfile").hide();
-      $("#btnAcceptProfile").show(1000);
-      $("#btnCancelProfile").show(1000);
-    });
-
-    $("#btnCancelProfile").on('click', function () {
-      $("#txtNameSample").show(1000);
-      $("#txtPhoneSample").show(1000);
-      $("#txtEmailSample").show(1000);
-      $("#txtAddressSample").show(1000);
-      $("#txtFullName").hide(1000);
-      $("#txtPhone").hide(1000);
-      $("#txtAddress").hide(1000);
-      $("#txtEmail").hide(1000);
-
-      $("#btnEditProfile").show(1000);
-      $("#btnAcceptProfile").hide();
+    $(document).ready(function () {
       $("#btnCancelProfile").hide();
-    });
-
-
-    //-- Change Password --//
-    $("#btnEditPassword").on('click', function () {
-      $("#txtPasswordSample").hide(1000);
-      $("#txtPassword").show(1000);
-      $("#txtNewPassword").show(1000);
-
-      $("#btnEditPassword").hide();
-      $("#btnCancelPassword").show(1000);
-      $("#btnAcceptPassword").show(1000);
-    });
-
-    $("#btnCancelPassword").on('click', function () {
-      $("#txtPasswordSample").show(1000);
-      $("#txtPassword").hide(1000);
-      $("#txtNewPassword").hide(1000);
-
-      $("#btnEditPassword").show(1000);
+      $("#btnAcceptProfile").hide();
       $("#btnCancelPassword").hide();
       $("#btnAcceptPassword").hide();
+
+      $("#txtFullName").hide();
+      $("#txtPhone").hide();
+      $("#txtAddress").hide();
+      $("#txtEmail").hide();
+
+      //-- Update profile --//
+      $("#btnEditProfile").on('click', function () {
+        $("#txtNameSample").hide(1000);
+        $("#txtPhoneSample").hide(1000);
+        $("#txtEmailSample").hide(1000);
+        $("#txtAddressSample").hide(1000);
+        $("#txtFullName").show(1000);
+        $("#txtPhone").show(1000);
+        $("#txtAddress").show(1000);
+        $("#txtEmail").show(1000);
+
+        $("#btnEditProfile").hide();
+        $("#btnAcceptProfile").show(1000);
+        $("#btnCancelProfile").show(1000);
+      });
+
+      $("#btnCancelProfile").on('click', function () {
+        $("#txtNameSample").show(1000);
+        $("#txtPhoneSample").show(1000);
+        $("#txtEmailSample").show(1000);
+        $("#txtAddressSample").show(1000);
+        $("#txtFullName").hide(1000);
+        $("#txtPhone").hide(1000);
+        $("#txtAddress").hide(1000);
+        $("#txtEmail").hide(1000);
+
+        $("#btnEditProfile").show(1000);
+        $("#btnAcceptProfile").hide();
+        $("#btnCancelProfile").hide();
+      });
+
+
+      //-- Change Password --//
+      $("#btnEditPassword").on('click', function () {
+        $("#txtPasswordSample").hide(1000);
+        $("#txtPassword").show(1000);
+        $("#txtNewPassword").show(1000);
+
+        $("#btnEditPassword").hide();
+        $("#btnCancelPassword").show(1000);
+        $("#btnAcceptPassword").show(1000);
+      });
+
+      $("#btnCancelPassword").on('click', function () {
+        $("#txtPasswordSample").show(1000);
+        $("#txtPassword").hide(1000);
+        $("#txtNewPassword").hide(1000);
+
+        $("#btnEditPassword").show(1000);
+        $("#btnCancelPassword").hide();
+        $("#btnAcceptPassword").hide();
+      });
+
+
     });
 
 
-  });
-
-  
   </script>
 
 </body>

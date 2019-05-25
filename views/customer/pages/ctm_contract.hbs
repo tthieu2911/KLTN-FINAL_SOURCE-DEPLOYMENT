@@ -65,59 +65,78 @@
       </ul>
     </nav>
 
-  </div>
-  <div class="container">
-    <h1>Quản lí thông tin đơn hàng</h1>
+    <h1>Quản lí thông tin đơn mua hàng</h1>
     <hr>
     <br>
-    <div class="container-fluid ">
-      <h3 class="text-center">Danh sách đơn hàng</h3>
-      <table id="contract-list" class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Tên sản phẩm</th>
-            <th scope="col">Giá trị</th>
-            <th scope="col">Người giao hàng</th>
-            <th scope="col">Trạng thái</th>
-            <th colspan="4" scope="col">Thao tác</th>
-          </tr>
-        </thead>
-        {{# each contracts}}
-        {{# each this}}
-        <tbody>
-          <tr>
-            <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
-            <td>{{this.product_id.name}}</td>
-            <td>{{this.price}}</td>
-            <td>{{this.shipper_id.fullName}}</td>
-            <td>{{this.status}}</td>
-            <td>
-              <a href="/customer/cancel/{{this._id}}" onclick="return check()"><button type="" class="btn btn-danger btnCancel">Hủy</button></a>
-            </td>
-            <td>
-              <!--<a href="/customer/accept/{{this._id}}"onclick="return check()"><button type="" class="btn btn-success btnAccept" >Chấp nhận</button></a>
+
+    <h3 class="text-center">Danh sách đơn hàng</h3>
+    <table id="contract-list" class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Tên sản phẩm</th>
+          <th scope="col">Giá trị</th>
+          <th scope="col">Đơn vị tính</th>
+          <th scope="col">Người bán hàng</th>
+          <th scope="col">Người vận chuyển</th>
+          <th scope="col">Trạng thái</th>
+          <th colspan="4" scope="col">Thao tác</th>
+        </tr>
+      </thead>
+      {{# each contracts}}
+      {{# each this}}
+      <tbody>
+        <tr>
+          <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
+          <td>{{this.product_id.name}}</td>
+          <td>{{this.price}}</td>
+          <td>USD</td>
+          <td>{{this.supplier_id.fullName}}</td>
+          <td>{{this.shipper_id.fullName}}</td>
+          <td>{{this.status}}</td>
+          <td>
+            <a href="/customer/cancel/{{this._id}}" onclick="return check()">
+              <button type="" class="btn btn-danger btnCancel">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td>
+            <a href="/customer/accept/{{this._id}}" onclick="return check()">
+              <button type="" class="btn btn-success btnAccept">
+                <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+              </button>
+            </a>
+            <!--
+              <a href="/customer/create-payment/{{this._id}}" onclick="return check()">
+                <button type="" class="btn btn-success btnAccept" >
+                  <i class="fas fa-info" aria-hidden="true"></i>
+                </button>
+              </a>
               -->
-              <a href="/customer/create-payment/{{this._id}}" onclick="return check()"><button type="" class="btn btn-success btnAccept" >Chấp nhận</button></a>
-            </td>
-            <td>
-              <a href="/customer/done/{{this._id}}" ><button type="" class="btn btn-warning btnReceive">Đã nhận</button></a>
-            </td>  
-            <td>
-             <a href="/customer/detail/{{this._id}}"><button type="" class="btn btn-info btnDetail">Chi Tiết</button></a>
-            </td>
-          </tr>
-        </tbody>
-        {{/each}}
-        {{/each}}
-      </table>
-      
-      <nav aria-label="Page navigation example">
+          </td>
+          <td>
+            <a href="/customer/done/{{this._id}}">
+              <button type="" class="btn btn-warning btnReceive">
+                <i class="fas fa-box-open" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td>
+            <a href="/customer/detail/{{this._id}}">
+              <button type="" class="btn btn-info btnDetail">
+                <i class="fas fa-info" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      {{/each}}
+      {{/each}}
+    </table>
+
+    <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
-      </nav>
-      
-   
-      
-    </div>
+    </nav>
 
   </div>
 
@@ -126,45 +145,44 @@
 
     $(document).ready(function () {
 
-      $("#contract-list tr").each(function(){
+      $("#contract-list tr").each(function () {
         var stt = $(this).find(".hdnStatus").val();
 
-        //handle button Receive product
-        if(stt == "Đang vận chuyển"){
-          $(this).find(".btnReceive").show();
-        }
-        else{
-          $(this).find(".btnReceive").hide();
-        }
+        // Disable all button
+        $(this).find(".btnCancel").hide();
+        $(this).find(".btnAccept").hide();
+        $(this).find(".btnReceive").hide();
 
-        //handle button Accept price
-        if(stt == "Báo giá"){
-          $(this).find(".btnAccept").show();
-        }
-        else{
-          $(this).find(".btnAccept").hide();
-        }
+        $(this).find(".btnDetail").show();
 
-        //handle button Cancel
-        if(stt == "Đang vận chuyển"){
-          $(this).find(".btnCancel").hide();
-        }
-        else{
+        // handle for Cancel button
+        if (stt == "0" || stt == "1") {
           $(this).find(".btnCancel").show();
         }
-
-        //handle buttons
-        if(stt == "Hủy" || stt == "Đã nhận hàng"){
+        else {
           $(this).find(".btnCancel").hide();
+        }
+
+        // handle for Accept price button
+        if (stt == "1") {
+          $(this).find(".btnAccept").show();
+        }
+        else {
           $(this).find(".btnAccept").hide();
+        }
+
+        // handle for Send price button
+        if (stt == "4") {
+          $(this).find(".btnReceive").show();
+        }
+        else {
           $(this).find(".btnReceive").hide();
         }
-        
       })
 
     });
   </script>
-  
+
 </body>
 
 </html>

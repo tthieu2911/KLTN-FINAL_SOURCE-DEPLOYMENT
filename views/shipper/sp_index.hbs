@@ -95,38 +95,55 @@
       </ul>
     </nav>
 
-  </div>
+    <h1>Đơn hàng đang chờ</h1>
+    <br>
 
-  <div class="container">
     <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">Mã đơn hàng</th>
           <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Khách hàng</th>
-          <th scope="col">Trạng thái</th>
-          <th scope="col">Thao tác</th>
+          <th scope="col">Người bán hàng</th>
+          <th scope="col">Địa chỉ nhận hàng</th>
+          <th scope="col">Người mua hàng</th>
+          <th scope="col">Địa chỉ giao hàng</th>
+          <th scope="col">Giá trị</th>
+          <th scope="col">Đơn vị tính</th>
+          <th scope="col" colspan="2" class="text-center">Thao tác</th>
         </tr>
       </thead>
       <tbody>
         {{# each contracts}}
         {{# each this}}
         <tr>
-          <th scope="row">{{this._id}}</th>
           <td>{{this.product_id.name}}</td>
+          <td>{{this.supplier_id.fullName}}</td>
+          <td>{{this.supplier_id.address}}</td>
           <td>{{this.customer_id.fullName}}</td>
-          <td>{{this.status}}</td>
+          <td>{{this.customer_id.address}}</td>
+          <td>{{this.price}}</td>
+          <td>USD</td>
           <td class="text-center">
-            <a href="/shipper/delivery/{{this.id}}"><button type="" class="btn btn-success">Nhận giao hàng</button></a>
+            <a href="/shipper/delivery/{{this.id}}">
+              <button type="" class="btn btn-success btnShip">
+                <i class="fas fa-truck" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="/shipper/detail/{{this._id}}">
+              <button type="" class="btn btn-info btnDetail">
+                <i class="fas fa-info" aria-hidden="true"></i>
+              </button>
+            </a>
           </td>
         </tr>
         {{/each}}
         {{/each}}
       </tbody>
     </table>
-     <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
-      </nav>
+    </nav>
   </div>
 
 </body>

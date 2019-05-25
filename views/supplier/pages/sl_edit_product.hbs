@@ -53,11 +53,11 @@
                   <form class="user" method="POST" action="/supplier/product/edit">
                     <div class="form-group">
                       <input type="text" class="form-control form-control-user" id="" name="nameproduct"
-                        value="{{this.name}}">
+                        value="{{this.name}}" required>
                     </div>
                     <div class="form-group">
                       <input type="text" class="form-control form-control-user" id="" name="description"
-                        value="{{this.desription}}">
+                        value="{{this.desription}}" required>
                     </div>
                     <hr>
                     <input type="hidden" name="id_product" value="{{this._id}}">
