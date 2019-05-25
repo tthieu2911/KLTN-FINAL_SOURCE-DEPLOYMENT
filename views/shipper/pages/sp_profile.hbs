@@ -190,9 +190,12 @@
       <thead class="thead-dark">
         <tr>
           <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Địa chỉ giao hàng</th>
           <th scope="col">Giá trị</th>
           <th scope="col">Đơn vị tính</th>
+          <th scope="col">Người bán hàng</th>
+          <th scope="col">Người mua hàng</th>
+          <th scope="col">Trạng thái</th>
+          <th scope="col">Thao tác</th>
           <th scope="col" colspan="2" class="text-center">Thao tác</th>
         </tr>
       </thead>
@@ -200,10 +203,13 @@
       {{# each this}}
       <tbody>
         <tr>
+          <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
           <td>{{this.product_id.name}}</td>
-          <td>{{this.customer_id.address}}</td>
           <td>{{this.price}}</td>
           <td>USD</td>
+          <td>{{this.supplier_id.fullName}}</td>
+          <td>{{this.customer_id.fullName}}</td>
+          <td class="sttDescription"></td>
           <td class="text-center">
             <a href="/shipper/detail/{{this._id}}"><button type="" class="btn btn-info">Chi Tiết</button></a>
           </td>
@@ -282,6 +288,37 @@
         $("#btnCancelPassword").hide();
         $("#btnAcceptPassword").hide();
       });
+
+      $("#contract-list tr").each(function () {
+        var stt = $(this).find(".hdnStatus").val();
+        // handle for Status Description
+        var sttDescription = $(this).find(".sttDescription");
+
+        switch (stt) {
+          case '0':
+            sttDescription.html("Đặt hàng");
+            break;
+          case '1':
+            sttDescription.html("Báo giá");
+            break;
+          case '2':
+            sttDescription.html("Xác nhận báo giá");
+            break;
+          case '3':
+            sttDescription.html("Chờ vận chuyển");
+            break;
+          case '4':
+            sttDescription.html("Đang vận chuyển");
+            break;
+          case '5':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '6':
+            sttDescription.html("Đã hủy");
+            break;
+        }
+      })
+
     });
   </script>
 

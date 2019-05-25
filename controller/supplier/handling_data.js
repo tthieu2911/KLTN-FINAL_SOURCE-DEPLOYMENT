@@ -163,7 +163,8 @@ var edit_product = (req, res, next) => {
     var nameproduct = req.body.nameproduct;
     var description = req.body.description;
     var id_product = req.body.id_product;
-    productSchema.findOne({ _id: id_product }, (err, doc) => {
+    var id_supplier = req.session.userId;
+    productSchema.findOne({ _id: id_product, supplier_id: id_supplier}, (err, doc) => {
         if (doc == null) {
             res.redirect('/supplier/product');
         }

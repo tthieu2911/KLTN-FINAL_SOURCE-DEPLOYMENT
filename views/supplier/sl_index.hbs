@@ -117,7 +117,7 @@
           <td>{{this.shipper_id.fullName}}</td>
           <td>{{this.price}}</td>
           <td>USD</td>
-          <td>{{this.status}}</td>
+          <td id="sttDescription"></td>
           <td class="text-center">
             <a href="/supplier/contract/delete/{{this.id}}">
               <button type="" class="btn btn-danger btnDelete">
@@ -134,9 +134,9 @@
           </td>
           <td class="text-center">
             <a href="/supplier/contract/delivery/{{this.id}}">
-            <button type="" class="btn btn-warning btnShip">
-              <i class="fas fa-truck" aria-hidden="true"></i>
-            </button>
+              <button type="" class="btn btn-warning btnShip">
+                <i class="fas fa-truck" aria-hidden="true"></i>
+              </button>
             </a>
           </td>
           <td class="text-center">
@@ -154,11 +154,7 @@
     <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
     </nav>
-
-
   </div>
-
-
 
   <!-- Jquery handling -->
   <script>
@@ -176,7 +172,7 @@
         $(this).find(".btnDetail").show();
 
         // handle for Delete button
-        if (stt == "0" || stt == "1" ) {
+        if (stt == "0" || stt == "1") {
           $(this).find(".btnDelete").show();
         }
         else {
@@ -199,7 +195,34 @@
           $(this).find(".btnShip").hide();
         }
 
+        // handle for Status Description
+        var sttDescription = $(this).find("#sttDescription");
+        
+        switch(stt) {
+          case '0':
+            sttDescription.html("Đặt hàng");
+            break;
+          case '1':
+            sttDescription.html("Báo giá");
+            break;
+          case '2':
+            sttDescription.html("Xác nhận báo giá");
+            break;
+          case '3':
+            sttDescription.html("Chờ vận chuyển");
+            break;
+          case '4':
+            sttDescription.html("Đang vận chuyển");
+            break;
+          case '5':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '6':
+            sttDescription.html("Đã hủy");
+            break;
+        }
       })
+
 
     });
 

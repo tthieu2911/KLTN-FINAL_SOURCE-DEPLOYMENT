@@ -8,7 +8,7 @@
   <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-   <!-- Custom fonts for this template-->
+  <!-- Custom fonts for this template-->
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -152,7 +152,7 @@
         <th>Mật khẩu</th>
         <td>
           <div id="txtPasswordSample">*******</div>
-          <input type="password" id="txtPassword" required name="passWord" class="form-input" 
+          <input type="password" id="txtPassword" required name="passWord" class="form-input"
             placeholder="Mật khẩu hiện tại" style="display: none;" required>
           </input>
           <input type="password" id="txtNewPassword" required name="passWord_new" class="form-input"
@@ -180,7 +180,7 @@
     </form>
 
     <h3 class="text-center">Lịch sử mua hàng</h3>
-    <table class="table">
+    <table class="table" id="contract-list">
       <thead class="thead-dark">
         <tr>
           <th scope="col">Tên sản phẩm</th>
@@ -196,16 +196,19 @@
       {{# each this}}
       <tbody>
         <tr>
+          <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
           <td>{{this.product_id.name}}</td>
           <td>{{this.price}}</td>
           <td>USD</td>
           <td>{{this.supplier_id.fullName}}</td>
           <td>{{this.shipper_id.fullName}}</td>
-          <td>{{this.status}}</td>
+          <td class="sttDescription"></td>
           <td class="text-center">
-            <a href="/supplier/detail/{{this._id}}"><button type="" class="btn btn-info">
-              <i class="fas fa-info" aria-hidden="true"></i>
-            </button></a>
+            <a href="/supplier/detail/{{this._id}}">
+              <button type="" class="btn btn-info">
+                <i class="fas fa-info" aria-hidden="true"></i>
+              </button>
+            </a>
           </td>
         </tr>
       </tbody>
@@ -285,6 +288,36 @@
         $("#btnAcceptPassword").hide();
       });
 
+
+      $("#contract-list tr").each(function () {
+        var stt = $(this).find(".hdnStatus").val();
+        // handle for Status Description
+        var sttDescription = $(this).find(".sttDescription");
+
+        switch (stt) {
+          case '0':
+            sttDescription.html("Đặt hàng");
+            break;
+          case '1':
+            sttDescription.html("Báo giá");
+            break;
+          case '2':
+            sttDescription.html("Xác nhận báo giá");
+            break;
+          case '3':
+            sttDescription.html("Chờ vận chuyển");
+            break;
+          case '4':
+            sttDescription.html("Đang vận chuyển");
+            break;
+          case '5':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '6':
+            sttDescription.html("Đã hủy");
+            break;
+        }
+      })
 
     });
 

@@ -31,7 +31,10 @@ var sl_handling = require('../controller/supplier/handling_data');
 app.use('/supplier',load_page.requiresLoginSupplier);
 app.get('/supplier',sl_load_data.load_contract);
 app.get('/supplier/product',sl_load_data.load_product);
-app.post('/supplier/product',sl_handling.create_product);
+app.get('/supplier/product/create_product', (req, res) => {
+    res.render('../views/supplier/pages/sl_create_product');
+});
+app.post('/supplier/create_product',sl_handling.create_product);
 app.get('/supplier/product/delete/:id',sl_handling.delete_product);
 app.get('/supplier/market',sl_load_data.load_product_to_buy);
 app.get("/supplier/contract/:id",sl_load_data.load_price);

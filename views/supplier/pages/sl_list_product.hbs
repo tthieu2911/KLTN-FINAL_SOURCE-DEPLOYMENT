@@ -91,51 +91,11 @@
 
   <div class="container">
     <h2>Quản lý Hàng Hóa</h2>
-
-    <button id="btnCreateProduct" class="btn btn-primary" style="margin-bottom:20px;">
-      <i class="fas fa-plus" aria-hidden="true"></i>
-    </button>
-
-    <!-- Create product window -->
-    <div id="hdnCreateProduct" class="popup slide-window" style="display: none">
-      <div class="col-xl-10 col-lg-12 col-md-9">
-        <div class="card o-hidden border-0 shadow-lg my-5">
-          <div class="card-body p-0">
-            <div class="row">
-              <div class="col-lg-6 d-none d-lg-block">
-                <img src="https://source.unsplash.com/random/410x360">
-              </div>
-              <div class="col-lg-6">
-                <!-- Close button -->
-                <div>
-                  <span style="margin-bottom: 1%;margin-top: 3%; margin-left: 89%" class="close rounded">X</span>
-                </div>
-
-                <div class="p-5">
-                  <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Tạo sản phẩm</h1>
-                  </div>
-                  <form class="user" method="POST" action="/supplier/product">
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" required id="" name="nameProduct"
-                        placeholder="Tên sản phẩm">
-                    </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" required id="" name="desription"
-                        placeholder="Mô tả sản phẩm">
-                    </div>
-                    <hr>
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
-                      Tạo mới
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <a id="Create" href="/supplier/product/create_product">
+      <button class="btn btn-primary" style="margin-bottom:20px;">
+        <i class="fas fa-plus" aria-hidden="true"></i>
+      </button>
+    </a>
 
     <table class="table table-striped ">
       <thead class="thead-dark text-center">
@@ -144,7 +104,7 @@
           <th scope="col">Nhà cung cấp</th>
           <th scope="col">Mô tả</th>
           <th scope="col">Số lượng trong kho</th>
-          <th colspan="2" scope="col" >Thao tác</th>
+          <th colspan="2" scope="col">Thao tác</th>
         </tr>
       </thead>
       <tbody>
@@ -174,24 +134,13 @@
         {{/each}}
       </tbody>
     </table>
-     <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
-      </nav>
+    </nav>
   </div>
 
   <!-- Jquery handling -->
   <script>
-    $(document).ready(function () {
-
-      $(".close").on('click', function () {
-        $(this).closest(".popup").hide(1000);
-      })
-
-      $("#btnCreateProduct").on('click', function () {
-        $("#hdnCreateProduct").show(1000);
-      })
-    });
-
   </script>
 
 </body>

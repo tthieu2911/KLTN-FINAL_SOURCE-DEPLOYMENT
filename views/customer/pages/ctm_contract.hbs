@@ -92,7 +92,7 @@
           <td>USD</td>
           <td>{{this.supplier_id.fullName}}</td>
           <td>{{this.shipper_id.fullName}}</td>
-          <td>{{this.status}}</td>
+          <td id="sttDescription">{{this.status}}</td>
           <td>
             <a href="/customer/cancel/{{this._id}}" onclick="return check()">
               <button type="" class="btn btn-danger btnCancel">
@@ -178,6 +178,34 @@
         else {
           $(this).find(".btnReceive").hide();
         }
+
+                // handle for Status Description
+        var sttDescription = $(this).find("#sttDescription");
+        
+        switch(stt) {
+          case '0':
+            sttDescription.html("Đặt hàng");
+            break;
+          case '1':
+            sttDescription.html("Báo giá");
+            break;
+          case '2':
+            sttDescription.html("Xác nhận báo giá");
+            break;
+          case '3':
+            sttDescription.html("Chờ vận chuyển");
+            break;
+          case '4':
+            sttDescription.html("Đang vận chuyển");
+            break;
+          case '5':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '6':
+            sttDescription.html("Đã hủy");
+            break;
+        }
+        
       })
 
     });

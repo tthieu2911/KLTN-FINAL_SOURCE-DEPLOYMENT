@@ -97,7 +97,7 @@ var load_profile = async(req,res,next)=>{
             var num_page= Math.ceil(docs.length/perPage)
             contractChunks= contractChunks.slice(start,end)   
         res.render('supplier/pages/sl_profile',{contracts:contractChunks,users:userChunks,success:req.flash('success'),message:req.flash('message'), pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
-    }).populate('product_id')
+    }).populate('product_id shipper_id supplier_id')
     
 })}
 

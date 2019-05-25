@@ -67,6 +67,7 @@ var load_profile = async(req,res,next)=>{
             for (var i=0; i<docs.length;i+= chunkSize){
                 contractChunks.push(docs.slice(i,i+chunkSize));
             }
+            console.log(contractChunks);
             var page = parseInt(req.query.page) ||1;
             var perPage = 5;
             var start = (page -1)*perPage;
@@ -74,7 +75,7 @@ var load_profile = async(req,res,next)=>{
             var num_page= Math.ceil(docs.length/perPage)
             contractChunks= contractChunks.slice(start,end)
         res.render('shipper/pages/sp_profile',{contracts:contractChunks,users:userChunks,success:req.flash('success'),message:req.flash('message'),pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
-    }).populate('product_id')
+    }).populate('product_id customer_id supplier_id shipper_id')
     
 })}
 
