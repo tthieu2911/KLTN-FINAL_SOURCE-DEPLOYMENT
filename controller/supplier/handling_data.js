@@ -71,22 +71,22 @@ var create_contract = async (req, res, next) => {
     console.log(id_product);
     console.log(id_manufacturer);
     var contracts = new contractSchema({
-            product_id: id_product, 
-            seller_id: id_manufacturer, 
-            buyer_id: req.session.userId, 
-            shipper_id: null,
-            quatity: 1,     // fix value
-            price: null, 
-            currency: 'USD',// fix value
-            createBy: req.session.userId,
-            createDate: today,
-            deleteBy: null,
-            deleteDate: null,
-            acceptDate: null,
-            shipDate: null,
-            receiveDate: null,
-            status: '0'
-        });
+        product_id: id_product,
+        seller_id: id_manufacturer,
+        buyer_id: req.session.userId,
+        shipper_id: null,
+        quatity: 1,     // fix value
+        price: null,
+        currency: 'USD',// fix value
+        createBy: req.session.userId,
+        createDate: today,
+        deleteBy: null,
+        deleteDate: null,
+        acceptDate: null,
+        shipDate: null,
+        receiveDate: null,
+        status: '0'
+    });
     contracts.save().then(() => {
         console.log('Create new contract successfully');
     })
@@ -102,11 +102,11 @@ var accept_contract = (req, res, next) => {
             res.redirect('/supplier/manacontract');
         }
         else {
-            wareHouseSchema.find({product_id:doc.product_id,supplier_id:doc.seller_id},(error, product) => {
-                if(product.quatity <= 0){
+            wareHouseSchema.find({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+                if (product.quatity <= 0) {
                     return;
                 }
-                else{
+                else {
                     product.quatity -= 1;
                     product.save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully");
@@ -132,13 +132,24 @@ var done_contract = (req, res, next) => {
             res.redirect('/supplier/manacontract');
         }
         else {
-            doc.status = "5";
-            doc.receiveDate = today;
-            doc.save().then(() => {
-                console.log('Received product');
-            });
+            wareHouseSchema.find({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+                if (product == null) {
+                    return;
+                }
+                else {
+                    product.quatity += 1;
+                    product.save().then(() => {
+                        console.log("Update quatity of seller's warehouse successfully");
+                    });
+                    doc.status = "5";
+                    doc.receiveDate = today;
+                    doc.save().then(() => {
+                        console.log('Received product');
+                    });
 
-            res.redirect('/supplier/manacontract');
+                    res.redirect('/supplier/manacontract');
+                }
+            })
         }
     })
 }
@@ -166,7 +177,7 @@ var cancel_contract = (req, res) => {
 // Xóa sản phẩm khỏi kho chứa
 var delete_product = (req, res, next) => {
     var id_product = req.params.id;
-    wareHouseSchema.remove({product_id:id_product,supplier_id:req.session.userId},(error, product) => {
+    wareHouseSchema.remove({ product_id: id_product, supplier_id: req.session.userId }, (error, product) => {
         console.log("Remove product succesfullly");
         res.redirect('/supplier/product');
     })
