@@ -17,7 +17,7 @@ var load_contract = async(req,res,next)=>{
         var num_page= Math.ceil(docs.length/perPage)
         contractChunks= contractChunks.slice(start,end)
         res.render('shipper/sp_index',{contracts:contractChunks, pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
-    }).sort({ status: -1 }).populate('product_id customer_id supplier_id')
+    }).sort({ status: -1 }).populate('product_id buyer_id seller_id')
 }
 
 //load chi tiết đơn hàng
@@ -32,7 +32,7 @@ var load_detail_contract = async (req,res,next)=>
             contractChunks.push(docs.slice(i,i+chunkSize));
         }
         res.render('shipper/pages/sp_detail',{contracts:contractChunks});
-    }).populate('product_id shipper_id customer_id supplier_id')
+    }).populate('product_id shipper_id buyer_id seller_id')
 }
 
 //load đơn hàng đã nhận 
@@ -50,7 +50,7 @@ var load_contract_manager = async(req,res,next)=>{
         var num_page= Math.ceil(docs.length/perPage)
         contractChunks= contractChunks.slice(start,end)
         res.render('shipper/pages/sp_contract',{contracts:contractChunks,pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
-    }).sort({ status: -1 }).populate('product_id customer_id supplier_id')
+    }).sort({ status: -1 }).populate('product_id buyer_id seller_id')
 }
 
 // load dữ liệu trang cá nhân
@@ -75,7 +75,7 @@ var load_profile = async(req,res,next)=>{
             var num_page= Math.ceil(docs.length/perPage)
             contractChunks= contractChunks.slice(start,end)
         res.render('shipper/pages/sp_profile',{contracts:contractChunks,users:userChunks,success:req.flash('success'),message:req.flash('message'),pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
-    }).sort({ status: -1 }).populate('product_id customer_id supplier_id shipper_id')
+    }).sort({ status: -1 }).populate('product_id buyer_id seller_id shipper_id')
     
 })}
 

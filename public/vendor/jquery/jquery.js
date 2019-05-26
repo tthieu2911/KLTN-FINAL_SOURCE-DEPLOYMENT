@@ -2553,7 +2553,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				// Add matches to results
 				push.apply( results, setMatched );
 
-				// Seedless set matches succeeding multiple successful matchers stipulate sorting
+				// Seedless set matches succeeding multiple successfully matchers stipulate sorting
 				if ( outermost && !seed && setMatched.length > 0 &&
 					( matchedCount + setMatchers.length ) > 1 ) {
 
@@ -9243,7 +9243,7 @@ jQuery.extend( {
 			// Set readyState
 			jqXHR.readyState = status > 0 ? 4 : 0;
 
-			// Determine if successful
+			// Determine if successfully
 			isSuccess = status >= 200 && status < 300 || status === 304;
 
 			// Get response data
@@ -9254,7 +9254,7 @@ jQuery.extend( {
 			// Convert no matter what (that way responseXXX fields are always set)
 			response = ajaxConvert( s, response, jqXHR, isSuccess );
 
-			// If successful, handle type chaining
+			// If successfully, handle type chaining
 			if ( isSuccess ) {
 
 				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.

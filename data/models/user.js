@@ -9,8 +9,8 @@ var  userSchema = new Schema({
     address: {type:String},
     phone: String,
     email: String,
-    type: {type:String}, // customer - supplier - shipper - admin
-    del:Boolean,
+    createDate: Date,
+    type: {type:String}, // customer - manufacturer - supplier - shipper - admin
 })
 
 module.exports = mongoose.model('Users',userSchema)

@@ -2,16 +2,31 @@ var productSchema = require('../../data/models/product')
 var contractSchema = require('../../data/models/contract')
 
 //  Tạo đơn mua hàng
+// Tạo đơn mua hàng
 var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
-    var id_supplier = req.body.supplier_id;
-    var name_product = req.body.product_name;
+    var id_manufacturer = req.body.manufacturer_id;
     console.log(id_product);
-    console.log(id_supplier);
-    var contracts = new contractSchema({ product_id: id_product, name_product: name_product, supplier_id: id_supplier, customer_id: req.session.userId, price: null, shipper_id: null, status: "0" })
+    console.log(id_manufacturer);
+    var contracts = new contractSchema({
+            product_id: id_product, 
+            seller_id: id_manufacturer, 
+            buyer_id: req.session.userId, 
+            shipper_id: null,
+            quatity: 1,     // fix value
+            price: null, 
+            currency: 'USD',// fix value
+            createBy: req.session.userId,
+            createDate: today,
+            deleteBy: null,
+            deleteDate: null,
+            acceptDate: null,
+            shipDate: null,
+            receiveDate: null,
+            status: '0'
+        });
     contracts.save().then(() => {
-        console.log('insert contract success');
-
+        console.log('Create new contract successfully');
     })
     res.redirect('/customer');
 }
@@ -25,14 +40,24 @@ var accept_contract = (req, res, next) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            doc.status = "2";
-            doc.save().then(() => {
-                console.log('Update contract status accept success')
-            });
-
-            res.redirect('/customer/manacontract');
-            //res.redirect('/customer/create-payment/' + doc._id);
+            wareHouseSchema.find({product_id:doc.product_id,supplier_id:doc.seller_id},(error, product) => {
+                if(product.quatity <= 0){
+                    return;
+                }
+                else{
+                    product.quatity -= 1;
+                    product.save().then(() => {
+                        console.log("Update quatity of seller's warehouse successfully");
+                    });
+                    doc.acceptDate = today;
+                    doc.status = "2";
+                    doc.save().then(() => {
+                        console.log('Accept contract successfully')
+                    });
+                }
+            })
         }
+        res.redirect('/customer/manacontract');
     })
 }
 
@@ -46,11 +71,13 @@ var cancel_contract = (req, res) => {
         }
         else {
             doc.status = "6";
+            doc.deleteBy = req.session.userId;
+            doc.deleteDate = today;
             doc.save().then(() => {
-                console.log('Update contract status Cancel success')
+                console.log('Cancel contract successfully')
             });
-            res.redirect('/customer/manacontract');
         }
+        res.redirect('/customer/manacontract');
     });
 }
 
@@ -64,8 +91,9 @@ var done_contract = (req, res, next) => {
         }
         else {
             doc.status = "5";
+            doc.receiveDate = today;
             doc.save().then(() => {
-                console.log('Update contract status done success')
+                console.log('Received product')
             });
 
             res.redirect('/customer/manacontract');

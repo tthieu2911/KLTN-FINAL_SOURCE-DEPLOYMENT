@@ -14,6 +14,16 @@ var users =[
         del:true,
     }), 
     new user({
+        username: "manufacturer",
+        password: "123456",
+        fullName:"Manu Li",
+        address: "HCM",
+        phone: '036224521',
+        email: 'manufacturer@gmail.com',
+        type: "manufacturer",
+        del:true,
+    }),
+    new user({
         username: "supplier",
         password: "123456",
         fullName:"manager",

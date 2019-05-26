@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Trang chủ</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" href="assets/css/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Custom fonts for this template-->
+  <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <div class="container">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+      <!-- Home button -->
+      <div>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/manufacturer"></a>
+      </div>
+
+      <!-- Topbar Search -->
+      <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+        <div class="input-group">
+          <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm..." aria-label="Search"
+            aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button">
+              <i class="fas fa-search fa-sm"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Topbar Navbar -->
+      <ul class="navbar-nav ml-auto">
+
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Manufacturer</span>
+            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+          </a>
+
+          <!-- Dropdown - User Information -->
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="/manufacturer/profile">
+              <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
+              Cá nhân
+            </a>
+            <a class="dropdown-item" href="/manufacturer/product">
+              <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí kho
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">
+              <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Incoming Contract -->
+    <h3> Danh sách đơn bán hàng</h3>
+    <br>
+    <table ID="contract-list" class="table table-striped ">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Tên sản phẩm</th>
+          <th scope="col">Người mua hàng</th>
+          <th scope="col">Người vận chuyển</th>
+          <th scope="col">Giá trị</th>
+          <th scope="col">Đơn vị tính</th>
+          <th scope="col">Trạng thái</th>
+          <th colspan="4" scope="col" class="text-center">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{# each contracts}}
+        {{# each this}}
+        <tr>
+          <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
+          <td>{{this.product_id.name}}</td>
+          <td>{{this.customer_id.fullName}}</td>
+          <td>{{this.shipper_id.fullName}}</td>
+          <td>{{this.price}}</td>
+          <td>USD</td>
+          <td id="sttDescription"></td>
+          <td class="text-center">
+            <a href="/manufacturer/contract/delete/{{this.id}}">
+              <button type="" class="btn btn-danger btnDelete">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="/manufacturer/contract/{{this.id}}">
+              <button type="" class="btn btn-success btnPrice">
+                <i class="fas fa-tag" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="/manufacturer/contract/delivery/{{this.id}}">
+              <button type="" class="btn btn-warning btnShip">
+                <i class="fas fa-truck" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="/manufacturer/detail/{{this.id}}">
+              <button type="" class="btn btn-info btnDetail">
+                <i class="fas fa-info" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+        </tr>
+        {{/each}}
+        {{/each}}
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+      {{{paginateHelper pagination}}}
+    </nav>
+  </div>
+
+  <!-- Jquery handling -->
+  <script>
+
+    $(document).ready(function () {
+
+      $("#contract-list tr").each(function () {
+        var stt = $(this).find(".hdnStatus").val();
+
+        // Disable all button
+        $(this).find(".btnDelete").hide();
+        $(this).find(".btnPrice").hide();
+        $(this).find(".btnShip").hide();
+
+        $(this).find(".btnDetail").show();
+
+        // handle for Delete button
+        if (stt == "0" || stt == "1") {
+          $(this).find(".btnDelete").show();
+        }
+        else {
+          $(this).find(".btnDelete").hide();
+        }
+
+        // handle for Send price button
+        if (stt == "0") {
+          $(this).find(".btnPrice").show();
+        }
+        else {
+          $(this).find(".btnPrice").hide();
+        }
+
+        // handle for Send price button
+        if (stt == "2") {
+          $(this).find(".btnShip").show();
+        }
+        else {
+          $(this).find(".btnShip").hide();
+        }
+
+        // handle for Status Description
+        var sttDescription = $(this).find("#sttDescription");
+        
+        switch(stt) {
+          case '0':
+            sttDescription.html("Đặt hàng");
+            break;
+          case '1':
+            sttDescription.html("Báo giá");
+            break;
+          case '2':
+            sttDescription.html("Xác nhận báo giá");
+            break;
+          case '3':
+            sttDescription.html("Chờ vận chuyển");
+            break;
+          case '4':
+            sttDescription.html("Đang vận chuyển");
+            break;
+          case '5':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '6':
+            sttDescription.html("Đã hủy");
+            break;
+        }
+      })
+
+
+    });
+
+  </script>
+
+</body>
+
+</html>

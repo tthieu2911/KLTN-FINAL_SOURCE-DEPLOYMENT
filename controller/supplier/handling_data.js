@@ -1,37 +1,11 @@
 var productSchema = require('./../../data/models/product')
 var contractSchema = require('../../data/models/contract')
+var wareHouseSchema = require('../../data/models/warehouse')
 var mongoose = require('mongoose')
 var DBurl = require('./../../data/config')
 mongoose.connect(DBurl.url)
 
-// Tạo sản phẩm
-var create_product = (req, res) => {
-    var nameProduct = req.body.nameProduct;
-    var desription = req.body.desription;
-    var products = new productSchema({ name: nameProduct, desription: desription, supplier_id: req.session.userId, del: true })
-    products.save().then(() => {
-        console.log('insert products success');
-    })
-    res.redirect('/supplier/product');
-}
-
-// Cho phép giao hàng
-var delivery_contract = (req, res) => {
-    var id_contract = req.params.id;
-    console.log(id_contract);
-    contractSchema.findOne({ _id: id_contract, status: '2' }, (err, doc) => {
-        if (doc == null) {
-            res.redirect('/supplier');
-        }
-        else {
-            doc.status = "3";
-            doc.save().then(() => {
-                console.log('Update contract status accept success')
-            });
-            res.redirect('/supplier');
-        }
-    })
-}
+var today = new Date();
 
 // Báo giá 
 var send_price = async (req, res, next) => {
@@ -45,7 +19,25 @@ var send_price = async (req, res, next) => {
             doc.price = price;
             doc.status = "1";
             doc.save().then(() => {
-                console.log('Update contract success')
+                console.log('Send price successfully')
+            });
+            res.redirect('/supplier');
+        }
+    })
+}
+
+// Cho phép giao hàng
+var delivery_contract = (req, res) => {
+    var id_contract = req.params.id;
+    console.log(id_contract);
+    contractSchema.findOne({ _id: id_contract, status: '2' }, (err, doc) => {
+        if (doc == null) {
+            res.redirect('/supplier');
+        }
+        else {
+            doc.status = "3";
+            doc.save().then(() => {
+                console.log('Release contract successfully')
             });
             res.redirect('/supplier');
         }
@@ -62,8 +54,10 @@ var delete_contract = (req, res) => {
         }
         else {
             doc.status = "6";
+            doc.deleteBy = req.session.userId;
+            doc.deleteDate = today;
             doc.save().then(() => {
-                console.log('Update contract status cancel success')
+                console.log('Delete contract successfully')
             })
         }
     })
@@ -73,14 +67,29 @@ var delete_contract = (req, res) => {
 // Tạo đơn mua hàng
 var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
-    var id_supplier = req.body.supplier_id;
+    var id_manufacturer = req.body.manufacturer_id;
     console.log(id_product);
-    console.log(id_supplier);
-    var contracts = new contractSchema({ product_id: id_product, supplier_id: id_supplier, customer_id: req.session.userId, price: null, shipper_id: null, status: '0' })
+    console.log(id_manufacturer);
+    var contracts = new contractSchema({
+            product_id: id_product, 
+            seller_id: id_manufacturer, 
+            buyer_id: req.session.userId, 
+            shipper_id: null,
+            quatity: 1,     // fix value
+            price: null, 
+            currency: 'USD',// fix value
+            createBy: req.session.userId,
+            createDate: today,
+            deleteBy: null,
+            deleteDate: null,
+            acceptDate: null,
+            shipDate: null,
+            receiveDate: null,
+            status: '0'
+        });
     contracts.save().then(() => {
-        console.log('insert contract success');
+        console.log('Create new contract successfully');
     })
-
     res.redirect('/supplier/market');
 }
 
@@ -93,13 +102,24 @@ var accept_contract = (req, res, next) => {
             res.redirect('/supplier/manacontract');
         }
         else {
-            doc.status = "2";
-            doc.save().then(() => {
-                console.log('Update contract status accept success')
-            });
-
-            res.redirect('/supplier/manacontract');
+            wareHouseSchema.find({product_id:doc.product_id,supplier_id:doc.seller_id},(error, product) => {
+                if(product.quatity <= 0){
+                    return;
+                }
+                else{
+                    product.quatity -= 1;
+                    product.save().then(() => {
+                        console.log("Update quatity of seller's warehouse successfully");
+                    });
+                    doc.acceptDate = today;
+                    doc.status = "2";
+                    doc.save().then(() => {
+                        console.log('Accept contract successfully')
+                    });
+                }
+            })
         }
+        res.redirect('/supplier/manacontract');
     })
 }
 
@@ -113,8 +133,9 @@ var done_contract = (req, res, next) => {
         }
         else {
             doc.status = "5";
+            doc.receiveDate = today;
             doc.save().then(() => {
-                console.log('Update contract status done success')
+                console.log('Received product');
             });
 
             res.redirect('/supplier/manacontract');
@@ -132,56 +153,26 @@ var cancel_contract = (req, res) => {
         }
         else {
             doc.status = "6";
+            doc.deleteBy = req.session.userId;
+            doc.deleteDate = today;
             doc.save().then(() => {
-                console.log('Update contract status cancel success')
+                console.log('Cancel contract successfully')
             })
         }
         res.redirect('/supplier/manacontract');
     })
 }
 
-// Xóa sản phẩm
+// Xóa sản phẩm khỏi kho chứa
 var delete_product = (req, res, next) => {
     var id_product = req.params.id;
-    productSchema.findOne({ _id: id_product }, function (err, doc) {
-        if (doc == null) {
-            res.redirect('/supplier/product');
-        }
-        else {
-            doc.del = false;
-            doc.save().then(() => {
-                console.log('delete done success')
-            });
-
-            res.redirect('/supplier/product');
-        }
-    })
-}
-
-//  Sửa sản phẩm
-var edit_product = (req, res, next) => {
-    var nameproduct = req.body.nameproduct;
-    var description = req.body.description;
-    var id_product = req.body.id_product;
-    var id_supplier = req.session.userId;
-    productSchema.findOne({ _id: id_product, supplier_id: id_supplier}, (err, doc) => {
-        if (doc == null) {
-            res.redirect('/supplier/product');
-        }
-        else {
-            doc.name = nameproduct;
-            doc.desription = description;
-            doc.save().then(() => {
-                console.log('Update product successfully')
-            });
-
-            res.redirect('/supplier/product');
-        }
+    wareHouseSchema.remove({product_id:id_product,supplier_id:req.session.userId},(error, product) => {
+        console.log("Remove product succesfullly");
+        res.redirect('/supplier/product');
     })
 }
 
 module.exports = {
-    create_product,
     delivery_contract,
     send_price,
     cancel_contract,
@@ -190,5 +181,4 @@ module.exports = {
     accept_contract,
     done_contract,
     delete_product,
-    edit_product,
 }

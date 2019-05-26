@@ -8,63 +8,88 @@ var csrfProtection = csrf();
 
 var ctm_handling_payment = require('../controller/payment/handling_payment');
 
-//Custommer
+
+// Custommer
 var ctm_load_data = require('../controller/customer/load_data');
 var ctm_handling = require('../controller/customer/handling_data');
 app.use('/customer',load_page.requiresLoginCustom);
 app.get('/customer',ctm_load_data.load_product);
+
 app.post('/customer/contract',ctm_handling.create_contract);
 app.get('/customer/accept/:id',ctm_handling.accept_contract);
 app.get('/customer/cancel/:id',ctm_handling.cancel_contract);
 app.get('/customer/done/:id',ctm_handling.done_contract);
+
+app.get('/customer/manacontract',ctm_load_data.load_contract_manager);
 app.get('/customer/detail/:id',ctm_load_data.load_detail_contract);
 app.get('/customer/profile',ctm_load_data.load_profile);
-app.get('/customer/manacontract',ctm_load_data.load_contract_manager);
 
+// Test
 app.get('/customer/create-payment/:id',ctm_load_data.load_contract_for_payment);
 app.post('/customer/create-payment/:id',ctm_handling_payment.create_payment_transaction);
 app.get('/customer/execute-payment/:id',ctm_handling_payment.execute_payment_transaction);
 
-//Supplier
+
+// Manufacturer
+var mf_load_data = require('../controller/manufacturer/load_data');
+var mf_handling = require('../controller/manufacturer/handling_data');
+//- Sell
+app.use('/manufacturer',load_page.requiresLoginManufacturer);
+app.get('/manufacturer',mf_load_data.load_contract);
+app.get("/manufacturer/contract/:id",mf_load_data.load_price);
+app.post("/manufacturer/price",mf_handling.send_price);         // Send price
+app.get("/manufacturer/contract/delivery/:id",mf_handling.delivery_contract);
+app.get("/manufacturer/contract/delete/:id",mf_handling.delete_contract);
+//- Warehouse
+app.get('/manufacturer/product',mf_load_data.load_product);
+app.get('/manufacturer/product/create_product', (req, res) => {
+    res.render('../views/manufacturer/pages/mf_create_product');
+});
+app.post('/manufacturer/create_product',mf_handling.create_product);
+app.get('/manufacturer/product/delete/:id',mf_handling.delete_product);
+app.get('/manufacturer/product/edit/:id',mf_load_data.load_update_product);
+app.post('/manufacturer/product/edit',mf_handling.edit_product);     // Edit Product
+//- Profile
+app.get('/manufacturer/profile',mf_load_data.load_profile);
+app.get('/manufacturer/detail/:id',mf_load_data.load_detail_contract);
+
+
+// Supplier
 var sl_load_data = require('../controller/supplier/load_data');
 var sl_handling = require('../controller/supplier/handling_data');
+//- Sell
 app.use('/supplier',load_page.requiresLoginSupplier);
 app.get('/supplier',sl_load_data.load_contract);
-app.get('/supplier/product',sl_load_data.load_product);
-app.get('/supplier/product/create_product', (req, res) => {
-    res.render('../views/supplier/pages/sl_create_product');
-});
-app.post('/supplier/create_product',sl_handling.create_product);
-app.get('/supplier/product/delete/:id',sl_handling.delete_product);
-app.get('/supplier/market',sl_load_data.load_product_to_buy);
 app.get("/supplier/contract/:id",sl_load_data.load_price);
+app.post("/supplier/price",sl_handling.send_price);         // Send price
 app.get("/supplier/contract/delivery/:id",sl_handling.delivery_contract);
 app.get("/supplier/contract/delete/:id",sl_handling.delete_contract);
+//- Warehouse
+app.get('/supplier/product',sl_load_data.load_product);
+//- Buy
+app.get('/supplier/market',sl_load_data.load_product_to_buy);
 app.post('/supplier/contract/buy',sl_handling.create_contract);
-app.post("/supplier/price",sl_handling.send_price);
-
-app.get('/supplier/profile',sl_load_data.load_profile);
 app.get('/supplier/manacontract',sl_load_data.load_contract_manager);
-// app.get('/supplier/manacontract/cancel/:id',)
-// app.get('/supplier/manacontract/done/:id',)
-// app.get('/supplier/manacontract/detail/:id',)
-// app.get('/supplier/manacontract/accept/:id',)
 app.get('/supplier/cancel/:id',sl_handling.cancel_contract);
 app.get('/supplier/accept/:id',sl_handling.accept_contract);
 app.get('/supplier/done/:id',sl_handling.done_contract);
+//- Profile
+app.get('/supplier/profile',sl_load_data.load_profile);
 app.get('/supplier/detail/:id',sl_load_data.load_detail_contract);
-app.get('/supplier/product/edit/:id',sl_load_data.load_update_product);
-app.post('/supplier/product/edit',sl_handling.edit_product);
 
-//Shipper
+
+// Shipper
 var sp_load_data = require('../controller/shipper/load_data');
 var sp_handling = require('../controller/shipper/handling_data');
+//- Ship
 app.use('/shipper',load_page.requiresLoginShipper);
 app.get('/shipper',sp_load_data.load_contract);
 app.get('/shipper/delivery/:id',sp_handling.admit_delivery);
-app.get('/shipper/profile',sp_load_data.load_profile);
+//- Manage
+app.get('/shipper/manacontract',sp_load_data.load_contract_manager);
 app.get('/shipper/cancel/:id',sp_handling.cancel_delivery);
 app.get('/shipper/detail/:id',sp_load_data.load_detail_contract);
-app.get('/shipper/manacontract',sp_load_data.load_contract_manager);
+//- Profile
+app.get('/shipper/profile',sp_load_data.load_profile);
 
 module.exports = app;

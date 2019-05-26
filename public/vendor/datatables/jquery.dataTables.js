@@ -2384,7 +2384,7 @@
 	 *    DataTables will create a row automatically
 	 *  @param {array} [anTds] Array of TD|TH elements for the row - must be given
 	 *    if nTr is.
-	 *  @returns {int} >=0 if successful (index of new aoData entry), -1 if failed
+	 *  @returns {int} >=0 if successfully (index of new aoData entry), -1 if failed
 	 *  @memberof DataTable#oApi
 	 */
 	function _fnAddData ( oSettings, aDataIn, nTr, anTds )

@@ -2553,7 +2553,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 				// Add matches to results
 				push.apply( results, setMatched );
 
-				// Seedless set matches succeeding multiple successful matchers stipulate sorting
+				// Seedless set matches succeeding multiple successfully matchers stipulate sorting
 				if ( outermost && !seed && setMatched.length > 0 &&
 					( matchedCount + setMatchers.length ) > 1 ) {
 

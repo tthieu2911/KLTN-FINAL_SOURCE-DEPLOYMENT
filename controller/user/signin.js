@@ -30,17 +30,19 @@ var checked = async (req,res) =>{
         await get_check_type(req,userName,(value)=>{
             check_type=value;
         })
+        /*if(check_type==='manufacturer'){
+            res.redirect('/manufacturer');
+        }
         if(check_type==='supplier'){
             res.redirect('/supplier');
         }
-           
         else if(check_type==='customer'){
             res.redirect('/customer');
         }
         else if(check_type=='shipper'){
             res.redirect('/shipper');
-        }
-           
+        }*/
+        res.redirect('/' + check_type);
     }
         
 }
@@ -92,7 +94,6 @@ var get_check_type = async(req,name,callback)=>{
         return callback(value);
     });
 }
-
 
 module.exports ={
     checked,

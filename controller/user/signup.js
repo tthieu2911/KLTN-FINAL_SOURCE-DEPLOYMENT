@@ -3,6 +3,7 @@ var Messages = require('./../../data/messages.json');
 var mongoose = require('mongoose')
 var DBurl = require('./../../data/config')
 mongoose.connect(DBurl.url)
+
 var save_data= async(req,res,done)=>{
     var userName = req.body.userName;
     var passWord = req.body.passWord;
@@ -31,10 +32,9 @@ var save_data= async(req,res,done)=>{
             console.log('insert success');
             })
         return res.render('signup',{message_sc:Messages.signup.success})
-
     }
-    
 }
+
 var check_dulicate =async(name,callback)=>{
     var value = null;
     await userSchema.find({'username':name}, (err,data)=>{
@@ -50,6 +50,8 @@ var check_dulicate =async(name,callback)=>{
         }
         return callback(value);
     });
-
 }
-module.exports = {save_data}
+
+module.exports = {
+    save_data
+}

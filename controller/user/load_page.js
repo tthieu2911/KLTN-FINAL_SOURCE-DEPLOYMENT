@@ -44,6 +44,28 @@ async function requiresLoginCustom(req, res, next){
       return next(err);
     }
   }
+
+async function requiresLoginManufacturer(req, res, next){
+    
+    if (req.session && req.session.userId) {
+        var check_type;
+        await check_type_id(req.session.userId,(value)=>{
+            check_type=value;
+        })
+        if (check_type == 'manufacturer')
+            return next();
+        else {
+            var err = new Error('You must be logged in to view this page.');
+            err.status = 401;
+            return next(err);
+        }
+    } else {
+      var err = new Error('You must be logged in to view this page.');
+      err.status = 401;
+      return next(err);
+    }
+  }
+
 async function requiresLoginSupplier(req, res, next){
     
     if (req.session && req.session.userId) {
@@ -182,6 +204,7 @@ var createPagination = function (pagination, options) {
 ;
 module.exports={
     requiresLoginCustom,
+    requiresLoginManufacturer,
     requiresLoginSupplier,
     requiresLoginShipper,
     isloggedIn,

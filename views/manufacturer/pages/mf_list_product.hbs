@@ -37,7 +37,7 @@
 
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/supplier"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/manufacturer"></a>
       </div>
 
       <!-- Topbar Search -->
@@ -58,25 +58,17 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="/supplier" id="userDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Supplier</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Manufacturer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
 
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/supplier/profile">
+            <a class="dropdown-item" href="/manufacturer/profile">
               <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
               Cá nhân
-            </a>
-            <a class="dropdown-item" href="/supplier/manacontract">
-              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn mua hàng
-            </a>
-            <a class="dropdown-item" href="/supplier/market">
-              <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
-              Mua sản phẩm
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">
@@ -91,6 +83,11 @@
 
   <div class="container">
     <h2>Quản lý Hàng Hóa</h2>
+    <a id="Create" href="/manufacturer/product/create_product">
+      <button class="btn btn-primary" style="margin-bottom:20px;">
+        <i class="fas fa-plus" aria-hidden="true"></i>
+      </button>
+    </a>
 
     <table class="table table-striped ">
       <thead class="thead-dark text-center">
@@ -111,14 +108,14 @@
           <td>{{this.desription}}</td>
           <td>{{this.quatity}}</td>
           <td class="text-center">
-            <a id="delete" href="/supplier/product/delete/{{this.id}}" onclick="return check()">
+            <a id="delete" href="/manufacturer/product/delete/{{this.id}}" onclick="return check()">
               <button type="button" class="btn btn-danger">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
-            <a id="edit" href="/supplier/product/edit/{{this.id}}">
+            <a id="edit" href="/manufacturer/product/edit/{{this.id}}">
               <button type="button" class="btn btn-info">
                 <i class="fas fa-edit" aria-hidden="true"></i>
               </button>

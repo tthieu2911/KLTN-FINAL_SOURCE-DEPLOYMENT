@@ -1,5 +1,7 @@
 var contractSchema = require('../../data/models/contract')
 
+var today = new Date();
+
 // Xử lí nhận đơn hàng
 var admit_delivery = (req,res)=>{
     var id_contract =req.params.id;
@@ -8,8 +10,9 @@ var admit_delivery = (req,res)=>{
         if (err) return err;
         doc.status ="4";
         doc.shipper_id = req.session.userId;
+        doc.shipDate = today;
         doc.save().then(()=>{
-            console.log('Update contract status transport success')
+            console.log('Received to deliver successfully')
         });
       }); 
     res.redirect('/shipper'); 
@@ -26,13 +29,13 @@ var cancel_delivery = (req,res)=>{
         else
         {
             doc.status ="3";
-            doc.shipper_id = req.session.userId;
+            doc.shipper_id = null;
+            doc.shipDate = null;
             doc.save().then(()=>{
-                console.log('Update contract status transport success')
+                console.log('Cancel delivery successfully')
             });
         res.redirect('/shipper/manacontract'); 
         }
-       
 })}
 
 module.exports = {

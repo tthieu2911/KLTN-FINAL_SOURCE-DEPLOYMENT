@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Định giá đơn hàng</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
+  <!-- Bootstrap core JavaScript-->
+  <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="../../assets/js/sb-admin-2.min.js"></script>
+
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+      <div class="col-xl-10 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-6 d-none d-lg-block">
+                <img src="https://source.unsplash.com/random/460x410">
+              </div>
+              <div class="col-lg-6">
+                <!-- Exit button -->
+                <button class="btn btn-primary" onclick="back()"
+                  style="margin-bottom: 1%;margin-top: 3%; margin-left: 89%;"> X </button>
+
+                <h4 style="font-weight: bold; text-align:center;">Thông tin đơn hàng</h4>
+
+                <div class="container-fluid">
+                  <form action="/manufacturer/price" method="post">
+                    <div class="form-group">
+                      {{# each contracts}}
+                      {{# each this}}
+                      <table class="table">
+                        <tr>
+                          <td>Mã đơn hàng :</td>
+                          <td><b>{{this._id}}</b></td>
+                        </tr>
+                        <tr>
+                          <td>Tên sản phẩm:</td>
+                          <td><b>{{this.product_id.name}}</b></td>
+                        </tr>
+                        <tr>
+                          <td>Người mua hàng:</td>
+                          <td><b>{{this.customer_id.fullName}}</b></td>
+                        </tr>
+                      </table>
+                      <input type="hidden" name="contract_id" value="{{this._id}}">
+                      {{/each}}
+                      {{/each}}
+                    </div>
+                    <div class="form-group">
+                      <p><b>Tổng giá trị đơn hàng: </b></p>
+                      <input type="number" min="0" class="form-control" id="price" name="price"
+                        placeholder="Giá trị đơn hàng" required >
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-left:86%; margin-bottom:5% ">
+                      <i class="fas fa-check" aria-hidden="true"></i>    
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function back() {
+      history.back();
+    }
+  </script>
+
+
+</body>
+
+</html>
