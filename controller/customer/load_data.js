@@ -20,7 +20,7 @@ var load_product = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         productChunks = productChunks.slice(start, end)
         res.render('customer/ctm_index', { products: productChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-    }).populate('supplier_id')
+    }).sort({ name: -1 }).populate('supplier_id')
 }
 
 // Load dữ liệu thông tin customer
@@ -44,7 +44,7 @@ var load_profile = async (req, res, next) => {
             var num_page = Math.ceil(docs.length / perPage)
             contractChunks = contractChunks.slice(start, end)
             res.render('customer/pages/ctm_profile', { contract: contractChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-        }).populate('product_id shipper_id supplier_id')
+        }).sort({ status: -1 }).populate('product_id shipper_id supplier_id')
 
     })
 }
@@ -64,7 +64,7 @@ var load_contract_manager = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         contractChunks = contractChunks.slice(start, end)
         res.render('customer/pages/ctm_contract', { contracts: contractChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-    }).populate('product_id shipper_id supplier_id')
+    }).sort({ status: -1 }).populate('product_id shipper_id supplier_id')
 }
 
 // load chi tiết đơn hàng
