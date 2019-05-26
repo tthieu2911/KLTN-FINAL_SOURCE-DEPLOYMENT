@@ -30,7 +30,7 @@ var save_data= async(req,res,done)=>{
         users.save().then(()=>{
             console.log('insert success');
             })
-        return res.render('signup',{message_sc:Messages.signup.success})
+        return res.render('index',{message_sc:Messages.signup.success})
    
     }
     

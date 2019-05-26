@@ -15,6 +15,7 @@ app.post('/',signin.checked);
 app.get('/signup',(req,res)=>{
   res.render('signup')
 })
+
 app.post('/signup',signup.save_data)
 app.get('/logout',async (req,res,next)=>{
     if (req.session) {
