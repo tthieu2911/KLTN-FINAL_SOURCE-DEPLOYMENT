@@ -1,30 +1,30 @@
 var productSchema = require('../../data/models/product')
 var contractSchema = require('../../data/models/contract')
+var warehouseSchema = require('../../data/models/warehouse')
 
-//  Tạo đơn mua hàng
+var today = new Date();
+
 // Tạo đơn mua hàng
 var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
-    var id_manufacturer = req.body.manufacturer_id;
-    console.log(id_product);
-    console.log(id_manufacturer);
+    var id_supplier = req.body.supplier_id;
     var contracts = new contractSchema({
-            product_id: id_product, 
-            seller_id: id_manufacturer, 
-            buyer_id: req.session.userId, 
-            shipper_id: null,
-            quatity: 1,     // fix value
-            price: null, 
-            currency: 'USD',// fix value
-            createBy: req.session.userId,
-            createDate: today,
-            deleteBy: null,
-            deleteDate: null,
-            acceptDate: null,
-            shipDate: null,
-            receiveDate: null,
-            status: '0'
-        });
+        product_id: id_product,
+        seller_id: id_supplier,
+        buyer_id: req.session.userId,
+        shipper_id: null,
+        quatity: 1,     // fix value
+        price: null,
+        currency: 'USD',// fix value
+        createBy: req.session.userId,
+        createDate: today,
+        deleteBy: null,
+        deleteDate: null,
+        acceptDate: null,
+        shipDate: null,
+        receiveDate: null,
+        status: '0'
+    });
     contracts.save().then(() => {
         console.log('Create new contract successfully');
     })
@@ -40,15 +40,16 @@ var accept_contract = (req, res, next) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            warehouseSchema.find({product_id:doc.product_id,supplier_id:doc.seller_id},(error, product) => {
-                if(product.quatity <= 0){
-                    return;
+            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+                if (product.quatity <= 0) {
+                    res.redirect('/customer/manacontract');
                 }
-                else{
-                    product.quatity -= 1;
-                    product.save().then(() => {
+                else {
+                    product.quatity = product.quatity - 1;
+                     product.save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully");
                     });
+                    
                     doc.acceptDate = today;
                     doc.status = "2";
                     doc.save().then(() => {

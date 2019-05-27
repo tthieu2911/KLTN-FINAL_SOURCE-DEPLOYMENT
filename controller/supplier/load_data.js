@@ -30,6 +30,7 @@ var load_product_to_buy = async (req, res, next) => {
         }
         else {
             var id_manufacturer = user;
+            console.log(id_manufacturer);
             warehouseSchema.find({ quatity: { $ne: 0 }, supplier_id: id_manufacturer }, (error, docs) => {
                 if (docs == null || docs.length == 0) {
                     res.redirect('/supplier/pages/sl_buy_product');
@@ -105,6 +106,7 @@ var load_profile = async (req, res, next) => {
         for (var i = 0; i < docs.length; i += chunkSize) {
             userChunks.push(docs.slice(i, i + chunkSize));
         }
+        
         await contractSchema.find({ buyer_id: req.session.userId, status: "5" }, (err, docs) => {
             var contractChunks = [];
             var chunkSize = 1;

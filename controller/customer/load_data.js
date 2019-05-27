@@ -6,33 +6,32 @@ var warehouseSchema = require('../../data/models/warehouse')
 var user_load = require('../user/load_page');
 
 // load dữ liệu sản phẩm để mua
-var load_product = async(req,res,next)=>{
-    warehouseSchema.find({quatity:{$ne:0}}, async (error,product)=>{
-        if (product==null){
-            res.redirect('/customer/ctm_index'); 
+var load_product = async (req, res, next) => {
+    userSchema.find({ type: "supplier" }, async (error, user) => {
+        if (user == null || user.length == 0) {
+            res.redirect('/customer/ctm_index');
         }
-        else{
-            await productSchema.find({manufacturer_id:product.supplier_id,_id:product.product_id},(err,docs)=>{
-                var productChunks =[];
-                var chunkSize =1;
-                for (var i=0; i<docs.length;i+= chunkSize){
-                    productChunks.push(docs.slice(i,i+chunkSize));
+        else {
+            var id_supplier = user;
+            warehouseSchema.find({ quatity: { $ne: 0 }, supplier_id: id_supplier }, (error, docs) => {
+                if (docs == null || docs.length == 0) {
+                    res.redirect('/customer');
                 }
-
-                var warehouseChunks =[];
-                var chunkSize =1;
-                for (var i=0; i<product.length;i+= chunkSize){
-                    warehouseChunks.push(product.slice(i,i+chunkSize));
+                else {
+                    var warehouseChunks = [];
+                    var chunkSize = 1;
+                    for (var i = 0; i < docs.length; i += chunkSize) {
+                        warehouseChunks.push(docs.slice(i, i + chunkSize));
+                    }
+                    var page = parseInt(req.query.page) || 1;
+                    var perPage = 6;
+                    var start = (page - 1) * perPage;
+                    var end = page * perPage;
+                    var num_page = Math.ceil(docs.length / perPage)
+                    warehouseChunks = warehouseChunks.slice(start, end)
+                    res.render('customer/ctm_index', { warehouses: warehouseChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
                 }
-
-                var page = parseInt(req.query.page) || 1;
-                var perPage = 6;
-                var start = (page -1)*perPage;
-                var end = page*perPage;
-                var num_page= Math.ceil(docs.length/perPage)
-                productChunks= productChunks.slice(start,end)
-                res.render('/customer/ctm_index',{products:productChunks, warehouses:warehouseChunks, pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
-            }).sort({ name: -1 }).populate('manufacturer_id supplier_id')
+            }).sort({ name: -1 }).populate('product_id manufacturer_id supplier_id')
         }
     })
 }
