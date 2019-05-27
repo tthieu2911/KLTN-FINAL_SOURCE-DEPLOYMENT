@@ -44,8 +44,8 @@
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
 
-          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Manufacturer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
@@ -164,48 +164,50 @@
           </button>
         </td>
       </tr>
-    </form>
-    </table>
-    {{/each}}
-    {{/each}}
+
+      </table>
+      {{/each}}
+      {{/each}}
     </form>
 
     <h3 class="text-center">Lịch sử bán hàng</h3>
-    <table class="table" id="contract-list">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Giá trị</th>
-          <th scope="col">Đơn vị tính</th>
-          <th scope="col">Số lượng</th>
-          <th scope="col">Người mua hàng</th>
-          <th scope="col">Người vận chuyển</th>
-          <th scope="col">Thao tác</th>
-        </tr>
-      </thead>
-      {{# each contract}}
-      {{# each this}}
-      <tbody>
-        <tr>
-          <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
-          <td>{{this.product_id.name}}</td>
-          <td>{{this.price}}</td>
-          <td>{{this.currency}}</td>
-          <td>{{this.quatity}}</td>
-          <td>{{this.seller_id.fullName}}</td>
-          <td>{{this.shipper_id.fullName}}</td>
-          <td class="text-center">
-            <a href="/manufacturer/detail/{{this._id}}">
-              <button type="" class="btn btn-info">
-                <i class="fas fa-info" aria-hidden="true"></i>
-              </button>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-      {{/each}}
-      {{/each}}
-    </table>
+    <form>
+      <table class="table" id="contract-list">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Giá trị</th>
+            <th scope="col">Đơn vị tính</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Người mua hàng</th>
+            <th scope="col">Người vận chuyển</th>
+            <th scope="col" class="text-center">Thao tác</th>
+          </tr>
+        </thead>
+        {{# each contracts}}
+        {{# each this}}
+        <tbody>
+          <tr>
+            <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
+            <td>{{this.product_id.name}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.currency}}</td>
+            <td>{{this.quatity}}</td>
+            <td>{{this.seller_id.fullName}}</td>
+            <td>{{this.shipper_id.fullName}}</td>
+            <td class="text-center">
+              <a href="/manufacturer/detail/{{this._id}}">
+                <button type="button" class="btn btn-info btnDetail">
+                  <i class="fas fa-info" aria-hidden="true"></i>
+                </button>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+        {{/each}}
+        {{/each}}
+      </table>
+    </form>
     <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
     </nav>
@@ -311,7 +313,6 @@
       })
 
     });
-
 
   </script>
 

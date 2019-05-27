@@ -93,7 +93,7 @@
     <h2>Quản lý Hàng Hóa</h2>
 
     <table class="table table-striped ">
-      <thead class="thead-dark text-center">
+      <thead class="thead-dark">
         <tr>
           <th scope="col">Tên sản phẩm</th>
           <th scope="col">Nhà sản xuất</th>
@@ -101,38 +101,27 @@
           <th scope="col">Số lượng trong kho</th>
           <th scope="col">Ngày sản xuất</th>
           <th scope="col">Ngày hết hạn</th>
-          <th colspan="2" scope="col">Thao tác</th>
+          <th scope="col" class="text-center">Thao tác</th>
         </tr>
       </thead>
       <tbody>
-        {{# each products}}
-        {{# each prod}}
         {{# each warehouses}}
-        {{# each ware}}
+        {{# each this}}
         <tr>
-          <td>{{prod.name}}</td>
-          <td>{{prod.manufacturer_id.fullName}}</td>
-          <td>{{prod.desription}}</td>
-          <td>{{ware.quatity}}</td>
-          <td>{{prod.createDate}}</td>
-          <td>{{prod.expireDate}}</td>
+          <td>{{this.product_id.name}}</td>
+          <td>{{this.supplier_id.fullName}}</td>
+          <td>{{this.product_id.desription}}</td>
+          <td class="text-center">{{this.quatity}}</td>
+          <td>{{this.product_id.createDate}}</td>
+          <td>{{this.product_id.expireDate}}</td>
           <td class="text-center">
-            <a id="delete" href="/supplier/product/delete/{{prod.id}}" onclick="return check()">
+            <a id="delete" href="/supplier/product/delete/{{this.product_id._id}}" onclick="return check()">
               <button type="button" class="btn btn-danger">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </a>
           </td>
-          <td class="text-center">
-            <a id="edit" href="/supplier/product/edit/{{prod.id}}">
-              <button type="button" class="btn btn-info">
-                <i class="fas fa-edit" aria-hidden="true"></i>
-              </button>
-            </a>
-          </td>
         </tr>
-        {{/each}}
-        {{/each}}
         {{/each}}
         {{/each}}
       </tbody>

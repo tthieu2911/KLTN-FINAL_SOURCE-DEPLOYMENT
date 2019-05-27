@@ -102,15 +102,16 @@ var accept_contract = (req, res, next) => {
             res.redirect('/supplier/manacontract');
         }
         else {
-            warehouseSchema.find({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
                 if (product.quatity <= 0) {
-                    return;
+                    res.redirect('/supplier/manacontract');
                 }
                 else {
-                    product.quatity -= 1;
-                    product.save().then(() => {
+                    product.quatity = product.quatity - 1;
+                     product.save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully");
                     });
+                    
                     doc.acceptDate = today;
                     doc.status = "2";
                     doc.save().then(() => {
@@ -126,29 +127,38 @@ var accept_contract = (req, res, next) => {
 //Xác nhận nhận hàng
 var done_contract = (req, res, next) => {
     var id_contract = req.params.id;
-    console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: "4" }, function (err, doc) {
         if (doc == null) {
             res.redirect('/supplier/manacontract');
         }
         else {
-            warehouseSchema.find({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
-                if (product == null) {
-                    return;
+            warehouseSchema.find({ product_id: doc.product_id, supplier_id: req.session.userId }, (error, product) => {
+                if (product == null || product.length == 0) {
+                    var warehouse = new warehouseSchema({
+                        product_id: doc.product_id,
+                        supplier_id: req.session.userId,
+                        quatity: doc.quatity
+                    })
+                    warehouse.save().then(() => {
+                        console.log("Update quatity of seller's warehouse successfully");
+                    })
                 }
                 else {
-                    product.quatity += 1;
-                    product.save().then(() => {
+                    console.log(product[0].quatity);
+
+                    product[0].quatity = product[0].quatity + 1;
+                    product[0].save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully");
                     });
-                    doc.status = "5";
-                    doc.receiveDate = today;
-                    doc.save().then(() => {
-                        console.log('Received product');
-                    });
-
-                    res.redirect('/supplier/manacontract');
                 }
+
+                doc.status = "5";
+                doc.receiveDate = today;
+                doc.save().then(() => {
+                    console.log('Received product');
+                });
+
+                res.redirect('/supplier/manacontract');
             })
         }
     })

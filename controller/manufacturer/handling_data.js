@@ -48,7 +48,7 @@ var edit_product = (req, res, next) => {
     var nameproduct = req.body.nameproduct;
     var description = req.body.description;
     var id_product = req.body.id_product;
-    var id_manufacturer = req.session.userId;
+    var quatity = req.body.quatity;
     var dateExpire = req.body.expireDate;
     var dateCreate = today;
     if (req.body.createDate != null){
@@ -57,11 +57,18 @@ var edit_product = (req, res, next) => {
     if(dateExpire < dateCreate && dateExpire != null){
         return;
     }
-    productSchema.findOne({ _id: id_product, manufacturer_id: id_manufacturer}, (err, doc) => {
+    productSchema.findOne({ _id: id_product, manufacturer_id: req.session.userId}, (err, doc) => {
+        console.log(doc);
         if (doc == null) {
             res.redirect('/manufacturer/product');
         }
         else {
+            warehouseSchema.findOne({ product_id: id_product, supplier_id: req.session.userId}, (err, product) => {
+                product.quatity = quatity;
+                product.save().then(() => {
+                    console.log("Update manufacturer 's warehouse successful");
+                })
+            });
             doc.name = nameproduct;
             doc.desription = description;
             doc.createDate = dateCreate;

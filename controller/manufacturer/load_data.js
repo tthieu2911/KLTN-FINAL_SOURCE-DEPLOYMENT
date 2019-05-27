@@ -6,7 +6,7 @@ var user_load = require('../user/load_page');
 
 // load dữ liệu cho trang index supplier
 var load_contract = async (req, res, next) => {
-    await contractSchema.find({ seller_id: req.session.userId }, (err, docs) => {
+    await contractSchema.find({ seller_id: req.session.userId,status:{$ne:'5'} }, (err, docs) => {
         var contractChunks = [];
         var chunkSize = 1;
         for (var i = 0; i < docs.length; i += chunkSize) {
@@ -43,7 +43,7 @@ var load_product = async (req, res, next) => {
 
             res.render('manufacturer/pages/mf_list_product', { warehouses: warehouseChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
         }
-    }).sort({ product_id: -1 }).populate('product_id manufacturer_id')
+    }).sort({ product_id: -1 }).populate('product_id manufacturer_id supplier_id')
 }
 
 // load dữ liệu báo giá sản phẩm
@@ -75,20 +75,20 @@ var load_profile = async (req, res, next) => {
             userChunks.push(docs.slice(i, i + chunkSize));
         }
 
-        await contractSchema.find({ seller_id: req.session.userId }, (err, docs) => {
+        await contractSchema.find({ seller_id: req.session.userId, status:'5'}, (err, contr) => {
             var contractChunks = [];
             var chunkSize = 1;
-            for (var i = 0; i < docs.length; i += chunkSize) {
-                contractChunks.push(docs.slice(i, i + chunkSize));
+            for (var i = 0; i < contr.length; i += chunkSize) {
+                contractChunks.push(contr.slice(i, i + chunkSize));
             }
             var page = parseInt(req.query.page) || 1;
             var perPage = 5;
             var start = (page - 1) * perPage;
             var end = page * perPage;
-            var num_page = Math.ceil(docs.length / perPage)
+            var num_page = Math.ceil(contr.length / perPage)
             contractChunks = contractChunks.slice(start, end)
             res.render('manufacturer/pages/mf_profile', { contracts: contractChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-        }).sort({ status: -1 }).populate('product_id shipper_id seller_id buyer_id')
+        }).sort({ receiveDate: -1 }).populate('product_id shipper_id seller_id buyer_id')
     })
 }
 
@@ -109,19 +109,19 @@ var load_detail_contract = async (req, res, next) => {
 // load thông tin sản phẩm để chỉnh sửa
 var load_update_product = async (req, res) => {
     var id = req.params.id;
-    productSchema.find({ _id: id }, async (err, docs) => {
-        if (docs == null) {
-            res.redirect('/manufacturer');
+    warehouseSchema.find({product_id: id, supplier_id: req.session.userId}, async (err, doc) => {
+        if (doc == null) {
+            res.redirect('/manufacturer/product');
         }
         else {
-            var productChunks = [];
+            var warehouseChunks = [];
             var chunkSize = 3;
-            for (var i = 0; i < docs.length; i += chunkSize) {
-                productChunks.push(docs.slice(i, i + chunkSize));
+            for (var i = 0; i < doc.length; i += chunkSize) {
+                warehouseChunks.push(doc.slice(i, i + chunkSize));
             }
-            res.render('manufacturer/pages/mf_edit_product', { products: productChunks });
+            res.render('manufacturer/pages/mf_edit_product', { warehouses: warehouseChunks });
         }
-    })
+    }).populate('product_id supplier_id');
 }
 
 module.exports = {

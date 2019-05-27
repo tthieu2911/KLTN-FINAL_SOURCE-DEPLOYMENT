@@ -24,14 +24,14 @@ var load_contract = async (req, res, next) => {
 
 // load dữ liệu sản phẩm để mua
 var load_product_to_buy = async (req, res, next) => {
-    userSchema.find({type:"manufacturer"}, async (error, user) => {
-        if (user == null){
+    userSchema.find({ type: "manufacturer" }, async (error, user) => {
+        if (user == null || user.length == 0) {
             res.redirect('/supplier/pages/sl_buy_product');
         }
-        else{
+        else {
             var id_manufacturer = user;
             warehouseSchema.find({ quatity: { $ne: 0 }, supplier_id: id_manufacturer }, (error, docs) => {
-                if (docs == null) {
+                if (docs == null || docs.length == 0) {
                     res.redirect('/supplier/pages/sl_buy_product');
                 }
                 else {
@@ -50,46 +50,38 @@ var load_product_to_buy = async (req, res, next) => {
                 }
             }).sort({ name: -1 }).populate('product_id manufacturer_id supplier_id')
         }
-    } )
+    })
 }
 
 // load danh sách sản phẩm của supplier đang đăng nhập
 var load_product = async (req, res, next) => {
-    warehouseSchema.find({ supplier_id: req.session.userId }, async (error, product) => {
-        if (product == null) {
+    warehouseSchema.find({ supplier_id: req.session.userId }, async (error, docs) => {
+        if (docs == null) {
             res.redirect('/supplier/pages/sl_list_product');
         }
         else {
             var warehouseChunks = [];
             var chunkSize = 1;
-            for (var i = 0; i < product.length; i += chunkSize) {
-                warehouseChunks.push(product.slice(i, i + chunkSize));
+            for (var i = 0; i < docs.length; i += chunkSize) {
+                warehouseChunks.push(docs.slice(i, i + chunkSize));
             }
+            var page = parseInt(req.query.page) || 1;
+            var perPage = 6;
+            var start = (page - 1) * perPage;
+            var end = page * perPage;
+            var num_page = Math.ceil(docs.length / perPage)
+            warehouseChunks = warehouseChunks.slice(start, end)
 
-            await productSchema.find({ _id: product.product_id }, (err, docs) => {
-                var productChunks = [];
-                var chunkSize = 1;
-                for (var i = 0; i < docs.length; i += chunkSize) {
-                    productChunks.push(docs.slice(i, i + chunkSize));
-                }
-
-                var page = parseInt(req.query.page) || 1;
-                var perPage = 6;
-                var start = (page - 1) * perPage;
-                var end = page * perPage;
-                var num_page = Math.ceil(docs.length / perPage)
-                productChunks = productChunks.slice(start, end)
-                res.render('supplier/pages/sl_list_product', { products: productChunks, warehouses: warehouseChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-            }).sort({ name: -1 }).populate('manufacturer_id supplier')
+            res.render('supplier/pages/sl_list_product', { warehouses: warehouseChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
         }
-    })
+    }).sort({ product_id: -1 }).populate('product_id manufacturer_id supplier_id')
 }
 
 // load trang báo giá sản phẩm
 var load_price = async (req, res) => {
     var id = req.params.id;
     contractSchema.find({ _id: id, status: '0' }, async (err, doc) => {
-        if (doc == null) {
+        if (doc == null || doc.length == 0) {
             res.redirect('/supplier');
         }
         else {

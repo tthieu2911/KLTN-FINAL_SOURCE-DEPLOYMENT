@@ -178,51 +178,50 @@
           </button>
         </td>
       </tr>
-    </form>
-    </table>
-    {{/each}}
-    {{/each}}
+      </table>
+      {{/each}}
+      {{/each}}
     </form>
 
     <!-- Lịch sử giao hàng -->
     <h3 class="text-center">Lịch sử giao hàng</h3>
-    <table class="table">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Người bán hàng</th>
-          <th scope="col">Địa chỉ nhận hàng</th>
-          <th scope="col">Người mua hàng</th>
-          <th scope="col">Địa chỉ giao hàng</th>
-          <th scope="col">Giá trị</th>
-          <th scope="col">Đơn vị tính</th>
-          <th scope="col">Số lượng</th>
-          <th scope="col" class="text-center">Thao tác</th>
-        </tr>
-      </thead>
-      {{# each contract}}
-      {{# each this}}
-      <tbody>
-        <tr>
-          <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
-          <td>{{this.product_id.name}}</td>
-          <td>{{this.seller_id.fullName}}</td>
-          <td>{{this.buyer_id.fullName}}</td>
-          <td>{{this.price}}</td>
-          <td>{{this.currency}}</td>
-          <td>{{this.quatity}}</td>
-          <td class="text-center">
-            <a href="/shipper/detail/{{this._id}}">
-              <button type="" class="btn btn-info btnDetail">
-                <i class="fas fa-info" aria-hidden="true"></i>
-              </button>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-      {{/each}}
-      {{/each}}
-    </table>
+    <form>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Người bán hàng</th>
+            <th scope="col">Người mua hàng</th>
+            <th scope="col">Giá trị</th>
+            <th scope="col">Đơn vị tính</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col" class="text-center">Thao tác</th>
+          </tr>
+        </thead>
+        {{# each contracts}}
+        {{# each this}}
+        <tbody>
+          <tr>
+            <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
+            <td>{{this.product_id.name}}</td>
+            <td>{{this.seller_id.fullName}}</td>
+            <td>{{this.buyer_id.fullName}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.currency}}</td>
+            <td>{{this.quatity}}</td>
+            <td class="text-center">
+              <a href="/shipper/detail/{{this._id}}">
+                <button type="button" class="btn btn-info btnDetail">
+                  <i class="fas fa-info" aria-hidden="true"></i>
+                </button>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+        {{/each}}
+        {{/each}}
+      </table>
+    </form>
     <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
     </nav>

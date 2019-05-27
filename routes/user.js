@@ -66,6 +66,7 @@ app.get("/supplier/contract/delivery/:id",sl_handling.delivery_contract);
 app.get("/supplier/contract/delete/:id",sl_handling.delete_contract);
 //- Warehouse
 app.get('/supplier/product',sl_load_data.load_product);
+app.get('/supplier/product/delete/:id',sl_handling.delete_product);
 //- Buy
 app.get('/supplier/market',sl_load_data.load_product_to_buy);
 app.post('/supplier/contract/buy',sl_handling.create_contract);
