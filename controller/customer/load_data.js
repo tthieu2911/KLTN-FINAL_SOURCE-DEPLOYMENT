@@ -1,13 +1,13 @@
 var productSchema = require('../../data/models/product')
 var contractSchema = require('../../data/models/contract')
 var userSchema = require('../../data/models/user')
-var wareHouseSchema = require('../../data/models/warehouse')
+var warehouseSchema = require('../../data/models/warehouse')
 
 var user_load = require('../user/load_page');
 
 // load dữ liệu sản phẩm để mua
 var load_product = async(req,res,next)=>{
-    wareHouseSchema.find({quatity:{$ne:0}}, async (error,product)=>{
+    warehouseSchema.find({quatity:{$ne:0}}, async (error,product)=>{
         if (product==null){
             res.redirect('/customer/ctm_index'); 
         }
@@ -18,22 +18,20 @@ var load_product = async(req,res,next)=>{
                 for (var i=0; i<docs.length;i+= chunkSize){
                     productChunks.push(docs.slice(i,i+chunkSize));
                 }
-                productChunks= productChunks.slice(start,end)
 
                 var warehouseChunks =[];
                 var chunkSize =1;
                 for (var i=0; i<product.length;i+= chunkSize){
                     warehouseChunks.push(product.slice(i,i+chunkSize));
                 }
-                warehouseChunks= warehouseChunks.slice(start,end)
 
                 var page = parseInt(req.query.page) || 1;
                 var perPage = 6;
                 var start = (page -1)*perPage;
                 var end = page*perPage;
                 var num_page= Math.ceil(docs.length/perPage)
-
-                res.render('/customer/ctm_index',{products:productChunks, wareHouse:warehouseChunks, pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
+                productChunks= productChunks.slice(start,end)
+                res.render('/customer/ctm_index',{products:productChunks, warehouses:warehouseChunks, pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
             }).sort({ name: -1 }).populate('manufacturer_id supplier_id')
         }
     })

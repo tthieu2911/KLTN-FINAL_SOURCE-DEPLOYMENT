@@ -92,7 +92,7 @@
                     </tr>
                     <tr>
                       <th>Ngày đặt hàng</th>
-                      <td>{{this.createDate}}</td>
+                      <td><input type="date" class="border-0" value={{this.createDate}} readonly></input></td>
                     </tr>
                     <tr>
                       <th>Ngày giao hàng</th>
@@ -117,6 +117,10 @@
     function back() {
       history.back();
     }
+
+    $(document).ready(function(){
+      $('.formatDate').value = 'DD-MM-YYYY'
+    })
   </script>
 
 </body>

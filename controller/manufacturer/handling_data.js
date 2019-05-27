@@ -1,14 +1,16 @@
 var productSchema = require('./../../data/models/product')
 var contractSchema = require('../../data/models/contract')
-var wareHouseSchema = require('../../data/models/warehouse')
+var warehouseSchema = require('../../data/models/warehouse')
 var mongoose = require('mongoose')
 var DBurl = require('./../../data/config')
 mongoose.connect(DBurl.url)
 
 var today = new Date();
+
 // Tạo sản phẩm
 var create_product = (req, res) => {
     var nameProduct = req.body.nameProduct;
+    var quatity = req.body.quatity;
     var desription = req.body.desription;
     var dateExpire = req.body.expireDate;
     var dateCreate = today;
@@ -19,16 +21,24 @@ var create_product = (req, res) => {
         return;
     }
     else{
-        var products = new productSchema({ 
+        var product = new productSchema({ 
             name: nameProduct, 
             desription: desription, 
             manufacturer_id: req.session.userId,
             createDate: dateCreate,
             expireDate: dateExpire,
         })
-        products.save().then(() => {
+        product.save();
+
+        var warehouse = new warehouseSchema({
+            product_id: product._id,
+            supplier_id: req.session.userId,
+            quatity: quatity
+        })
+        warehouse.save().then(() => {
             console.log('create new product successfully');
         })
+
         res.redirect('/manufacturer/product');
     }
 }
@@ -67,7 +77,7 @@ var edit_product = (req, res, next) => {
 // Xóa sản phẩm khỏi kho chứa
 var delete_product = (req, res, next) => {
     var id_product = req.params.id;
-    wareHouseSchema.remove({product_id:id_product,supplier_id:req.session.userId},(error, product) => {
+    warehouseSchema.remove({product_id:id_product,supplier_id:req.session.userId},(error, product) => {
         console.log("Remove product succesfully");
         res.redirect('/supplier/product');
     })

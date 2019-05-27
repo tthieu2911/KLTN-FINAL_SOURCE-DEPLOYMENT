@@ -101,33 +101,29 @@
         </tr>
       </thead>
       <tbody>
-        {{# each products}}
-        {{# each prod}}
-        {{# each wareHouse}}
-        {{# each ware}}
+        {{# each warehouses}}
+        {{# each this}}
         <tr>
-          <td>{{prod.name}}</td>
-          <td>{{prod.desription}}</td>
-          <td>{{ware.quatity}}</td>
-          <td>{{prod.createDate}}</td>
-          <td>{{prod.expireDate}}</td>
+          <td>{{this.product_id.name}}</td>
+          <td>{{this.product_id.desription}}</td>
+          <td>{{this.quatity}}</td>
+          <td>{{this.product_id.createDate}}</td>
+          <td>{{this.product_id.expireDate}}</td>
           <td class="text-center">
-            <a id="delete" href="/manufacturer/product/delete/{{prod.id}}" onclick="return check()">
+            <a id="delete" href="/manufacturer/product/delete/{{this.product_id._id}}" onclick="return check()">
               <button type="button" class="btn btn-danger">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
-            <a id="edit" href="/manufacturer/product/edit/{{prod.id}}">
+            <a id="edit" href="/manufacturer/product/edit/{{this.product_id._id}}">
               <button type="button" class="btn btn-info">
                 <i class="fas fa-edit" aria-hidden="true"></i>
               </button>
             </a>
           </td>
         </tr>
-        {{/each}}
-        {{/each}}
         {{/each}}
         {{/each}}
       </tbody>

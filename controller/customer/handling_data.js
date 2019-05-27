@@ -40,7 +40,7 @@ var accept_contract = (req, res, next) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            wareHouseSchema.find({product_id:doc.product_id,supplier_id:doc.seller_id},(error, product) => {
+            warehouseSchema.find({product_id:doc.product_id,supplier_id:doc.seller_id},(error, product) => {
                 if(product.quatity <= 0){
                     return;
                 }

@@ -1,6 +1,6 @@
 var productSchema = require('./../../data/models/product')
 var contractSchema = require('../../data/models/contract')
-var wareHouseSchema = require('../../data/models/warehouse')
+var warehouseSchema = require('../../data/models/warehouse')
 var mongoose = require('mongoose')
 var DBurl = require('./../../data/config')
 mongoose.connect(DBurl.url)
@@ -102,7 +102,7 @@ var accept_contract = (req, res, next) => {
             res.redirect('/supplier/manacontract');
         }
         else {
-            wareHouseSchema.find({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+            warehouseSchema.find({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
                 if (product.quatity <= 0) {
                     return;
                 }
@@ -132,7 +132,7 @@ var done_contract = (req, res, next) => {
             res.redirect('/supplier/manacontract');
         }
         else {
-            wareHouseSchema.find({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+            warehouseSchema.find({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
                 if (product == null) {
                     return;
                 }
@@ -177,7 +177,7 @@ var cancel_contract = (req, res) => {
 // Xóa sản phẩm khỏi kho chứa
 var delete_product = (req, res, next) => {
     var id_product = req.params.id;
-    wareHouseSchema.remove({ product_id: id_product, supplier_id: req.session.userId }, (error, product) => {
+    warehouseSchema.remove({ product_id: id_product, supplier_id: req.session.userId }, (error, product) => {
         console.log("Remove product succesfullly");
         res.redirect('/supplier/product');
     })

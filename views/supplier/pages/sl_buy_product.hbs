@@ -96,10 +96,10 @@
 
     <!-- Product card -->
     <div class="row">
-      {{# each products}}
+      {{# each warehouses}}
       {{# each this}}
       <div class="col-sm-6 col-md-6">
-        <form action="/customer/contract" method="post" onsubmit="return accept_form()">
+        <form action="/supplier/contract/buy" method="post" onsubmit="return accept_form()">
           <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
               <!-- Nested Row within Card Body -->
@@ -113,14 +113,14 @@
                   <h4 style="font-weight:bold; text-align:center; margin-top:8%">Thông tin sản phẩm</h4>
                   <hr>
                   <div class="product-text text-center">
-                    <h3>{{this.name}}</h3>
-                    <h2>{{this.manufacturer_id.fullName}}</h2>
+                    <h3>{{this.product_id.name}}</h3>
+                    <h2>{{this.supplier_id.fullName}}</h2>
 
                     <p class="card-text">
-                      Nhà sản xuất: {{this.manufacturer_id.fullName}}<br>
-                      Mô tả sản phẩm: {{this.desription}} <br>
-                      Ngày sản xuất: {{this.createDate}} <br>
-                      Ngày hết hạn: {{this.expireDate}}
+                      Nhà sản xuất: {{this.supplier_id.fullName}}<br>
+                      Mô tả sản phẩm: {{this.product_id.desription}} <br>
+                      Ngày sản xuất: {{this.product_id.createDate}} <br>
+                      Ngày hết hạn: {{this.product_id.expireDate}}
                     </p>
                   </div>
                   <br>
@@ -129,14 +129,13 @@
                       <i class="fas fa-cart-plus" aria-hidden="true"></i>
                     </button>
                   </div>
-
                 </div>
               </div>
             </div>
 
-            <input type="hidden" name="product_id" value="{{this._id}}">
-            <input type="hidden" name="product_name" value="{{this.name}}">
-            <input type="hidden" name="manufacturer_id" value="{{this.manufacturer_id._id}}">
+            <input type="hidden" name="product_id" value="{{this.product_id._id}}">
+            <input type="hidden" name="product_name" value="{{this.product_id.name}}">
+            <input type="hidden" name="manufacturer_id" value="{{this.supplier_id._id}}">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
           </div>
         </form>
