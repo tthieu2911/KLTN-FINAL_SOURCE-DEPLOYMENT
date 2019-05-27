@@ -95,6 +95,7 @@
           <th scope="col">Người vận chuyển</th>
           <th scope="col">Giá trị</th>
           <th scope="col">Đơn vị tính</th>
+          <th scope="col">Số lượng</th>
           <th scope="col">Trạng thái</th>
           <th colspan="4" scope="col" class="text-center">Thao tác</th>
         </tr>
@@ -105,10 +106,11 @@
         <tr>
           <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
           <td>{{this.product_id.name}}</td>
-          <td>{{this.customer_id.fullName}}</td>
+          <td>{{this.buyer_id.fullName}}</td>
           <td>{{this.shipper_id.fullName}}</td>
           <td>{{this.price}}</td>
-          <td>USD</td>
+          <td>{{this.currency}}</td>
+          <td>{{this.quatity}}</td>
           <td id="sttDescription"></td>
           <td class="text-center">
             <a href="/manufacturer/contract/delete/{{this.id}}">

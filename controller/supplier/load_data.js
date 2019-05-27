@@ -35,13 +35,15 @@ var load_product_to_buy = async(req,res,next)=>{
                 for (var i=0; i<docs.length;i+= chunkSize){
                     productChunks.push(docs.slice(i,i+chunkSize));
                 }
+                productChunks= productChunks.slice(start,end)
+
                 var page = parseInt(req.query.page) || 1;
                 var perPage = 6;
                 var start = (page -1)*perPage;
                 var end = page*perPage;
                 var num_page= Math.ceil(docs.length/perPage)
-                productChunks= productChunks.slice(start,end)
-                res.render('supplier/pages/sl_buy_product',{products:productChunks,pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
+
+                res.render('supplier/pages/sl_buy_product',{products:productChunks, pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
             }).sort({ name: -1 }).populate('manufacturer_id')
         }
     })
@@ -60,14 +62,23 @@ var load_product = async(req,res,next)=>{
                 for (var i=0; i<docs.length;i+= chunkSize){
                     productChunks.push(docs.slice(i,i+chunkSize));
                 }
+                productChunks= productChunks.slice(start,end)
+
+                var warehouseChunks =[];
+                var chunkSize =1;
+                for (var i=0; i<product.length;i+= chunkSize){
+                    warehouseChunks.push(product.slice(i,i+chunkSize));
+                }
+                warehouseChunks= warehouseChunks.slice(start,end)
+
                 var page = parseInt(req.query.page) || 1;
                 var perPage = 6;
                 var start = (page -1)*perPage;
                 var end = page*perPage;
                 var num_page= Math.ceil(docs.length/perPage)
-                productChunks= productChunks.slice(start,end)
-                res.render('supplier/pages/sl_list_product',{products:productChunks,pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
-            }).sort({ name: -1 }).populate('manufacturer_id')
+
+                res.render('supplier/pages/sl_list_product',{products:productChunks, wareHouse:warehouseChunks, pagination: { page: page, limit:num_page},paginateHelper: user_load.createPagination});
+            }).sort({ name: -1 }).populate('manufacturer_id supplier')
         }
     })
 }

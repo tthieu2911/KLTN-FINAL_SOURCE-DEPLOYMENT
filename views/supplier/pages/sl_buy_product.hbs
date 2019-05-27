@@ -114,12 +114,13 @@
                   <hr>
                   <div class="product-text text-center">
                     <h3>{{this.name}}</h3>
-                    <h2>{{this.supplier_id.fullName}}</h2>
+                    <h2>{{this.manufacturer_id.fullName}}</h2>
 
                     <p class="card-text">
-                      Nhà sản xuất: <br>
-                      Nhà phân phối: {{this.supplier_id.fullName}} <br>
-                      Mô tả sản phẩm: {{this.desription}}
+                      Nhà sản xuất: {{this.manufacturer_id.fullName}}<br>
+                      Mô tả sản phẩm: {{this.desription}} <br>
+                      Ngày sản xuất: {{this.createDate}} <br>
+                      Ngày hết hạn: {{this.expireDate}}
                     </p>
                   </div>
                   <br>

@@ -93,35 +93,41 @@
       <thead class="thead-dark text-center">
         <tr>
           <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Nhà cung cấp</th>
           <th scope="col">Mô tả</th>
           <th scope="col">Số lượng trong kho</th>
+          <th scope="col">Ngày sản xuất</th>
+          <th scope="col">Ngày hết hạn</th>
           <th colspan="2" scope="col">Thao tác</th>
         </tr>
       </thead>
       <tbody>
         {{# each products}}
-        {{# each this}}
+        {{# each prod}}
+        {{# each wareHouse}}
+        {{# each ware}}
         <tr>
-          <td>{{this.name}}</td>
-          <td>{{this.supplier_id.fullName}}</td>
-          <td>{{this.desription}}</td>
-          <td>{{this.quatity}}</td>
+          <td>{{prod.name}}</td>
+          <td>{{prod.desription}}</td>
+          <td>{{ware.quatity}}</td>
+          <td>{{prod.createDate}}</td>
+          <td>{{prod.expireDate}}</td>
           <td class="text-center">
-            <a id="delete" href="/manufacturer/product/delete/{{this.id}}" onclick="return check()">
+            <a id="delete" href="/manufacturer/product/delete/{{prod.id}}" onclick="return check()">
               <button type="button" class="btn btn-danger">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
-            <a id="edit" href="/manufacturer/product/edit/{{this.id}}">
+            <a id="edit" href="/manufacturer/product/edit/{{prod.id}}">
               <button type="button" class="btn btn-info">
                 <i class="fas fa-edit" aria-hidden="true"></i>
               </button>
             </a>
           </td>
         </tr>
+        {{/each}}
+        {{/each}}
         {{/each}}
         {{/each}}
       </tbody>

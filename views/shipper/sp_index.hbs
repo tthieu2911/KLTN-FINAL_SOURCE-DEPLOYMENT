@@ -103,11 +103,10 @@
         <tr>
           <th scope="col">Tên sản phẩm</th>
           <th scope="col">Người bán hàng</th>
-          <th scope="col">Địa chỉ nhận hàng</th>
           <th scope="col">Người mua hàng</th>
-          <th scope="col">Địa chỉ giao hàng</th>
           <th scope="col">Giá trị</th>
           <th scope="col">Đơn vị tính</th>
+          <th scope="col">Số lượng</th>
           <th scope="col" colspan="2" class="text-center">Thao tác</th>
         </tr>
       </thead>
@@ -116,12 +115,11 @@
         {{# each this}}
         <tr>
           <td>{{this.product_id.name}}</td>
-          <td>{{this.supplier_id.fullName}}</td>
-          <td>{{this.supplier_id.address}}</td>
-          <td>{{this.customer_id.fullName}}</td>
-          <td>{{this.customer_id.address}}</td>
+          <td>{{this.seller_id.fullName}}</td>
+          <td>{{this.buyer_id.fullName}}</td>
           <td>{{this.price}}</td>
-          <td>USD</td>
+          <td>{{this.currency}}</td>
+          <td>{{this.quatity}}</td>
           <td class="text-center">
             <a href="/shipper/delivery/{{this.id}}">
               <button type="" class="btn btn-success btnShip">

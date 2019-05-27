@@ -90,7 +90,9 @@
     <!-- Product card -->
     <div class="row">
       {{# each products}}
-      {{# each this}}
+      {{# each prod}}
+      {{# each wareHouse}}
+      {{# each ware}}
       <div class="col-sm-6 col-md-6">
         <form action="/customer/contract" method="post" onsubmit="return accept_form()">
           <div class="card o-hidden border-0 shadow-lg my-5">
@@ -106,13 +108,14 @@
                   <h4 style="font-weight:bold; text-align:center; margin-top:8%">Thông tin sản phẩm</h4>
                   <hr>
                   <div class="product-text text-center">
-                    <h3>{{this.name}}</h3>
-                    <h2>{{this.supplier_id.fullName}}</h2>
+                    <h3>{{prod.name}}</h3>
+                    <h2>{{ware.supplier_id.fullName}}</h2>
 
                     <p class="card-text">
-                      Nhà sản xuất: <br>
-                      Nhà phân phối: {{this.supplier_id.fullName}} <br>
-                      Mô tả sản phẩm: {{this.desription}}
+                      Nhà sản xuất: {{prod.manufacturer_id.fullName}}<br>
+                      Mô tả sản phẩm: {{prod.desription}} <br>
+                      Ngày sản xuất: {{prod.createDate}} <br>
+                      Ngày hết hạn: {{prod.expireDate}}
                     </p>
                   </div>
                   <br>
@@ -126,13 +129,15 @@
               </div>
             </div>
 
-            <input type="hidden" name="product_id" value="{{this._id}}">
-            <input type="hidden" name="product_name" value="{{this.name}}">
-            <input type="hidden" name="supplier_id" value="{{this.supplier_id._id}}">
+            <input type="hidden" name="product_id" value="{{prod._id}}">
+            <input type="hidden" name="product_name" value="{{prod.name}}">
+            <input type="hidden" name="supplier_id" value="{{ware.supplier_id._id}}">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
           </div>
         </form>
       </div>
+      {{/each}}
+      {{/each}}
       {{/each}}
       {{/each}}
     </div>
