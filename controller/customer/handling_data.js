@@ -8,7 +8,7 @@ var today = new Date();
 var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_supplier = req.body.supplier_id;
-    var contracts = new contractSchema({
+    var contract = new contractSchema({
         product_id: id_product,
         seller_id: id_supplier,
         buyer_id: req.session.userId,
@@ -25,9 +25,15 @@ var create_contract = async (req, res, next) => {
         receiveDate: null,
         status: '0'
     });
-    contracts.save().then(() => {
-        console.log('Create new contract successfully');
-    })
+
+    if(contract == null){
+        console.log('Create new contract failed. Can not create object.');
+    }
+    else{
+        contract.save().then(() => {
+            console.log('Create new contract successfully.');
+        })
+    }
     res.redirect('/customer');
 }
 
@@ -36,24 +42,24 @@ var accept_contract = (req, res, next) => {
     var id_contract = req.params.id;
     console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: "1" }, function (err, doc) {
-        if (doc == null) {
-            res.redirect('/customer/manacontract');
+        if (doc == null || doc.length == 0) {
+            console.log('Accept contract failed. Can not find contract.')
         }
         else {
             warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
                 if (product.quatity <= 0) {
-                    res.redirect('/customer/manacontract');
+                    console.log('Accept contract failed. No product left in warehouse.')
                 }
                 else {
                     product.quatity = product.quatity - 1;
-                     product.save().then(() => {
-                        console.log("Update quatity of seller's warehouse successfully");
+                    product.save().then(() => {
+                        console.log("Update quatity of seller's warehouse successfully.");
                     });
-                    
+
                     doc.acceptDate = today;
                     doc.status = "2";
                     doc.save().then(() => {
-                        console.log('Accept contract successfully')
+                        console.log('Accept contract successfully.')
                     });
                 }
             })
@@ -67,15 +73,15 @@ var cancel_contract = (req, res) => {
     var id_contract = req.params.id;
     console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, $or: [{ 'status': "0" }, { 'status': "1" }] }, function (err, doc) {
-        if (doc == null) {
-            res.redirect('/customer/manacontract');
+        if (doc == null || doc.length == 0) {
+            console.log('Cancel contract failed. Can not find contract.');
         }
         else {
             doc.status = "6";
             doc.deleteBy = req.session.userId;
             doc.deleteDate = today;
             doc.save().then(() => {
-                console.log('Cancel contract successfully')
+                console.log('Cancel contract successfully.');
             });
         }
         res.redirect('/customer/manacontract');
@@ -85,20 +91,18 @@ var cancel_contract = (req, res) => {
 // Xác nhận nhận hàng
 var done_contract = (req, res, next) => {
     var id_contract = req.params.id;
-    console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: "4" }, function (err, doc) {
-        if (doc == null) {
-            res.redirect('/customer/manacontract');
+        if (doc == null || doc.length == 0) {
+            console.log('Received product failed. Can not find contract.');
         }
         else {
             doc.status = "5";
             doc.receiveDate = today;
             doc.save().then(() => {
-                console.log('Received product')
+                console.log('Received product successfully.');
             });
-
-            res.redirect('/customer/manacontract');
         }
+        res.redirect('/customer/manacontract');
     })
 }
 

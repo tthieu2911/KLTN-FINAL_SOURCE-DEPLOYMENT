@@ -9,7 +9,7 @@ var user_load = require('../user/load_page');
 var load_product = async (req, res, next) => {
     userSchema.find({ type: "supplier" }, async (error, user) => {
         if (user == null || user.length == 0) {
-            res.redirect('/customer/ctm_index');
+            res.redirect('/customer');
         }
         else {
             var id_supplier = user;
@@ -33,49 +33,66 @@ var load_product = async (req, res, next) => {
                 }
             }).sort({ name: -1 }).populate('product_id manufacturer_id supplier_id')
         }
+        res.redirect('/customer');
     })
 }
 
 // Load dữ liệu thông tin customer
 var load_profile = async (req, res, next) => {
-    await userSchema.find({ _id: req.session.userId }, async (err, docs) => {
-        var userChunks = [];
-        var chunkSize = 3;
-        for (var i = 0; i < docs.length; i += chunkSize) {
-            userChunks.push(docs.slice(i, i + chunkSize));
+    await userSchema.find({ _id: req.session.userId }, async (err, user) => {
+        if(user == null || user.length == 0){
+            res.redirect('/customer/profile');
         }
-        await contractSchema.find({ buyer_id: req.session.userId, status: "5" }, (err, docs) => {
-            var contractChunks = [];
+        else{
+            var userChunks = [];
             var chunkSize = 1;
-            for (var i = 0; i < docs.length; i += chunkSize) {
-                contractChunks.push(docs.slice(i, i + chunkSize));
+            for (var i = 0; i < user.length; i += chunkSize) {
+                userChunks.push(user.slice(i, i + chunkSize));
             }
-            var page = parseInt(req.query.page) || 1;
-            var perPage = 5;
-            var start = (page - 1) * perPage;
-            var end = page * perPage;
-            var num_page = Math.ceil(docs.length / perPage)
-            contractChunks = contractChunks.slice(start, end)
-            res.render('customer/pages/ctm_profile', { contract: contractChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-        }).sort({ status: -1 }).populate('product_id shipper_id seller_id')
+            await contractSchema.find({ buyer_id: req.session.userId, status: '5' }, (err, docs) => {
+                if(docs == null){
+                    res.redirect('/customer/profile');
+                }
+                else{
+                    var contractChunks = [];
+                    var chunkSize = 1;
+                    for (var i = 0; i < docs.length; i += chunkSize) {
+                        contractChunks.push(docs.slice(i, i + chunkSize));
+                    }
+                    var page = parseInt(req.query.page) || 1;
+                    var perPage = 5;
+                    var start = (page - 1) * perPage;
+                    var end = page * perPage;
+                    var num_page = Math.ceil(docs.length / perPage)
+                    contractChunks = contractChunks.slice(start, end)
+                    res.render('customer/pages/ctm_profile', { contract: contractChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });    
+                }
+            }).sort({ status: -1 }).populate('product_id shipper_id seller_id')
+        }
+        res.redirect('/customer/profile');
     })
 }
 
 // Quản lí tình trạng đơn mua hàng
 var load_contract_manager = async (req, res, next) => {
-    await contractSchema.find({ buyer_id: req.session.userId, $or: [{ 'status': "0" }, { 'status': "1" }, { 'status': "2" }, { 'status': "6" }, { 'status': '3' }, { 'status': '4' }] }, async (err, docs) => {
-        var page = parseInt(req.query.page) || 1;
-        var perPage = 5;
-        var start = (page - 1) * perPage;
-        var end = page * perPage;
-        var contractChunks = [];
-        var chunkSize = 1;
-        for (var i = 0; i < docs.length; i += chunkSize) {
-            contractChunks.push(docs.slice(i, i + chunkSize));
+    await contractSchema.find({ buyer_id: req.session.userId, status: {$ne: '5'}}, async (err, docs) => {
+        if(docs == null || docs.length == 0){
+            res.redirect('/customer/manacontract');
         }
-        var num_page = Math.ceil(docs.length / perPage)
-        contractChunks = contractChunks.slice(start, end)
-        res.render('customer/pages/ctm_contract', { contracts: contractChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        else{
+            var page = parseInt(req.query.page) || 1;
+            var perPage = 5;
+            var start = (page - 1) * perPage;
+            var end = page * perPage;
+            var contractChunks = [];
+            var chunkSize = 1;
+            for (var i = 0; i < docs.length; i += chunkSize) {
+                contractChunks.push(docs.slice(i, i + chunkSize));
+            }
+            var num_page = Math.ceil(docs.length / perPage)
+            contractChunks = contractChunks.slice(start, end)
+            res.render('customer/pages/ctm_contract', { contracts: contractChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });    
+        }
     }).sort({ status: -1 }).populate('product_id shipper_id seller_id')
 }
 
@@ -84,12 +101,17 @@ var load_detail_contract = async (req, res, next) => {
     var id_contract = req.params.id;
     console.log(id_contract);
     await contractSchema.find({ _id: id_contract }, (err, docs) => {
-        var contractChunks = [];
-        var chunkSize = 3;
-        for (var i = 0; i < docs.length; i += chunkSize) {
-            contractChunks.push(docs.slice(i, i + chunkSize));
+        if(docs == null || docs.length == 0){
+            res.redirect('/customer/manacontract');
         }
-        res.render('customer/pages/ctm_detail', { contracts: contractChunks });
+        else{
+            var contractChunks = [];
+            var chunkSize = 3;
+            for (var i = 0; i < docs.length; i += chunkSize) {
+                contractChunks.push(docs.slice(i, i + chunkSize));
+            }
+            res.render('customer/pages/ctm_detail', { contracts: contractChunks });
+        }
     }).populate('product_id shipper_id buyer_id seller_id')
 }
 

@@ -12,17 +12,17 @@ var send_price = async (req, res, next) => {
     var id_contract = req.body.contract_id;
     var price = req.body.price;
     contractSchema.findOne({ _id: id_contract, status: '0' }, (err, doc) => {
-        if (doc == null) {
-            res.redirect('/supplier');
+        if (doc == null || doc.length == 0) {
+            console.log('Send price failed. Can not find contract.')
         }
         else {
             doc.price = price;
             doc.status = "1";
             doc.save().then(() => {
-                console.log('Send price successfully')
+                console.log('Send price successfully.')
             });
-            res.redirect('/supplier');
         }
+        res.redirect('/supplier');
     })
 }
 
@@ -32,15 +32,15 @@ var delivery_contract = (req, res) => {
     console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: '2' }, (err, doc) => {
         if (doc == null) {
-            res.redirect('/supplier');
+            console.log('Release contract failed. Can not find contract.')
         }
         else {
             doc.status = "3";
             doc.save().then(() => {
                 console.log('Release contract successfully')
             });
-            res.redirect('/supplier');
         }
+        res.redirect('/supplier');s
     })
 }
 
@@ -49,8 +49,8 @@ var delete_contract = (req, res) => {
     var id_contract = req.params.id;
     console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, $or: [{ 'status': "0" }, { 'status': "1" }] }, function (err, doc) {
-        if (doc == null) {
-            res.redirect('/supplier');
+        if (doc == null || doc.length == 0) {
+            console.log('Delete contract failed. Can not contract.')
         }
         else {
             doc.status = "6";
@@ -60,8 +60,8 @@ var delete_contract = (req, res) => {
                 console.log('Delete contract successfully')
             })
         }
+        res.redirect('/supplier');
     })
-    res.redirect('/supplier');
 }
 
 // Tạo đơn mua hàng
@@ -70,7 +70,7 @@ var create_contract = async (req, res, next) => {
     var id_manufacturer = req.body.manufacturer_id;
     console.log(id_product);
     console.log(id_manufacturer);
-    var contracts = new contractSchema({
+    var contract = new contractSchema({
         product_id: id_product,
         seller_id: id_manufacturer,
         buyer_id: req.session.userId,
@@ -87,9 +87,15 @@ var create_contract = async (req, res, next) => {
         receiveDate: null,
         status: '0'
     });
-    contracts.save().then(() => {
-        console.log('Create new contract successfully');
-    })
+
+    if(contract == null){
+        console.log('Create new contract failed. Can not create object.');
+    }
+    else{
+        contract.save().then(() => {
+            console.log('Create new contract successfully');
+        })
+    }
     res.redirect('/supplier/market');
 }
 
@@ -98,18 +104,18 @@ var accept_contract = (req, res, next) => {
     var id_contract = req.params.id;
     console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: "1" }, function (err, doc) {
-        if (doc == null) {
-            res.redirect('/supplier/manacontract');
+        if (doc == null || doc.length == 0) {
+            console.log('Accept contract failed. Can not find contract.')
         }
         else {
             warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
                 if (product.quatity <= 0) {
-                    res.redirect('/supplier/manacontract');
+                    console.log('Accept contract failed. No product left in warehouse.')
                 }
                 else {
                     product.quatity = product.quatity - 1;
                      product.save().then(() => {
-                        console.log("Update quatity of seller's warehouse successfully");
+                        console.log("Update quatity of seller's warehouse successfully.");
                     });
                     
                     doc.acceptDate = today;
@@ -128,8 +134,8 @@ var accept_contract = (req, res, next) => {
 var done_contract = (req, res, next) => {
     var id_contract = req.params.id;
     contractSchema.findOne({ _id: id_contract, status: "4" }, function (err, doc) {
-        if (doc == null) {
-            res.redirect('/supplier/manacontract');
+        if (doc == null || doc.length == 0) {
+            console.log('Received product failed. Can not find contract.');
         }
         else {
             warehouseSchema.find({ product_id: doc.product_id, supplier_id: req.session.userId }, (error, product) => {
@@ -139,28 +145,37 @@ var done_contract = (req, res, next) => {
                         supplier_id: req.session.userId,
                         quatity: doc.quatity
                     })
-                    warehouse.save().then(() => {
-                        console.log("Update quatity of seller's warehouse successfully");
-                    })
+
+                    if(warehouse == null){
+                        console.log("Update quatity of seller's warehouse failed. Can not create object.");
+                    }
+                    else{
+                        warehouse.save().then(() => {
+                            console.log("Update quatity of seller's warehouse successfully.");
+                        })
+
+                        doc.status = "5";
+                        doc.receiveDate = today;
+                        doc.save().then(() => {
+                            console.log('Received product successfully.');
+                        });
+                    }
                 }
                 else {
-                    console.log(product[0].quatity);
-
                     product[0].quatity = product[0].quatity + 1;
                     product[0].save().then(() => {
-                        console.log("Update quatity of seller's warehouse successfully");
+                        console.log("Update quatity of seller's warehouse successfully.");
+                    });
+
+                    doc.status = "5";
+                    doc.receiveDate = today;
+                    doc.save().then(() => {
+                        console.log('Received product successfully.');
                     });
                 }
-
-                doc.status = "5";
-                doc.receiveDate = today;
-                doc.save().then(() => {
-                    console.log('Received product');
-                });
-
-                res.redirect('/supplier/manacontract');
             })
         }
+        res.redirect('/supplier/manacontract');
     })
 }
 
@@ -169,15 +184,15 @@ var cancel_contract = (req, res) => {
     var id_contract = req.params.id;
     console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, $or: [{ 'status': "0" }, { 'status': "1" }] }, function (err, doc) {
-        if (doc == null) {
-            res.redirect('/supplier/manacontract');
+        if (doc == null || doc.length == 0) {
+            console.log('Cancel contract failed. Can not find contract.');
         }
         else {
             doc.status = "6";
             doc.deleteBy = req.session.userId;
             doc.deleteDate = today;
             doc.save().then(() => {
-                console.log('Cancel contract successfully')
+                console.log('Cancel contract successfully.')
             })
         }
         res.redirect('/supplier/manacontract');
@@ -188,18 +203,28 @@ var cancel_contract = (req, res) => {
 var delete_product = (req, res, next) => {
     var id_product = req.params.id;
     warehouseSchema.remove({ product_id: id_product, supplier_id: req.session.userId }, (error, product) => {
-        console.log("Remove product succesfullly");
+        if(product == null || product.length == 0){
+            console.log("Remove product failed. Can not find product.s");
+        }
+        else{
+            console.log("Remove product succesfullly.");
+        }
         res.redirect('/supplier/product');
     })
 }
 
 module.exports = {
-    delivery_contract,
+    // Handling selling biz
     send_price,
+    delivery_contract,
     cancel_contract,
     delete_contract,
+
+    // Handling buying biz
     create_contract,
     accept_contract,
     done_contract,
+
+    // Handling product in warehouse
     delete_product,
 }

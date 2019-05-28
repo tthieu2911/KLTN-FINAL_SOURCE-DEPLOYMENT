@@ -36,7 +36,7 @@
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/customer"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/supplier"></a>
       </div>
 
       <!-- Topbar Navbar -->
@@ -44,16 +44,25 @@
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
 
-          <a class="nav-link dropdown-toggle" href="/customer" id="userDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="/supplier" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Customer</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Supplier</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/customer/manacontract">
+
+            <a class="dropdown-item" href="/supplier/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn hàng
+              Quản lí đơn mua hàng
+            </a>
+            <a class="dropdown-item" href="/supplier/product">
+              <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí kho
+            </a>
+            <a class="dropdown-item" href="/supplier/market">
+              <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
+              Mua sản phẩm
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">
@@ -164,51 +173,52 @@
           </button>
         </td>
       </tr>
+      </table>
+      {{/each}}
+      {{/each}}
     </form>
-    </table>
-    {{/each}}
-    {{/each}}
-
 
     <h3 class="text-center">Lịch sử mua hàng</h3>
-    <table class="table" id="contract-list">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Giá trị</th>
-          <th scope="col">Đơn vị tính</th>
-          <th scope="col">Số lượng</th>
-          <th scope="col">Người bán hàng</th>
-          <th scope="col">Người vận chuyển</th>
-          <th scope="col">Thao tác</th>
-        </tr>
-      </thead>
-      {{# each contract}}
-      {{# each this}}
-      <tbody>
-        <tr>
-          <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
-          <td>{{this.product_id.name}}</td>
-          <td>{{this.price}}</td>
-          <td>{{this.currency}}</td>
-          <td>{{this.quatity}}</td>
-          <td>{{this.seller_id.fullName}}</td>
-          <td>{{this.shipper_id.fullName}}</td>
-          <td id="sttDescription"></td>
-          <td class="text-center">
-            <a href="/customer/detail/{{this._id}}"><button type="button" class="btn btn-info">
-                <i class="fas fa-info" aria-hidden="true"></i>
-              </button></a>
-          </td>
-        </tr>
-      </tbody>
-      {{/each}}
-      {{/each}}
-    </table>
+    <form>
+      <table class="table" id="contract-list">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Giá trị</th>
+            <th scope="col">Đơn vị tính</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Người bán hàng</th>
+            <th scope="col">Người vận chuyển</th>
+            <th scope="col" class="text-center">Thao tác</th>
+          </tr>
+        </thead>
+        {{# each contracts}}
+        {{# each this}}
+        <tbody>
+          <tr>
+            <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
+            <td>{{this.product_id.name}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.currency}}</td>
+            <td>{{this.quatity}}</td>
+            <td>{{this.seller_id.fullName}}</td>
+            <td>{{this.shipper_id.fullName}}</td>
+            <td class="text-center">
+              <a href="/customer/detail/{{this._id}}">
+                <button type="button" class="btn btn-info">
+                  <i class="fas fa-info" aria-hidden="true"></i>
+                </button>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+        {{/each}}
+        {{/each}}
+      </table>
+    </form>
     <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
     </nav>
-
 
   </div>
 
@@ -279,10 +289,11 @@
         $("#btnAcceptPassword").hide();
       });
 
+
       $("#contract-list tr").each(function () {
         var stt = $(this).find(".hdnStatus").val();
         // handle for Status Description
-        var sttDescription = $(this).find("#sttDescription");
+        var sttDescription = $(this).find(".sttDescription");
 
         switch (stt) {
           case '0':
