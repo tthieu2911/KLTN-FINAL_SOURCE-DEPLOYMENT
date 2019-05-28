@@ -4,6 +4,8 @@ var productSchema = require('../../data/models/product')
 var warehouseSchema = require('../../data/models/warehouse')
 var user_load = require('../user/load_page');
 
+
+
 // load dữ liệu cho trang index supplier
 var load_contract = async (req, res, next) => {
     await contractSchema.find({ seller_id: req.session.userId, status: { $ne: '5' } }, (err, docs) => {

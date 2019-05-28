@@ -1,6 +1,7 @@
 var productSchema = require('./../../data/models/product')
 var contractSchema = require('../../data/models/contract')
 var warehouseSchema = require('../../data/models/warehouse')
+var Messages = require('./../../data/messages.json');
 var mongoose = require('mongoose')
 var DBurl = require('./../../data/config')
 mongoose.connect(DBurl.url)
@@ -112,6 +113,7 @@ var send_price = async (req, res, next) => {
     contractSchema.findOne({ _id: id_contract, status: '0' }, (err, doc) => {
         if (doc == null || doc.length == 0) {
             console.log("Send price failed. Can not find contract.");
+            res.render('/manufacturer/mf_index', {message: req.flash(Messages.contract.notFound)});
         }
         else {
             doc.price = price;
@@ -119,8 +121,10 @@ var send_price = async (req, res, next) => {
             doc.save().then(() => {
                 console.log('Send price successfully.')
             });
+            res.render('/manufacturer/mf_index', {success: req.flash(Messages.send_price.success)});
         }
-        res.redirect('/manufacturer');
+        //res.redirect('/manufacturer');
+
     })
 }
 

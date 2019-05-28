@@ -24,6 +24,58 @@
         "password_false":"Mật khẩu hiện tại không đúng!",
         "pass_equal_pass":"Mật khẩu lặp lại chưa trùng khớp!",
         "success":"Đổi mật khẩu thành công!"
+    },
+    
+    "contract":{
+        "not_Found":"Không tìm thấy hợp đồng",
+        "buy_notFound":"Không tim thấy đơn mua hàng",
+        "sell_notFound":"Không tim thấy đơn bán hàng",
+        "ship_notFound":"Không tim thấy đơn giao hàng",
+        "price_notFound":"Không tim thấy đơn báo giá",
+        "create": {
+            "success":"Tạo đơn mua hàng thành công!",
+            "failed":"Tạo đơn mua hàng thất bại!"
+        },
+        "send_price": {
+            "success":"Báo giá đơn hàng thành công!",
+            "failed":"Báo giá đơn hàng thất bại!"
+        },
+        "accept": {
+            "success":"Chấp nhận đơn báo giá thành công!",
+            "failed":"Chấp nhận đơn báo giá thất bại!"
+        },
+        "receive_to_ship": {
+            "success":"Nhận đơn giao hàng thành công!",
+            "failed":"Nhận đơn giao hàng thất bại!"
+        },
+        "receive": {
+            "success":"Nhận hàng thành công!",
+            "failed":"Nhận hàng thất bại!"
+        },
+        "cancel": {
+            "success":"Hủy đơn hàng thành công!",
+            "failed":"Hủy đơn hàng thất bại!"
+        },
+        "delete": {
+            "success":"Hủy đơn hàng thành công!",
+            "failed":"Hủy đơn hàng thất bại!"
+        }
+    },
+    "product":{
+        "not_Found":"Không tìm thấy sản phẩm trong kho chứa!",
+        "not_Availabled":"Sản phẩm đang tạm hết hàng hoặc mặt hàng không còn cung ứng!",
+        "create": {
+            "success":"Thêm sản phẩm thành công!",
+            "failed":"Thêm sản phẩm thất bại!"
+        },
+        "edit": {
+            "success":"Chỉnh sửa thông tin sản phẩm thành công!",
+            "failed":"Chỉnh sửa thông tin sản phẩm thất bại!"
+        },
+        "delete": {
+            "success":"Xóa sản phẩm thành công!",
+            "failed":"Chỉnh sửa thông tin sản phẩm thất bại!"
+        }
     }
 
 }
