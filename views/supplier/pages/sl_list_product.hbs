@@ -90,6 +90,18 @@
   </div>
 
   <div class="container">
+
+    {{#if message}}
+    <div class="alert alert-danger text-center" role="alert">
+      {{this.message}}
+    </div>
+    {{/if}}
+    {{#if success}}
+    <div class="alert alert-success text-center" role="alert">
+      {{this.success}}
+    </div>
+    {{/if}}
+
     <h2>Quản lý Hàng Hóa</h2>
 
     <table class="table table-striped ">

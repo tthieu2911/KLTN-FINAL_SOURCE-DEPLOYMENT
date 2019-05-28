@@ -10,7 +10,8 @@ var admit_delivery = (req, res) => {
     contractSchema.findOne({ _id: id_contract }, function (err, doc) {
         if (doc == null || doc.length == 0) {
             console.log('Received to deliver failed. Can not find contract.');
-            req.flash('message', Messages.contract.not_Found);
+            req.flash('message', Messages.contract.ship_notFound);
+            res.redirect('/shipper');
         }
         else {
             doc.status = "4";
@@ -19,10 +20,10 @@ var admit_delivery = (req, res) => {
             doc.save().then(() => {
                 console.log('Received to deliver successfully.');
                 req.flash('success', Messages.contract.receive_to_ship.success);
+                res.redirect('/shipper');
             });
         }
     });
-    res.redirect('/shipper');
 }
 
 //Trả hàng cho shipper khác giao
@@ -32,7 +33,8 @@ var cancel_delivery = (req, res) => {
     contractSchema.findOne({ _id: id_contract, status: '4' }, function (err, doc) {
         if (doc == null || doc.length == 0) {
             console.log('Cancel delivery failed. Can not find contract.');
-            req.flash('success', Messages.contract.not_Found);
+            req.flash('success', Messages.contract.ship_notFound);
+            res.redirect('/shipper/manacontract');
         }
         else {
             doc.status = "3";
@@ -41,9 +43,9 @@ var cancel_delivery = (req, res) => {
             doc.save().then(() => {
                 console.log('Cancel delivery successfully');
                 req.flash('success', Messages.contract.deny_to_ship.success);
+                res.redirect('/shipper/manacontract');
             });
         }
-        res.redirect('/shipper/manacontract');
     })
 }
 

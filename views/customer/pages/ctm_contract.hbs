@@ -64,9 +64,21 @@
         </li>
       </ul>
     </nav>
+  </div>
+  <div class="container">
+
+    {{#if message}}
+    <div class="alert alert-danger text-center" role="alert">
+      {{this.message}}
+    </div>
+    {{/if}}
+    {{#if success}}
+    <div class="alert alert-success text-center" role="alert">
+      {{this.success}}
+    </div>
+    {{/if}}
 
     <h1>Quản lí thông tin đơn mua hàng</h1>
-    <hr>
     <br>
 
     <h3 class="text-center">Danh sách đơn hàng</h3>
@@ -183,8 +195,8 @@
 
         // handle for Status Description
         var sttDescription = $(this).find("#sttDescription");
-        
-        switch(stt) {
+
+        switch (stt) {
           case '0':
             sttDescription.html("Đặt hàng");
             break;
@@ -207,7 +219,7 @@
             sttDescription.html("Đã hủy");
             break;
         }
-        
+
       })
 
     });

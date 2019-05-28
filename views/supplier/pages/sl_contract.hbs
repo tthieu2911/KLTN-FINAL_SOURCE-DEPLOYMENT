@@ -88,8 +88,19 @@
   </div>
 
   <div class="container">
+
+    {{#if message}}
+    <div class="alert alert-danger text-center" role="alert">
+      {{this.message}}
+    </div>
+    {{/if}}
+    {{#if success}}
+    <div class="alert alert-success text-center" role="alert">
+      {{this.success}}
+    </div>
+    {{/if}}
+    
     <h1>Quản lí thông tin đơn mua hàng</h1>
-    <hr>
     <br>
 
     <h3 class="text-center">Danh sách đơn hàng</h3>
@@ -120,23 +131,23 @@
           <td id="sttDescription"></td>
           <td class="text-center">
             <a href="/supplier/cancel/{{this._id}}"><button type="" class="btn btn-danger btnCancel">
-              <i class="fas fa-trash" aria-hidden="true"></i>
-            </button></a>
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button></a>
           </td>
           <td class="text-center">
             <a href="/supplier/accept/{{this._id}}"><button type="" class="btn btn-success btnAccept">
-              <i class="fas fa-clipboard-check" aria-hidden="true"></i>
-            </button></a>
+                <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+              </button></a>
           </td>
           <td class="text-center">
             <a href="/supplier/done/{{this._id}}"><button type="" class="btn btn-warning btnReceive">
-              <i class="fas fa-box-open" aria-hidden="true"></i>
+                <i class="fas fa-box-open" aria-hidden="true"></i>
           </td>
           <td class="text-center">
             <a href="/supplier/detail/{{this._id}}"><button type="" class="btn btn-info btnDetail">
-              <i class="fas fa-info" aria-hidden="true"></i>
-            </button>
-          </a>
+                <i class="fas fa-info" aria-hidden="true"></i>
+              </button>
+            </a>
           </td>
         </tr>
         {{/each}}
@@ -163,11 +174,11 @@
         $(this).find(".btnCancel").hide();
         $(this).find(".btnAccept").hide();
         $(this).find(".btnReceive").hide();
-        
+
         $(this).find(".btnDetail").show();
 
         // handle for Cancel button
-        if (stt == "0" || stt == "1" ) {
+        if (stt == "0" || stt == "1") {
           $(this).find(".btnCancel").show();
         }
         else {
@@ -193,8 +204,8 @@
 
         // handle for Status Description
         var sttDescription = $(this).find("#sttDescription");
-        
-        switch(stt) {
+
+        switch (stt) {
           case '0':
             sttDescription.html("Đặt hàng");
             break;

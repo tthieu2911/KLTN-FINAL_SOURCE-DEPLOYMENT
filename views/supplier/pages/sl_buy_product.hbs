@@ -89,9 +89,20 @@
         </li>
       </ul>
     </nav>
+  </div>
+  <div class="container">
+    
+    {{#if message}}
+    <div class="alert alert-danger text-center" role="alert">
+      {{this.message}}
+    </div>
+    {{/if}}
+    {{#if success}}
+    <div class="alert alert-success text-center" role="alert">
+      {{this.success}}
+    </div>
+    {{/if}}
 
-    <div class="container-fluid border"></div>
-    <br>
     <h1 class="text-center">Sản phẩm</h1>
 
     <!-- Product card -->

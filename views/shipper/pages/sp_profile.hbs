@@ -78,9 +78,10 @@
         </li>
       </ul>
     </nav>
-
   </div>
+
   <div class="container">
+
     {{#if message}}
     <div class="alert alert-danger text-center" role="alert">
       {{this.message}}
@@ -91,6 +92,7 @@
       {{this.success}}
     </div>
     {{/if}}
+
     <h1>Thông tin cá nhân</h1>
 
     <form action="/update_profile" method="POST">

@@ -91,7 +91,21 @@
         </li>
       </ul>
     </nav>
+  </div>
 
+  <div class="container">
+    
+    {{#if message}}
+    <div class="alert alert-danger text-center" role="alert">
+      {{this.message}}
+    </div>
+    {{/if}}
+    {{#if success}}
+    <div class="alert alert-success text-center" role="alert">
+      {{this.success}}
+    </div>
+    {{/if}}
+    
     <h1>Danh sách các đơn hàng đang xử lí</h1>
     <br>
 

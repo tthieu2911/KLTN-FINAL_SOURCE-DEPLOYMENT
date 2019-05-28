@@ -91,6 +91,20 @@
         </li>
       </ul>
     </nav>
+  </div>
+  
+  <div class="container">
+
+    {{#if message}}
+    <div class="alert alert-danger text-center" role="alert">
+      {{this.message}}
+    </div>
+    {{/if}}
+    {{#if success}}
+    <div class="alert alert-success text-center" role="alert">
+      {{this.success}}
+    </div>
+    {{/if}}
 
     <!-- Incoming Contract -->
     <h3> Danh sách đơn bán hàng chờ xử lý</h3>
