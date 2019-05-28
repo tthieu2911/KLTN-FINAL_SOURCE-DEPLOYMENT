@@ -9,6 +9,7 @@ var update_profile = (req, res, next) => {
     var id_user = req.session.userId;
     userSchema.findOne({ _id: id_user }, (err, doc) => {
         if (doc == null) {
+            req.flash('message', Messages.user.profile.update_failed);
             res.redirect('/');
         }
         else {
@@ -19,6 +20,7 @@ var update_profile = (req, res, next) => {
             doc.save().then(() => {
                 console.log('Cập nhật cá nhân')
             });
+            req.flash('success', Messages.user.profile.update_success);
             res.redirect('/' + doc.type + '/profile');
         }
     });
@@ -32,31 +34,6 @@ var update_password = async (req, res, next) => {
     var type = req.body.type;
     await userSchema.findOne({ _id: user_id, password: password }, (err, doc) => {
         if (doc == null) {
-            console.log(type)
-            /*if(type=="customer")
-            {
-                req.flash('message',Messages.update_password.password_false)
-                res.redirect('/customer/profile')
-                return res.end();
-            }
-            if(type=="manufacturer")
-            {
-                req.flash('message',Messages.update_password.password_false)
-                res.redirect('/manufacturer/profile')
-                return res.end();
-            }
-            if(type=="supplier")
-            {
-                req.flash('message',Messages.update_password.password_false)
-                res.redirect('/supplier/profile')
-                return res.end();
-            }
-            if(type=="shipper")
-            {
-                req.flash('message',Messages.update_password.password_false)
-                res.redirect('/shipper/profile')
-                return res.end();
-            } */
             req.flash('message', Messages.update_password.password_false)
             res.redirect('/' + type + '/profile')
             return res.end();
@@ -66,34 +43,9 @@ var update_password = async (req, res, next) => {
             doc.save().then(() => {
                 console.log('Change user success')
             });
-            /*if(type=="customer")
-            {
-                req.flash('success',Messages.update_password.success)
-                res.redirect('/customer/profile')
-                return res.end();
-            }
-            if(type=="manufacturer")
-            {
-                req.flash('success',Messages.update_password.success)
-                res.redirect('/manufacturer/profile')
-                return res.end();
-            }
-            if(type=="supplier")
-            {
-                req.flash('success',Messages.update_password.success)
-                res.redirect('/supplier/profile')
-                return res.end();
-            }
-            if(type=="shipper")
-            {
-                req.flash('success',Messages.update_password.success)
-                res.redirect('/shipper/profile')
-                return res.end();
-            } */
             req.flash('success', Messages.update_password.success)
             res.redirect('/' + type + '/profile')
             return res.end();
-
         }
     })
 }

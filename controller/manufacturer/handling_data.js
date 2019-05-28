@@ -20,6 +20,7 @@ var create_product = (req, res) => {
     }
     if (dateExpire < dateCreate && dateExpire != null) {
         console.log('create new product failed. Wrong expiry date.');
+        req.flash('message', Messages.product.invalid_expireDate);
     }
     else {
         var product = new productSchema({
@@ -38,11 +39,13 @@ var create_product = (req, res) => {
 
         if (product == null || warehouse == null) {
             console.log('create new product failed. Can not create Object.');
+            req.flash('message', Messages.product.create.failed);
         }
         else {
             product.save();
             warehouse.save();
-            console.log('create new product successfully.');   
+            console.log('create new product successfully.');
+            req.flash('success', Messages.product.create.success);
         }
     }
     res.redirect('/manufacturer/product');
@@ -61,17 +64,20 @@ var edit_product = (req, res, next) => {
     }
     if (dateExpire < dateCreate && dateExpire != null) {
         console.log('Update new product failed. Wrong expiry date.');
+        req.flash('message', Messages.product.edit.failed);
         res.redirect('/manufacturer/product');
     }
 
     productSchema.findOne({ _id: id_product, manufacturer_id: req.session.userId }, (err, doc) => {
         if (doc == null || doc.length == 0) {
             console.log("Update manufacturer 's warehouse failed. Can not find product in warehouse.");
+            req.flash('message', Messages.product.not_Found);
         }
         else {
             warehouseSchema.findOne({ product_id: id_product, supplier_id: req.session.userId }, (err, product) => {
                 if(product == null || product.length == 0){
                     console.log("Update manufacturer 's warehouse failed. Can not find product in warehouse.");
+                    req.flash('message', Messages.product.unavailabled);
                 }
                 else{
                     product.quatity = quatity;
@@ -83,7 +89,8 @@ var edit_product = (req, res, next) => {
                     doc.createDate = dateCreate;
                     doc.expireDate = dateExpire;
                     doc.save().then(() => {
-                        console.log('Update product successfully.')
+                        console.log('Update product successfully.');
+                        req.flash('success', Messages.product.edit.success);
                     });
                 }
             });
@@ -98,22 +105,24 @@ var delete_product = (req, res, next) => {
     warehouseSchema.remove({ product_id: id_product, supplier_id: req.session.userId }, (error, product) => {
         if (product == null || product.length == 0) {
             console.log("Can not find product in warehouse.");
+            req.flash('message', Messages.product.unavailabled);
         }
         else {
             console.log("Remove product succesfully.");
+            req.flash('success', Messages.product.delete.success);
         }
         res.redirect('/manufacturer/product');
     })
 }
 
 // Báo giá 
-var send_price = async (req, res, next) => {
+var send_price = (req, res, next) => {
     var id_contract = req.body.contract_id;
     var price = req.body.price;
     contractSchema.findOne({ _id: id_contract, status: '0' }, (err, doc) => {
         if (doc == null || doc.length == 0) {
             console.log("Send price failed. Can not find contract.");
-            res.render('/manufacturer/mf_index', {message: req.flash(Messages.contract.notFound)});
+            req.flash('message', Messages.contract.not_Found);
         }
         else {
             doc.price = price;
@@ -121,10 +130,9 @@ var send_price = async (req, res, next) => {
             doc.save().then(() => {
                 console.log('Send price successfully.')
             });
-            res.render('/manufacturer/mf_index', {success: req.flash(Messages.send_price.success)});
+            req.flash('success', Messages.contract.send_price.success);
         }
-        //res.redirect('/manufacturer');
-
+        res.redirect('/manufacturer');
     })
 }
 
@@ -134,12 +142,14 @@ var delivery_contract = (req, res) => {
     console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: '2' }, (err, doc) => {
         if (doc == null || doc.length == 0) {
-            console.log('Release contract failed. Can not find contract.')
+            console.log('Release contract failed. Can not find contract.');
+            req.flash('message', Messages.contract.not_Found);
         }
         else {
             doc.status = "3";
             doc.save().then(() => {
-                console.log('Release contract successfully.')
+                console.log('Release contract successfully.');
+                req.flash('success', Messages.contract.allow_to_ship.success);
             });
         }
         res.redirect('/manufacturer');
@@ -152,7 +162,8 @@ var delete_contract = (req, res) => {
     console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, $or: [{ 'status': "0" }, { 'status': "1" }] }, function (err, doc) {
         if (doc == null || doc.length == 0) {
-            console.log('Release contract failed. Can not find contract.')
+            console.log('Release contract failed. Can not find contract.');
+            req.flash('message', Messages.contract.not_Found);
         }
         else {
             doc.status = "6";
@@ -160,6 +171,7 @@ var delete_contract = (req, res) => {
             doc.deleteDate = today;
             doc.save().then(() => {
                 console.log('Delete contract successfully.')
+                req.flash('success', Messages.contract.delete.success);
             })
         }
         res.redirect('/manufacturer');

@@ -19,7 +19,7 @@ var load_contract = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         contractChunks = contractChunks.slice(start, end)
 
-        res.render('supplier/sl_index', { contracts: contractChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        res.render('supplier/sl_index', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ status: -1 }).populate('buyer_id product_id shipper_id')
 }
 
@@ -40,7 +40,7 @@ var load_product_to_buy = async (req, res, next) => {
             var num_page = Math.ceil(docs.length / perPage)
             warehouseChunks = warehouseChunks.slice(start, end)
 
-            res.render('supplier/pages/sl_buy_product', { warehouses: warehouseChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+            res.render('supplier/pages/sl_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
         }).sort({ name: -1 }).populate('product_id manufacturer_id supplier_id')
     })
 }
@@ -60,7 +60,7 @@ var load_product = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         warehouseChunks = warehouseChunks.slice(start, end)
 
-        res.render('supplier/pages/sl_list_product', { warehouses: warehouseChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        res.render('supplier/pages/sl_list_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ product_id: -1 }).populate('product_id manufacturer_id supplier_id')
 }
 
@@ -121,7 +121,7 @@ var load_contract_manager = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         contractChunks = contractChunks.slice(start, end)
 
-        res.render('supplier/pages/sl_contract', { contracts: contractChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        res.render('supplier/pages/sl_contract', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ status: -1 }).populate('product_id shipper_id seller_id')
 }
 

@@ -1,6 +1,10 @@
 {
     "user":{
-        "notNull":"Dữ liệu đang bị bỏ trống"
+        "notNull":"Dữ liệu đang bị bỏ trống",
+        "profile":{
+            "update_success": "Cập nhật thông tin cá nhân thành công!",
+            "update_failed": "Cập nhật thông tin cá nhân thất bại!"
+        }
     },
     "signup":{
         "success":"Tài khoản được tạo thành công!",
@@ -44,9 +48,17 @@
             "success":"Chấp nhận đơn báo giá thành công!",
             "failed":"Chấp nhận đơn báo giá thất bại!"
         },
+        "allow_to_ship": {
+            "success":"Cho phép giao hàng thành công!",
+            "failed":"Cho phép giao hàng thất bại!"
+        },
         "receive_to_ship": {
             "success":"Nhận đơn giao hàng thành công!",
             "failed":"Nhận đơn giao hàng thất bại!"
+        },
+        "deny_to_ship": {
+            "success":"Hủy đơn giao hàng thành công!",
+            "failed":"Hủy đơn giao hàng thất bại!"
         },
         "receive": {
             "success":"Nhận hàng thành công!",
@@ -63,7 +75,8 @@
     },
     "product":{
         "not_Found":"Không tìm thấy sản phẩm trong kho chứa!",
-        "not_Availabled":"Sản phẩm đang tạm hết hàng hoặc mặt hàng không còn cung ứng!",
+        "unavailabled":"Sản phẩm đang tạm hết hàng hoặc mặt hàng không còn cung ứng!",
+        "invalid_expireDate":"Ngày hết hạn không hợp lệ!",
         "create": {
             "success":"Thêm sản phẩm thành công!",
             "failed":"Thêm sản phẩm thất bại!"

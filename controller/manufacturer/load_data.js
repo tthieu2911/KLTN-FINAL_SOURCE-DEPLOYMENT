@@ -4,8 +4,6 @@ var productSchema = require('../../data/models/product')
 var warehouseSchema = require('../../data/models/warehouse')
 var user_load = require('../user/load_page');
 
-
-
 // load dữ liệu cho trang index supplier
 var load_contract = async (req, res, next) => {
     await contractSchema.find({ seller_id: req.session.userId, status: { $ne: '5' } }, (err, docs) => {
@@ -21,7 +19,7 @@ var load_contract = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         contractChunks = contractChunks.slice(start, end)
         
-        res.render('manufacturer/mf_index', { contracts: contractChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        res.render('manufacturer/mf_index', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ status: -1 }).populate('buyer_id product_id shipper_id')
 }
 
@@ -40,7 +38,7 @@ var load_product = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         warehouseChunks = warehouseChunks.slice(start, end)
 
-        res.render('manufacturer/pages/mf_list_product', { warehouses: warehouseChunks, pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        res.render('manufacturer/pages/mf_list_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ product_id: -1 }).populate('product_id manufacturer_id supplier_id')
 }
 
