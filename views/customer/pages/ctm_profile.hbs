@@ -282,7 +282,6 @@
         $("#btnAcceptPassword").hide();
       });
 
-
       $("#contract-list tr").each(function () {
         var stt = $(this).find(".hdnStatus").val();
         // handle for Status Description
@@ -293,21 +292,27 @@
             sttDescription.html("Đặt hàng");
             break;
           case '1':
-            sttDescription.html("Báo giá");
+            sttDescription.html("Báo giá đơn hàng");
             break;
           case '2':
-            sttDescription.html("Xác nhận báo giá");
+            sttDescription.html("Chấp nhận báo giá");
             break;
           case '3':
-            sttDescription.html("Chờ vận chuyển");
+            sttDescription.html("Cho phép giao hàng");
             break;
           case '4':
-            sttDescription.html("Đang vận chuyển");
+            sttDescription.html("Báo giá giao hàng");
             break;
           case '5':
-            sttDescription.html("Đã nhận hàng");
+            sttDescription.html("Chấp nhận giao hàng");
             break;
           case '6':
+            sttDescription.html("Chờ giao hàng");
+            break;
+          case '7':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '8':
             sttDescription.html("Đã hủy");
             break;
         }

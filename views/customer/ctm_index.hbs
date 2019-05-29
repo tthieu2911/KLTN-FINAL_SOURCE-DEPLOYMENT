@@ -31,7 +31,7 @@
 </head>
 
 <body>
-  
+
   <!-- Header -->
   <div class="container">
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -111,27 +111,45 @@
             <div class="card-body p-0">
               <!-- Nested Row within Card Body -->
               <div class="row">
-                <div class="col-lg-6 d-none d-lg-block">
-                  <img src="https://source.unsplash.com/random/250x380">
+                <div class="col-lg-5 d-none d-lg-block">
+                  <img src="https://source.unsplash.com/random/200x460">
                 </div>
                 <!-- Product Info -->
-                <div class="col-lg-6 d-none d-lg-block row">
+                <div class="col-lg-7 d-none d-lg-block">
 
                   <h4 style="font-weight:bold; text-align:center; margin-top:8%">Thông tin sản phẩm</h4>
                   <hr>
-                  <div class="product-text text-center">
+                  <div class="product-text text-center ">
                     <h3>{{this.product_id.name}}</h3>
-                    <h2>{{this.supplier_id.fullName}}</h2>
+                    <h2>{{this.owner_id.fullName}}</h2>
 
-                    <p class="card-text">
-                      Nhà sản xuất: {{this.product_id.manufacturer_id}}<br>
-                      Mô tả sản phẩm: {{this.product_id.desription}} <br>
-                      Ngày sản xuất: {{this.product_id.createDate}} <br>
-                      Ngày hết hạn: {{this.product_id.expireDate}}
-                    </p>
+                    <div class="card-text text-left">
+                      <table class="product-content">
+                        <tr>
+                          <th>Nhà sản xuất: </th>
+                          <td>{{this.owner_id.fullName}}</td>
+                        </tr>
+                        <tr>
+                          <th>Mô tả: </th>
+                          <td>{{this.product_id.desription}}</td>
+                        </tr>
+                        <tr>
+                          <th>Ngày sản xuất: </th>
+                          <td class="createDate"></td>
+                        </tr>
+                        <tr>
+                          <th>Ngày hết hạn: </th>
+                          <td class="expireDate"></td>
+                        </tr>
+                        <input class="hdnCreateDate" type="hidden" name="hdnCreateDate"
+                          value="{{this.product_id.createDate}}">
+                        <input class="hdnExpireDate" type="hidden" name="hdnExpireDate"
+                          value="{{this.product_id.expireDate}}">
+                      </table>
+                    </div>
                   </div>
                   <br>
-                  <div class="col-lg-12 text-right">
+                  <div class="col-lg-12 text-right" >
                     <button type="submit" class="btn btn-success">
                       <i class="fas fa-cart-plus" aria-hidden="true"></i>
                     </button>
@@ -139,10 +157,8 @@
                 </div>
               </div>
             </div>
-
             <input type="hidden" name="product_id" value="{{this.product_id._id}}">
-            <input type="hidden" name="product_name" value="{{this.product_id.name}}">
-            <input type="hidden" name="supplier_id" value="{{this.supplier_id._id}}">
+            <input type="hidden" name="supplier_id" value="{{this.owner_id._id}}">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
           </div>
         </form>
@@ -154,6 +170,38 @@
       {{{paginateHelper pagination}}}
     </nav>
   </div>
+
+  <!-- Jquery handling -->
+  <script>
+    $(document).ready(function () {
+
+      $(".product-content").each(function () {
+
+        var crDate = $(this).find(".hdnCreateDate").val();
+        $(this).find(".createDate").html(Date_to_String(crDate));
+
+        var epDate = $(this).find(".hdnExpireDate").val();
+        $(this).find(".expireDate").html(Date_to_String(epDate));
+
+        function Date_to_String(date_model) {
+
+          if (date_model == null || date_model.length == 0) {
+            return '';
+          }
+          else {
+            var formated_date = new Date(date_model);
+            var day = formated_date.getDate();
+            var month = formated_date.getMonth() + 1;
+            var year = formated_date.getFullYear();
+
+            var return_format = day + ' - ' + month + ' - ' + year;
+
+            return return_format;
+          }
+        }
+      })
+    })
+  </script>
 </body>
 
 </html>

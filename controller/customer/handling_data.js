@@ -2,6 +2,7 @@ var productSchema = require('../../data/models/product')
 var contractSchema = require('../../data/models/contract')
 var warehouseSchema = require('../../data/models/warehouse')
 var Messages = require('./../../data/messages.json');
+var userSchema = require('../../data/models/user');
 
 var today = new Date();
 
@@ -10,7 +11,7 @@ var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_supplier = req.body.supplier_id;
     var req_quatity = req.body.req_quatity;
-
+    var to_ship = req.body.ship_to;
     var contract = new contractSchema({
         product_id: id_product,
         seller_id: id_supplier,
@@ -18,7 +19,10 @@ var create_contract = async (req, res, next) => {
         shipper_id: null,
         quatity: req_quatity,
         price: null,
+        shipPrice: null,
         currency: 'USD',// fix value
+        shipFrom: null,
+        shipTo: to_ship,
         createBy: req.session.userId,
         createDate: today,
         deleteBy: null,
@@ -35,13 +39,13 @@ var create_contract = async (req, res, next) => {
         res.redirect('/customer');
     }
     else {
-        warehouseSchema.findOne({ product_id: id_product, supplier_id: id_supplier }, (error, product) => {
-            if  (product == null || product.length == 0){
+        warehouseSchema.findOne({ product_id: id_product, owner_id: id_supplier }, (error, product) => {
+            if (product == null || product.length == 0) {
                 console.log('Create new contract failed.');
                 req.flash('messages', Messages.contract.create.failed);
                 res.redirect('/customer');
             }
-            else{
+            else {
                 if (product.quatity < req_quatity) {
                     console.log('Accept contract failed. No product left in warehouse.');
                     req.flash('message', Messages.product.unavailabled);
@@ -52,7 +56,7 @@ var create_contract = async (req, res, next) => {
                     product.save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
-    
+
                     contract.save().then(() => {
                         console.log('Create new contract successfully.');
                         req.flash('success', Messages.contract.create.success);
@@ -62,12 +66,12 @@ var create_contract = async (req, res, next) => {
             }
         })
     }
+
 }
 
 // Chấp nhận báo giá
 var accept_contract = (req, res, next) => {
     var id_contract = req.params.id;
-    console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: "1" }, function (err, doc) {
         if (doc == null || doc.length == 0) {
             console.log('Accept contract failed. Can not find contract.');
@@ -75,7 +79,7 @@ var accept_contract = (req, res, next) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: doc.seller_id }, (error, product) => {
                 if (product == null || product.length == 0) {
                     console.log('Accept contract failed. No product left in warehouse.');
                     req.flash('message', Messages.product.unavailabled);
@@ -105,7 +109,7 @@ var cancel_contract = (req, res) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: doc.seller_id }, (error, product) => {
                 if (product == null || product.length == 0) {
                     req.flash('success', Messages.contract.cancel.success);
                     res.redirect('/customer/manacontract');
@@ -115,8 +119,8 @@ var cancel_contract = (req, res) => {
                     product.save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
-                    
-                    doc.status = "6";
+
+                    doc.status = "8";
                     doc.deleteBy = req.session.userId;
                     doc.deleteDate = today;
                     doc.save().then(() => {
@@ -133,14 +137,14 @@ var cancel_contract = (req, res) => {
 // Xác nhận nhận hàng
 var done_contract = (req, res, next) => {
     var id_contract = req.params.id;
-    contractSchema.findOne({ _id: id_contract, status: "4" }, function (err, doc) {
+    contractSchema.findOne({ _id: id_contract, status: "6" }, function (err, doc) {
         if (doc == null || doc.length == 0) {
             console.log('Received product failed. Can not find contract.');
             req.flash('message', Messages.contract.ship_notFound);
             res.redirect('/customer/manacontract');
         }
         else {
-            doc.status = "5";
+            doc.status = "7";
             doc.receiveDate = today;
             doc.save().then(() => {
                 console.log('Received product successfully.');

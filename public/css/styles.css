@@ -138,7 +138,9 @@
   background-color: #79b0a1;
 }
 
-
+.card-text tr{
+  height: 50px;
+}
 /* Input */
 .form-input {
 

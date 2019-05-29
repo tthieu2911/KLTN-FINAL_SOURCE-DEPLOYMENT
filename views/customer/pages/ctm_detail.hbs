@@ -96,7 +96,7 @@
                 {{# each contracts}}
                 {{# each this}}
                 <div class="container-fluid">
-                  <table class="table">
+                  <table class="table contract-detail">
                     <tr>
                       <th>Tên sản phẩm</th>
                       <td>{{this.product_id.name}}</td>
@@ -123,7 +123,11 @@
                     </tr>
                     <tr>
                       <th>Địa chỉ giao hàng</th>
-                      <td>{{this.buyer_id.address}}</td>
+                      <td>{{this.shipTo}}</td>
+                    </tr>
+                    <tr>
+                      <th>Địa chỉ lấy hàng</th>
+                      <td>{{this.shipFrom}}</td>
                     </tr>
                     <tr>
                       <th>Ngày đặt hàng</th>
@@ -183,28 +187,34 @@
             sttDescription.html("Đặt hàng");
             break;
           case '1':
-            sttDescription.html("Báo giá");
+            sttDescription.html("Báo giá đơn hàng");
             break;
           case '2':
-            sttDescription.html("Xác nhận báo giá");
+            sttDescription.html("Chấp nhận báo giá");
             break;
           case '3':
-            sttDescription.html("Chờ vận chuyển");
+            sttDescription.html("Cho phép giao hàng");
             break;
           case '4':
-            sttDescription.html("Đang vận chuyển");
+            sttDescription.html("Báo giá giao hàng");
             break;
           case '5':
-            sttDescription.html("Đã nhận hàng");
+            sttDescription.html("Chấp nhận giao hàng");
             break;
           case '6':
+            sttDescription.html("Chờ giao hàng");
+            break;
+          case '7':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '8':
             sttDescription.html("Đã hủy");
             break;
         }
       })
 
       function Date_to_String(date_model) {
-        
+
         if (date_model == null || date_model.length == 0) {
           return '';
         }
@@ -222,12 +232,13 @@
           return return_format;
         }
       }
-
-      function back() {
-        history.back();
-      }
-
     })
+
+
+    function back() {
+      history.back();
+    }
+
   </script>
 
 </body>

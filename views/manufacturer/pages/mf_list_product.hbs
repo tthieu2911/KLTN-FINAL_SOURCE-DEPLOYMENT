@@ -93,7 +93,7 @@
       {{this.success}}
     </div>
     {{/if}}
-    
+
     <h2>Quản lý Hàng Hóa</h2>
     <a id="Create" href="/manufacturer/product/create_product">
       <button class="btn btn-primary" style="margin-bottom:20px;">
@@ -118,9 +118,9 @@
         <tr>
           <td>{{this.product_id.name}}</td>
           <td>{{this.product_id.desription}}</td>
-          <td>{{this.quatity}}</td>
-          <td>{{this.product_id.createDate}}</td>
-          <td>{{this.product_id.expireDate}}</td>
+          <td class="text-center">{{this.quatity}}</td>
+          <td id="createDate"></td>
+          <td id="expireDate"></td>
           <td class="text-center">
             <a id="delete" href="/manufacturer/product/delete/{{this.product_id._id}}" onclick="return check()">
               <button type="button" class="btn btn-danger">
@@ -135,6 +135,8 @@
               </button>
             </a>
           </td>
+          <input class="hdnCreateDate" type="hidden" name="hdnCreateDate" value="{{this.product_id.createDate}}">
+          <input class="hdnExpireDate" type="hidden" name="hdnExpireDate" value="{{this.product_id.expireDate}}">
         </tr>
         {{/each}}
         {{/each}}
@@ -147,6 +149,34 @@
 
   <!-- Jquery handling -->
   <script>
+    $(document).ready(function () {
+
+      var crDate = $(".hdnCreateDate").val();
+      $("#createDate").html(Date_to_String(crDate));
+
+      var epDate = $(".hdnExpireDate").val();
+      $("#expireDate").html(Date_to_String(epDate));
+
+      function Date_to_String(date_model) {
+
+        if (date_model == null || date_model.length == 0) {
+          return '';
+        }
+        else {
+          var formated_date = new Date(date_model);
+          var day = formated_date.getDate();
+          var month = formated_date.getMonth() + 1;
+          var year = formated_date.getFullYear();
+          var hour = formated_date.getHours();
+          var minute = formated_date.getMinutes();
+          var second = formated_date.getSeconds();
+
+          var return_format = day + ' - ' + month + ' - ' + year + ', ' + hour + ':' + minute + ':' + second;
+
+          return return_format;
+        }
+      }
+    })
   </script>
 
 </body>

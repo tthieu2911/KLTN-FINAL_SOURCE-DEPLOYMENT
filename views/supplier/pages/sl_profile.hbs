@@ -87,7 +87,7 @@
       {{this.success}}
     </div>
     {{/if}}
-    
+
     <h1>Thông tin cá nhân</h1>
 
     <form action="/update_profile" method="POST">
@@ -176,11 +176,13 @@
         </td>
       </tr>
       </table>
+
+      <input class="hdnUser_id" type="hidden" name="hdnUser_id" value="{{this._id}}">
       {{/each}}
       {{/each}}
     </form>
 
-    <h3 class="text-center">Lịch sử mua hàng</h3>
+    <h3 class="text-center">Lịch sử mua / bán hàng</h3>
     <form>
       <table class="table" id="contract-list">
         <thead class="thead-dark">
@@ -191,6 +193,7 @@
             <th scope="col">Số lượng</th>
             <th scope="col">Người bán hàng</th>
             <th scope="col">Người vận chuyển</th>
+            <th scope="col">Phân loại</th>
             <th scope="col" class="text-center">Thao tác</th>
           </tr>
         </thead>
@@ -205,6 +208,7 @@
             <td>{{this.quatity}}</td>
             <td>{{this.seller_id.fullName}}</td>
             <td>{{this.shipper_id.fullName}}</td>
+            <td id="type"></td>
             <td class="text-center">
               <a href="/supplier/detail/{{this._id}}">
                 <button type="button" class="btn btn-info">
@@ -214,6 +218,9 @@
             </td>
           </tr>
         </tbody>
+
+        <input class="hdnSeller_id" type="hidden" name="hdnSeller_id" value="{{this.seller_id._id}}">
+        <input class="hdnBuyer_id" type="hidden" name="hdnBuyer_id" value="{{this.buyer_id._id}}">
         {{/each}}
         {{/each}}
       </table>
@@ -291,7 +298,7 @@
         $("#btnAcceptPassword").hide();
       });
 
-
+      var user = $(".hdnUser_id").val();
       $("#contract-list tr").each(function () {
         var stt = $(this).find(".hdnStatus").val();
         // handle for Status Description
@@ -302,23 +309,39 @@
             sttDescription.html("Đặt hàng");
             break;
           case '1':
-            sttDescription.html("Báo giá");
+            sttDescription.html("Báo giá đơn hàng");
             break;
           case '2':
-            sttDescription.html("Xác nhận báo giá");
+            sttDescription.html("Chấp nhận báo giá");
             break;
           case '3':
-            sttDescription.html("Chờ vận chuyển");
+            sttDescription.html("Cho phép giao hàng");
             break;
           case '4':
-            sttDescription.html("Đang vận chuyển");
+            sttDescription.html("Báo giá giao hàng");
             break;
           case '5':
-            sttDescription.html("Đã nhận hàng");
+            sttDescription.html("Chấp nhận giao hàng");
             break;
           case '6':
+            sttDescription.html("Chờ giao hàng");
+            break;
+          case '7':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '8':
             sttDescription.html("Đã hủy");
             break;
+        }
+
+        var seller = $(this).parent().parent().find(".hdnSeller_id").val();
+        var buyer = $(this).parent().parent().find(".hdnBuyer_id").val();
+
+        if (user == seller) {
+          $(this).find("#type").html('Bán hàng');
+        }
+        if (user == buyer) {
+          $(this).find("#type").html('Mua hàng');
         }
       })
 

@@ -104,15 +104,11 @@
                       </tr>
                       <tr>
                         <th>Người bán hàng</th>
-                        <td>{{this.supplier_id.fullName}}</td>
-                      </tr>
-                      <tr>
-                        <th>Người mua hàng</th>
-                        <td></td>
+                        <td>{{this.owner_id.fullName}}</td>
                       </tr>
                       <tr>
                         <th>Đơn vị tính</th>
-                        <td>USD</td>
+                        <td>{{this.curency}}</td>
                       </tr>
                       <tr>
                         <th>Số lượng có thể mua</th>
@@ -129,14 +125,21 @@
                         <th>Ngày đặt hàng</th>
                         <td id="createDate"></td>
                       </tr>
+                      <tr>
+                        <th>Địa chỉ giao hàng</th>
+                        <td>
+                          <input type="text" class="form-control form-control-user"
+                            id="" name="ship_to" value="{{this.owner_id.address}}" required>
+                        </td>
+                      </tr>
                     </table>
                   </div>
                   <button type="submit" class="btn btn-primary" style="margin-left: 83%; margin-bottom: 5%; width:60px">
-                    <i class="fas fa-plus" aria-hidden="true"></i>
+                    <i class="fas fa-check" aria-hidden="true"></i>
                   </button>
 
                   <input type="hidden" name="product_id" value="{{this.product_id._id}}">
-                  <input type="hidden" name="supplier_id" value="{{this.supplier_id._id}}">
+                  <input type="hidden" name="supplier_id" value="{{this.owner_id._id}}">
                   <input type="hidden" name="_csrf" value="{{csrfToken}}">
 
                 </form>
@@ -171,11 +174,12 @@
         return return_format;
       }
 
-      function back() {
-        history.back();
-      }
-
     })
+
+    function back() {
+      history.back();
+    }
+    
   </script>
 
 </body>

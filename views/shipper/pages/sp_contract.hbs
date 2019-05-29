@@ -118,23 +118,33 @@
           <th scope="col">Giá trị</th>
           <th scope="col">Đơn vị tính</th>
           <th scope="col">Số lượng</th>
-          <th scope="col" colspan="2" class="text-center">Thao tác</th>
+          <th scope="col">Trạng thái</th>
+          <th scope="col" colspan="3" class="text-center">Thao tác</th>
         </tr>
       </thead>
       <tbody>
         {{# each contracts}}
         {{# each this}}
         <tr>
+          <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
           <td>{{this.product_id.name}}</td>
           <td>{{this.seller_id.fullName}}</td>
           <td>{{this.buyer_id.fullName}}</td>
           <td>{{this.price}}</td>
           <td>{{this.currency}}</td>
           <td>{{this.quatity}}</td>
+          <td id="sttDescription"></td>
           <td class="text-center">
             <a href="/shipper/cancel/{{this._id}}">
-              <button type="" class="btn btn-danger">
+              <button type="" class="btn btn-danger btnCancel" >
                 <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="/shipper/delivery/{{this.id}}">
+              <button type="" class="btn btn-warning btnShip">
+                <i class="fas fa-truck" aria-hidden="true"></i>
               </button>
             </a>
           </td>
@@ -158,7 +168,61 @@
 
   <!-- Jquery handling -->
   <script>
+     $(document).ready(function () {
 
+      $("#contract-list tr").each(function () {
+        // handle for Status Description
+        var stt = $(this).find(".hdnStatus").val();
+
+        // handle for Delete button
+        if (stt == "3" || stt == "4") {
+          $(this).find(".btnCancel").show();
+        }
+        else {
+          $(this).find(".btnCancel").hide();
+        }
+
+        // handle for Ship button
+        if (stt == "5") {
+          $(this).find(".btnShip").show();
+        }
+        else {
+          $(this).find(".btnShip").hide();
+        }
+
+        var sttDescription = $(this).find("#sttDescription");
+        
+        switch(stt) {
+          case '0':
+            sttDescription.html("Đặt hàng");
+            break;
+          case '1':
+            sttDescription.html("Báo giá đơn hàng");
+            break;
+          case '2':
+            sttDescription.html("Chấp nhận báo giá");
+            break;
+          case '3':
+            sttDescription.html("Cho phép giao hàng");
+            break;
+          case '4':
+            sttDescription.html("Báo giá giao hàng");
+            break;
+          case '5':
+            sttDescription.html("Chấp nhận giao hàng");
+            break;
+          case '6':
+            sttDescription.html("Chờ giao hàng");
+            break;
+          case '7':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '8':
+            sttDescription.html("Đã hủy");
+            break;
+        }
+      })
+    }); 
   </script>
 
 </body>

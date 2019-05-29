@@ -53,8 +53,8 @@
             "failed":"Cho phép giao hàng thất bại!"
         },
         "receive_to_ship": {
-            "success":"Nhận đơn giao hàng thành công!",
-            "failed":"Nhận đơn giao hàng thất bại!"
+            "success":"Nhận giao hàng thành công!",
+            "failed":"Nhận giao hàng thất bại!"
         },
         "deny_to_ship": {
             "success":"Hủy đơn giao hàng thành công!",

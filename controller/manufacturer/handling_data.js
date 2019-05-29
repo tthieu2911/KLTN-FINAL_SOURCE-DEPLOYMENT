@@ -14,17 +14,19 @@ var create_product = (req, res) => {
     var quatity = req.body.quatity;
     var desription = req.body.desription;
     var dateExpire = req.body.expireDate;
-    var dateCreate = today;
-    if (req.body.createDate != null) {
-        dateCreate = req.body.createDate;
+    var dateCreate = req.body.createDate;
+
+    if (dateCreate.length == 0) {
+        dateCreate = today;
     }
-    if (dateExpire < dateCreate && dateExpire != null) {
+
+    if (dateExpire < dateCreate && dateExpire.length != 0) {
         console.log('create new product failed. Wrong expiry date.');
         req.flash('message', Messages.product.invalid_expireDate);
         res.redirect('/manufacturer/product/create_product');
     }
     else {
-        var product = new productSchema({
+         var product = new productSchema({
             name: nameProduct,
             desription: desription,
             manufacturer_id: req.session.userId,
@@ -34,7 +36,7 @@ var create_product = (req, res) => {
 
         var warehouse = new warehouseSchema({
             product_id: product._id,
-            supplier_id: req.session.userId,
+            owner_id: req.session.userId,
             quatity: quatity
         })
 
@@ -49,7 +51,7 @@ var create_product = (req, res) => {
             console.log('create new product successfully.');
             req.flash('success', Messages.product.create.success);
             res.redirect('/manufacturer/product');
-        }
+        } 
     }
 }
 
@@ -60,16 +62,18 @@ var edit_product = (req, res, next) => {
     var id_product = req.body.id_product;
     var quatity = req.body.quatity;
     var dateExpire = req.body.expireDate;
-    var dateCreate = today;
-    if (req.body.createDate != null) {
-        dateCreate = req.body.createDate;
+    var dateCreate = req.body.createDate;
+    if (dateCreate != null) {
+        dateCreate = today;
     }
-    if (dateExpire < dateCreate && dateExpire != null) {
+    console.log(dateExpire);
+    console.log(dateCreate);
+    
+    if (dateExpire < dateCreate && dateExpire.length != 0) {
         console.log('Update new product failed. Wrong expiry date.');
         req.flash('message', Messages.product.edit.failed);
         res.redirect('/manufacturer/product/edit/' + id_product);
     }
-
     productSchema.findOne({ _id: id_product, manufacturer_id: req.session.userId }, (err, doc) => {
         if (doc == null || doc.length == 0) {
             console.log("Update manufacturer 's warehouse failed. Can not find product in warehouse.");
@@ -77,7 +81,7 @@ var edit_product = (req, res, next) => {
             res.redirect('/manufacturer/product');
         }
         else {
-            warehouseSchema.findOne({ product_id: id_product, supplier_id: req.session.userId }, (err, product) => {
+            warehouseSchema.findOne({ product_id: id_product, owner_id: req.session.userId }, (err, product) => {
                 if (product == null || product.length == 0) {
                     console.log("Update manufacturer 's warehouse failed. Can not find product in warehouse.");
                     req.flash('message', Messages.product.unavailabled);
@@ -106,7 +110,7 @@ var edit_product = (req, res, next) => {
 // Xóa sản phẩm khỏi kho chứa
 var delete_product = (req, res, next) => {
     var id_product = req.params.id;
-    warehouseSchema.remove({ product_id: id_product, supplier_id: req.session.userId }, (error, product) => {
+    warehouseSchema.remove({ product_id: id_product, owner_id: req.session.userId }, (error, product) => {
         if (product == null || product.length == 0) {
             console.log("Can not find product in warehouse.");
             req.flash('message', Messages.product.unavailabled);
@@ -124,6 +128,7 @@ var delete_product = (req, res, next) => {
 var send_price = (req, res, next) => {
     var id_contract = req.body.contract_id;
     var price = req.body.price;
+    var from_ship = req.body.ship_from;
     contractSchema.findOne({ _id: id_contract, status: '0' }, (err, doc) => {
         if (doc == null || doc.length == 0) {
             console.log("Send price failed. Can not find contract.");
@@ -133,6 +138,7 @@ var send_price = (req, res, next) => {
         else {
             doc.price = price;
             doc.status = "1";
+            doc.shipFrom = from_ship;
             doc.save().then(() => {
                 console.log('Send price successfully.')
             });
@@ -145,7 +151,6 @@ var send_price = (req, res, next) => {
 // Cho phép giao hàng
 var delivery_contract = (req, res) => {
     var id_contract = req.params.id;
-    console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: '2' }, (err, doc) => {
         if (doc == null || doc.length == 0) {
             console.log('Release contract failed. Can not find contract.');
@@ -166,7 +171,6 @@ var delivery_contract = (req, res) => {
 // Xóa đơn hàng
 var delete_contract = (req, res) => {
     var id_contract = req.params.id;
-    console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, $or: [{ 'status': "0" }, { 'status': "1" }] }, function (err, doc) {
         if (doc == null || doc.length == 0) {
             console.log('Release contract failed. Can not find contract.');
@@ -174,7 +178,7 @@ var delete_contract = (req, res) => {
             res.redirect('/manufacturer');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: req.session.userId }, (error, product) => {
+            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
                 if (product == null || product.length == 0) {
                     req.flash('success', Messages.contract.delete.success);
                     res.redirect('/manufacturer');
@@ -185,7 +189,7 @@ var delete_contract = (req, res) => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 
-                    doc.status = "6";
+                    doc.status = "8";
                     doc.deleteBy = req.session.userId;
                     doc.deleteDate = today;
                     doc.save().then(() => {

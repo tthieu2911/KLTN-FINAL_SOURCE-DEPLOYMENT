@@ -8,7 +8,10 @@ var  contractSchema = new Schema({
     buyer_id: { type: Schema.Types.ObjectId, ref: 'Users' },
     shipper_id : { type: Schema.Types.ObjectId, ref: 'Users' },
     price : Number,
+    shipPrice: Number,
     currency: String,
+    shipFrom: String,
+    shipTo: String,
     createBy: { type: Schema.Types.ObjectId, ref: 'Users' },
     createDate: Date,
     deleteBy: { type: Schema.Types.ObjectId, ref: 'Users' },
@@ -17,6 +20,16 @@ var  contractSchema = new Schema({
     shipDate: Date,
     receiveDate: Date,
     quatity: Number,
-    status: String, // Đặt hàng: 0 -> Báo giá: 1 -> Chấp nhận: 2 -> Giao hàng: 3 -> Đang vận chuyển: 4 -> Đã nhận hàng: 5 -> Đã hủy: 6 
+    status: String, 
+
+    // Đặt hàng: 0 
+    // Báo giá: 1 
+    // Chấp nhận báo giá: 2 
+    // Cho phép giao hàng: 3 
+    // Báo giá giao hàng: 4 
+    // Chấp nhận báo giá giao hàng: 5
+    // Đang vận chuyển: 6 
+    // Đã nhận hàng: 7 
+    // Đã hủy: 8 
 })
 module.exports = mongoose.model('Contracts',contractSchema)

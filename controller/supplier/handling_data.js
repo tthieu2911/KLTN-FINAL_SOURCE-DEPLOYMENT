@@ -12,6 +12,7 @@ var today = new Date();
 var send_price = async (req, res, next) => {
     var id_contract = req.body.contract_id;
     var price = req.body.price;
+    var from_ship = req.body.ship_from;
     contractSchema.findOne({ _id: id_contract, status: '0' }, (err, doc) => {
         if (doc == null || doc.length == 0) {
             console.log('Send price failed. Can not find contract.');
@@ -21,6 +22,7 @@ var send_price = async (req, res, next) => {
         else {
             doc.price = price;
             doc.status = "1";
+            doc.shipFrom = from_ship;
             doc.save().then(() => {
                 console.log('Send price successfully.');
                 req.flash('success', Messages.contract.send_price.success);
@@ -33,7 +35,6 @@ var send_price = async (req, res, next) => {
 // Cho phép giao hàng
 var delivery_contract = (req, res) => {
     var id_contract = req.params.id;
-    console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: '2' }, (err, doc) => {
         if (doc == null) {
             console.log('Release contract failed. Can not find contract.');
@@ -51,6 +52,35 @@ var delivery_contract = (req, res) => {
     })
 }
 
+// Chấp nhận chi phí vận chuyển
+var accept_ship_price = (req, res, next) => {
+    var id_contract = req.params.id;
+    contractSchema.findOne({ _id: id_contract, status: "4" }, function (err, doc) {
+        if (doc == null || doc.length == 0) {
+            console.log('Accept contract failed. Can not find contract.');
+            req.flash('message', Messages.contract.price_notFound);
+            res.redirect('/supplier');
+        }
+        else {
+            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
+                if (product == null || product.length == 0) {
+                    console.log('Accept contract failed. No product left in warehouse.');
+                    req.flash('message', Messages.product.unavailabled);
+                    res.redirect('/supplier');
+                }
+                else {
+                    doc.status = "5";
+                    doc.save().then(() => {
+                        console.log('Accept contract successfully');
+                        req.flash('success', Messages.contract.accept.success);
+                        res.redirect('/supplier');
+                    });
+                }
+            })
+        }
+    })
+}
+
 // Xóa đơn hàng
 var delete_contract = (req, res) => {
     var id_contract = req.params.id;
@@ -61,7 +91,7 @@ var delete_contract = (req, res) => {
             res.redirect('/supplier');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: req.session.userId }, (error, product) => {
+            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
                 if (product == null || product.length == 0) {
                     req.flash('success', Messages.contract.delete.success);
                     res.redirect('/supplier');
@@ -72,7 +102,7 @@ var delete_contract = (req, res) => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 
-                    doc.status = "6";
+                    doc.status = "8";
                     doc.deleteBy = req.session.userId;
                     doc.deleteDate = today;
                     doc.save().then(() => {
@@ -91,9 +121,7 @@ var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_manufacturer = req.body.manufacturer_id;
     var req_quatity = req.body.req_quatity;
-    console.log(id_product);
-    console.log(id_manufacturer);
-    console.log(req_quatity);
+    var to_ship = req.body.ship_to;
     var contract = new contractSchema({
         product_id: id_product,
         seller_id: id_manufacturer,
@@ -101,7 +129,10 @@ var create_contract = async (req, res, next) => {
         shipper_id: null,
         quatity: req_quatity,
         price: null,
+        shipPrice: null,
         currency: 'USD',// fix value
+        shipFrom: null,
+        shipTo: to_ship,
         createBy: req.session.userId,
         createDate: today,
         deleteBy: null,
@@ -118,7 +149,7 @@ var create_contract = async (req, res, next) => {
         res.redirect('/supplier/market');
     }
     else {
-        warehouseSchema.findOne({ product_id: id_product, supplier_id: id_manufacturer }, (error, product) => {
+        warehouseSchema.findOne({ product_id: id_product, owner_id: id_manufacturer }, (error, product) => {
             if  (product == null || product.length == 0){
                 console.log('Create new contract failed.');
                 req.flash('messages', Messages.contract.create.failed);
@@ -157,7 +188,7 @@ var accept_contract = (req, res, next) => {
             res.redirect('/supplier/manacontract');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: doc.seller_id }, (error, product) => {
                 if (product == null || product.length == 0) {
                     console.log('Accept contract failed. No product left in warehouse.');
                     req.flash('message', Messages.product.unavailabled);
@@ -180,18 +211,18 @@ var accept_contract = (req, res, next) => {
 //Xác nhận nhận hàng
 var done_contract = (req, res, next) => {
     var id_contract = req.params.id;
-    contractSchema.findOne({ _id: id_contract, status: "4" }, function (err, doc) {
+    contractSchema.findOne({ _id: id_contract, status: "6" }, function (err, doc) {
         if (doc == null || doc.length == 0) {
             console.log('Received product failed. Can not find contract.');
             req.flash('message', Messages.contract.ship_notFound);
             res.redirect('/supplier/manacontract');
         }
         else {
-            warehouseSchema.find({ product_id: doc.product_id, supplier_id: req.session.userId }, (error, product) => {
+            warehouseSchema.find({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
                 if (product == null || product.length == 0) {
                     var warehouse = new warehouseSchema({
                         product_id: doc.product_id,
-                        supplier_id: req.session.userId,
+                        owner_id: req.session.userId,
                         quatity: doc.quatity
                     })
 
@@ -205,7 +236,7 @@ var done_contract = (req, res, next) => {
                             console.log("Update quatity of seller's warehouse successfully.");
                         })
 
-                        doc.status = "5";
+                        doc.status = "7";
                         doc.receiveDate = today;
                         doc.save().then(() => {
                             console.log('Received product successfully.');
@@ -220,7 +251,7 @@ var done_contract = (req, res, next) => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 
-                    doc.status = "5";
+                    doc.status = "7";
                     doc.receiveDate = today;
                     doc.save().then(() => {
                         console.log('Received product successfully.');
@@ -243,7 +274,7 @@ var cancel_contract = (req, res) => {
             res.redirect('/supplier/manacontract');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: doc.seller_id }, (error, product) => {
                 if (product == null || product.length == 0) {
                     req.flash('success', Messages.contract.cancel.success);
                     res.redirect('/supplier/manacontract');
@@ -254,7 +285,7 @@ var cancel_contract = (req, res) => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 
-                    doc.status = "6";
+                    doc.status = "8";
                     doc.deleteBy = req.session.userId;
                     doc.deleteDate = today;
                     doc.save().then(() => {
@@ -271,7 +302,7 @@ var cancel_contract = (req, res) => {
 // Xóa sản phẩm khỏi kho chứa
 var delete_product = (req, res, next) => {
     var id_product = req.params.id;
-    warehouseSchema.remove({ product_id: id_product, supplier_id: req.session.userId }, (error, product) => {
+    warehouseSchema.remove({ product_id: id_product, owner_id: req.session.userId }, (error, product) => {
         if (product == null || product.length == 0) {
             console.log("Remove product failed. Can not find product.");
             req.flash('message', Messages.product.unavailabled);
@@ -289,6 +320,7 @@ module.exports = {
     // Handling selling biz
     send_price,
     delivery_contract,
+    accept_ship_price,
     cancel_contract,
     delete_contract,
 

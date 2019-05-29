@@ -6,7 +6,7 @@ var user_load = require('../user/load_page');
 
 // load dữ liệu cho trang index supplier
 var load_contract = async (req, res, next) => {
-    await contractSchema.find({ seller_id: req.session.userId, status: { $ne: '5' } }, (err, docs) => {
+    await contractSchema.find({ seller_id: req.session.userId, status: { $ne: '7' } }, (err, docs) => {
         var contractChunks = [];
         var chunkSize = 1;
         for (var i = 0; i < docs.length; i += chunkSize) {
@@ -25,7 +25,7 @@ var load_contract = async (req, res, next) => {
 
 // load dữ liệu sản phẩm của manufacturer đang đăng nhập
 var load_product = async (req, res, next) => {
-    warehouseSchema.find({ supplier_id: req.session.userId }, async (error, docs) => {
+    warehouseSchema.find({ owner_id: req.session.userId }, async (error, docs) => {
         var warehouseChunks = [];
         var chunkSize = 1;
         for (var i = 0; i < docs.length; i += chunkSize) {
@@ -39,7 +39,7 @@ var load_product = async (req, res, next) => {
         warehouseChunks = warehouseChunks.slice(start, end)
 
         res.render('manufacturer/pages/mf_list_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-    }).sort({ product_id: -1 }).populate('product_id manufacturer_id supplier_id')
+    }).sort({ product_id: -1 }).populate('product_id manufacturer_id owner_id')
 }
 
 // load dữ liệu báo giá sản phẩm
@@ -67,7 +67,7 @@ var load_profile = async (req, res, next) => {
             userChunks.push(docs.slice(i, i + chunkSize));
         }
 
-        await contractSchema.find({ seller_id: req.session.userId, status: '5' }, (err, contr) => {
+        await contractSchema.find({ seller_id: req.session.userId, status: '7' }, (err, contr) => {
             var contractChunks = [];
             var chunkSize = 1;
             for (var i = 0; i < contr.length; i += chunkSize) {
@@ -102,14 +102,14 @@ var load_detail_contract = async (req, res, next) => {
 // load thông tin sản phẩm để chỉnh sửa
 var load_update_product = async (req, res) => {
     var id = req.params.id;
-    warehouseSchema.find({ product_id: id, supplier_id: req.session.userId }, async (err, doc) => {
+    warehouseSchema.find({ product_id: id, owner_id: req.session.userId }, async (err, doc) => {
         var warehouseChunks = [];
         var chunkSize = 3;
         for (var i = 0; i < doc.length; i += chunkSize) {
             warehouseChunks.push(doc.slice(i, i + chunkSize));
         }
         res.render('manufacturer/pages/mf_edit_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
-    }).populate('product_id supplier_id');
+    }).populate('product_id owner_id');
 }
 
 module.exports = {

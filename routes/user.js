@@ -44,7 +44,7 @@ app.get("/manufacturer/contract/delete/:id",mf_handling.delete_contract);
 //- Warehouse
 app.get('/manufacturer/product',mf_load_data.load_product);
 app.get('/manufacturer/product/create_product', (req, res) => {
-    res.render('../views/manufacturer/pages/mf_create_product');
+    res.render('../views/manufacturer/pages/mf_create_product',{success: req.flash('success'), message: req.flash('message')});
 });
 app.post('/manufacturer/create_product',mf_handling.create_product);
 app.get('/manufacturer/product/delete/:id',mf_handling.delete_product);
@@ -64,6 +64,7 @@ app.get('/supplier',sl_load_data.load_contract);
 app.get("/supplier/contract/:id",sl_load_data.load_price);
 app.post("/supplier/price",sl_handling.send_price);         // Send price
 app.get("/supplier/contract/delivery/:id",sl_handling.delivery_contract);
+app.get("/supplier/contract/delivery/accept/:id",sl_handling.accept_ship_price);
 app.get("/supplier/contract/delete/:id",sl_handling.delete_contract);
 //- Warehouse
 app.get('/supplier/product',sl_load_data.load_product);
@@ -87,6 +88,8 @@ var sp_handling = require('../controller/shipper/handling_data');
 //- Ship
 app.use('/shipper',load_page.requiresLogin);
 app.get('/shipper',sp_load_data.load_contract);
+app.get('/shipper/contract/:id',sp_load_data.load_shipPrice);
+app.post('/shipper/price',sp_handling.send_price);      
 app.get('/shipper/delivery/:id',sp_handling.admit_delivery);
 //- Manage
 app.get('/shipper/manacontract',sp_load_data.load_contract_manager);

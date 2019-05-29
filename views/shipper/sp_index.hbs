@@ -111,7 +111,7 @@
     <h1>Đơn hàng đang chờ</h1>
     <br>
 
-    <table class="table">
+    <table id="contract-list" class="table">
       <thead class="thead-dark">
         <tr>
           <th scope="col">Tên sản phẩm</th>
@@ -120,23 +120,27 @@
           <th scope="col">Giá trị</th>
           <th scope="col">Đơn vị tính</th>
           <th scope="col">Số lượng</th>
-          <th scope="col" colspan="2" class="text-center">Thao tác</th>
+          <th scope="col">Trạng thái</th>
+          <th scope="col" colspan="3" class="text-center">Thao tác</th>
         </tr>
       </thead>
       <tbody>
         {{# each contracts}}
         {{# each this}}
         <tr>
+          <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
           <td>{{this.product_id.name}}</td>
           <td>{{this.seller_id.fullName}}</td>
           <td>{{this.buyer_id.fullName}}</td>
           <td>{{this.price}}</td>
           <td>{{this.currency}}</td>
           <td>{{this.quatity}}</td>
+          <td id="sttDescription"></td>
           <td class="text-center">
-            <a href="/shipper/delivery/{{this.id}}">
-              <button type="" class="btn btn-success btnShip">
-                <i class="fas fa-truck" aria-hidden="true"></i>
+            {{!-- <a href="/shipper/delivery/{{this.id}}"> --}}
+            <a href="/shipper/contract/{{this.id}}">
+              <button type="" class="btn btn-success btnPrice">
+                <i class="fas fa-tag" aria-hidden="true"></i>
               </button>
             </a>
           </td>
@@ -156,6 +160,73 @@
       {{{paginateHelper pagination}}}
     </nav>
   </div>
+
+    <!-- Jquery handling -->
+  <script>
+
+     $(document).ready(function () {
+
+      $("#contract-list tr").each(function () {
+        var stt = $(this).find(".hdnStatus").val();
+
+        // Disable all button
+        $(this).find(".btnDelete").hide();
+        $(this).find(".btnPrice").hide();
+        $(this).find(".btnShip").hide();
+
+        $(this).find(".btnDetail").show();
+
+        // handle for Send price button
+        if (stt == "3") {
+          $(this).find(".btnPrice").show();
+        }
+        else {
+          $(this).find(".btnPrice").hide();
+        }
+
+        // handle for Send price button
+        if (stt == "4") {
+          $(this).find(".btnShip").show();
+        }
+        else {
+          $(this).find(".btnShip").hide();
+        }
+
+        // handle for Status Description
+        var sttDescription = $(this).find("#sttDescription");
+        
+        switch(stt) {
+          case '0':
+            sttDescription.html("Đặt hàng");
+            break;
+          case '1':
+            sttDescription.html("Báo giá đơn hàng");
+            break;
+          case '2':
+            sttDescription.html("Chấp nhận báo giá");
+            break;
+          case '3':
+            sttDescription.html("Cho phép giao hàng");
+            break;
+          case '4':
+            sttDescription.html("Báo giá giao hàng");
+            break;
+          case '5':
+            sttDescription.html("Chấp nhận giao hàng");
+            break;
+          case '6':
+            sttDescription.html("Chờ giao hàng");
+            break;
+          case '7':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '8':
+            sttDescription.html("Đã hủy");
+            break;
+        }
+      })
+    }); 
+  </script>
 
 </body>
 
