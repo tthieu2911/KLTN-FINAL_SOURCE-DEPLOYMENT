@@ -33,6 +33,46 @@
 
 <body>
 
+  <!-- Header -->
+  <div class="container">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+      <!-- Home button -->
+      <div>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/customer"></a>
+      </div>
+
+      <!-- Topbar Navbar -->
+      <ul class="navbar-nav ml-auto">
+
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="/customer" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Customer</span>
+            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+          </a>
+          <!-- Dropdown - User Information -->
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="/customer/profile">
+              <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+              Cá nhân
+            </a>
+            <a class="dropdown-item" href="/customer/manacontract">
+              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí đơn hàng
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">
+              <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
   <div class="container">
 
     <!-- Outer Row -->
@@ -56,7 +96,7 @@
                 {{# each contracts}}
                 {{# each this}}
                 <div class="container-fluid">
-                 <table class="table">
+                  <table class="table">
                     <tr>
                       <th>Tên sản phẩm</th>
                       <td>{{this.product_id.name}}</td>
@@ -87,15 +127,24 @@
                     </tr>
                     <tr>
                       <th>Ngày đặt hàng</th>
-                      <td>{{this.createDate}}</td>
+                      <td id="createDate"></td>
+                      <input class="hdnCreateDate" type="hidden" name="hdnCreateDate" value="{{this.createDate}}">
                     </tr>
                     <tr>
                       <th>Ngày giao hàng</th>
-                      <td>{{this.shipDate}}</td>
+                      <td id="shipDate"></td>
+                      <input class="hdnShipDate" type="hidden" name="hdnShipDate" value="{{this.shipDate}}">
+                      </td>
                     </tr>
                     <tr>
                       <th>Ngày nhận hàng</th>
-                      <td>{{this.receiveDate}}</td>
+                      <td id="receiveDate"></td>
+                      <input class="hdnReceiveDate" type="hidden" name="hdnReceiveDate" value="{{this.receiveDate}}">
+                    </tr>
+                    <tr>
+                      <th>Tình trạng đơn hàng</th>
+                      <td id="sttDescription"></td>
+                      <input class="hdnStatus" type="hidden" name="hdnStatus" value="{{this.status}}">
                     </tr>
                   </table>
                 </div>
@@ -106,16 +155,79 @@
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
-
   </div>
+
   <script>
-    function back() {
-      history.back();
-    }
+
+    $(document).ready(function () {
+
+      var crDate = $(".hdnCreateDate").val();
+      $("#createDate").html(Date_to_String(crDate));
+
+      var shDate = $(".hdnShipDate").val();
+      $("#shipDate").html(Date_to_String(shDate));
+
+      var reDate = $(".hdnReceiveDate").val();
+      $("#receiveDate").html(Date_to_String(reDate));
+
+
+      // handle for Status Description
+      $(".contract-detail tr").each(function () {
+        var stt = $(this).find(".hdnStatus").val();
+        var sttDescription = $(this).find("#sttDescription");
+
+        switch (stt) {
+          case '0':
+            sttDescription.html("Đặt hàng");
+            break;
+          case '1':
+            sttDescription.html("Báo giá");
+            break;
+          case '2':
+            sttDescription.html("Xác nhận báo giá");
+            break;
+          case '3':
+            sttDescription.html("Chờ vận chuyển");
+            break;
+          case '4':
+            sttDescription.html("Đang vận chuyển");
+            break;
+          case '5':
+            sttDescription.html("Đã nhận hàng");
+            break;
+          case '6':
+            sttDescription.html("Đã hủy");
+            break;
+        }
+      })
+
+      function Date_to_String(date_model) {
+        
+        if (date_model == null || date_model.length == 0) {
+          return '';
+        }
+        else {
+          var formated_date = new Date(date_model);
+          var day = formated_date.getDate();
+          var month = formated_date.getMonth() + 1;
+          var year = formated_date.getFullYear();
+          var hour = formated_date.getHours();
+          var minute = formated_date.getMinutes();
+          var second = formated_date.getSeconds();
+
+          var return_format = day + ' - ' + month + ' - ' + year + ', ' + hour + ':' + minute + ':' + second;
+
+          return return_format;
+        }
+      }
+
+      function back() {
+        history.back();
+      }
+
+    })
   </script>
 
 </body>

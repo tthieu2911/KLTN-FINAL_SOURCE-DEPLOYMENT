@@ -12,10 +12,11 @@ var ctm_handling_payment = require('../controller/payment/handling_payment');
 // Custommer
 var ctm_load_data = require('../controller/customer/load_data');
 var ctm_handling = require('../controller/customer/handling_data');
-app.use('/customer',load_page.requiresLoginCustom);
+app.use('/customer',load_page.requiresLogin);
 app.get('/customer',ctm_load_data.load_product);
 
-app.post('/customer/contract',ctm_handling.create_contract);
+app.post('/customer/create_contract', ctm_load_data.load_contract_to_buy);
+app.post('/customer/create_contract/done',ctm_handling.create_contract);
 app.get('/customer/accept/:id',ctm_handling.accept_contract);
 app.get('/customer/cancel/:id',ctm_handling.cancel_contract);
 app.get('/customer/done/:id',ctm_handling.done_contract);
@@ -34,7 +35,7 @@ app.get('/customer/execute-payment/:id',ctm_handling_payment.execute_payment_tra
 var mf_load_data = require('../controller/manufacturer/load_data');
 var mf_handling = require('../controller/manufacturer/handling_data');
 //- Sell
-app.use('/manufacturer',load_page.requiresLoginManufacturer);
+app.use('/manufacturer',load_page.requiresLogin);
 app.get('/manufacturer',mf_load_data.load_contract);
 app.get("/manufacturer/contract/:id",mf_load_data.load_price);
 app.post("/manufacturer/price",mf_handling.send_price);         // Send price
@@ -58,7 +59,7 @@ app.get('/manufacturer/detail/:id',mf_load_data.load_detail_contract);
 var sl_load_data = require('../controller/supplier/load_data');
 var sl_handling = require('../controller/supplier/handling_data');
 //- Sell
-app.use('/supplier',load_page.requiresLoginSupplier);
+app.use('/supplier',load_page.requiresLogin);
 app.get('/supplier',sl_load_data.load_contract);
 app.get("/supplier/contract/:id",sl_load_data.load_price);
 app.post("/supplier/price",sl_handling.send_price);         // Send price
@@ -69,6 +70,7 @@ app.get('/supplier/product',sl_load_data.load_product);
 app.get('/supplier/product/delete/:id',sl_handling.delete_product);
 //- Buy
 app.get('/supplier/market',sl_load_data.load_product_to_buy);
+app.post('/supplier/market/create_contract',sl_load_data.load_contract_to_buy);
 app.post('/supplier/contract/buy',sl_handling.create_contract);
 app.get('/supplier/manacontract',sl_load_data.load_contract_manager);
 app.get('/supplier/cancel/:id',sl_handling.cancel_contract);
@@ -83,7 +85,7 @@ app.get('/supplier/detail/:id',sl_load_data.load_detail_contract);
 var sp_load_data = require('../controller/shipper/load_data');
 var sp_handling = require('../controller/shipper/handling_data');
 //- Ship
-app.use('/shipper',load_page.requiresLoginShipper);
+app.use('/shipper',load_page.requiresLogin);
 app.get('/shipper',sp_load_data.load_contract);
 app.get('/shipper/delivery/:id',sp_handling.admit_delivery);
 //- Manage

@@ -21,7 +21,7 @@ var create_product = (req, res) => {
     if (dateExpire < dateCreate && dateExpire != null) {
         console.log('create new product failed. Wrong expiry date.');
         req.flash('message', Messages.product.invalid_expireDate);
-        res.redirect('/manufacturer/product');
+        res.redirect('/manufacturer/product/create_product');
     }
     else {
         var product = new productSchema({
@@ -67,7 +67,7 @@ var edit_product = (req, res, next) => {
     if (dateExpire < dateCreate && dateExpire != null) {
         console.log('Update new product failed. Wrong expiry date.');
         req.flash('message', Messages.product.edit.failed);
-        res.redirect('/manufacturer/product');
+        res.redirect('/manufacturer/product/edit/' + id_product);
     }
 
     productSchema.findOne({ _id: id_product, manufacturer_id: req.session.userId }, (err, doc) => {
@@ -78,12 +78,12 @@ var edit_product = (req, res, next) => {
         }
         else {
             warehouseSchema.findOne({ product_id: id_product, supplier_id: req.session.userId }, (err, product) => {
-                if(product == null || product.length == 0){
+                if (product == null || product.length == 0) {
                     console.log("Update manufacturer 's warehouse failed. Can not find product in warehouse.");
                     req.flash('message', Messages.product.unavailabled);
                     res.redirect('/manufacturer/product');
                 }
-                else{
+                else {
                     product.quatity = quatity;
                     product.save().then(() => {
                         console.log("Update manufacturer 's warehouse successful.");
@@ -174,13 +174,26 @@ var delete_contract = (req, res) => {
             res.redirect('/manufacturer');
         }
         else {
-            doc.status = "6";
-            doc.deleteBy = req.session.userId;
-            doc.deleteDate = today;
-            doc.save().then(() => {
-                console.log('Delete contract successfully.')
-                req.flash('success', Messages.contract.delete.success);
-                res.redirect('/manufacturer');
+            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: req.session.userId }, (error, product) => {
+                if (product == null || product.length == 0) {
+                    req.flash('success', Messages.contract.delete.success);
+                    res.redirect('/manufacturer');
+                }
+                else {
+                    product.quatity = product.quatity + doc.quatity;
+                    product.save().then(() => {
+                        console.log("Update quatity of seller's warehouse successfully.");
+                    });
+
+                    doc.status = "6";
+                    doc.deleteBy = req.session.userId;
+                    doc.deleteDate = today;
+                    doc.save().then(() => {
+                        console.log('Delete contract successfully.')
+                        req.flash('success', Messages.contract.delete.success);
+                        res.redirect('/manufacturer');
+                    })
+                }
             })
         }
     })

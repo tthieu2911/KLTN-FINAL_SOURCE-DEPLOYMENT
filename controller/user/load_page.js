@@ -1,35 +1,26 @@
 var userSchema = require('./../../data/models/user')
 
-var isloggedIn = async (req,res,next)=>
-{
-    if(!req.session.userId){
+var isloggedIn = async (req, res, next) => {
+    if (!req.session.userId) {
         return next();
     }
     else {
         var check_type;
-        await check_type_id(req.session.userId,(value)=>{
-            check_type=value;
+        await check_type_id(req.session.userId, (value) => {
+            check_type = value;
         })
-        if(check_type==='supplier'){
-            res.redirect('/supplier');
-        }
-           
-        else if(check_type==='customer'){
-            res.redirect('/customer');
-        }
-        else{
-            res.redirect('/shipper');
-        }
+
+        res.redirect('/' + check_type);
     }
-    
+
 }
 
-async function requiresLoginCustom(req, res, next){
-    
+/* async function requiresLoginCustom(req, res, next) {
+
     if (req.session && req.session.userId) {
         var check_type;
-        await check_type_id(req.session.userId,(value)=>{
-            check_type=value;
+        await check_type_id(req.session.userId, (value) => {
+            check_type = value;
         })
         if (check_type == 'customer')
             return next();
@@ -39,18 +30,18 @@ async function requiresLoginCustom(req, res, next){
             return next(err);
         }
     } else {
-      var err = new Error('You must be logged in to view this page.');
-      err.status = 401;
-      return next(err);
+        var err = new Error('You must be logged in to view this page.');
+        err.status = 401;
+        return next(err);
     }
-  }
+}
 
-async function requiresLoginManufacturer(req, res, next){
-    
+async function requiresLoginManufacturer(req, res, next) {
+
     if (req.session && req.session.userId) {
         var check_type;
-        await check_type_id(req.session.userId,(value)=>{
-            check_type=value;
+        await check_type_id(req.session.userId, (value) => {
+            check_type = value;
         })
         if (check_type == 'manufacturer')
             return next();
@@ -60,18 +51,18 @@ async function requiresLoginManufacturer(req, res, next){
             return next(err);
         }
     } else {
-      var err = new Error('You must be logged in to view this page.');
-      err.status = 401;
-      return next(err);
+        var err = new Error('You must be logged in to view this page.');
+        err.status = 401;
+        return next(err);
     }
-  }
+}
 
-async function requiresLoginSupplier(req, res, next){
-    
+async function requiresLoginSupplier(req, res, next) {
+
     if (req.session && req.session.userId) {
         var check_type;
-        await check_type_id(req.session.userId,(value)=>{
-            check_type=value;
+        await check_type_id(req.session.userId, (value) => {
+            check_type = value;
         })
         if (check_type == 'supplier')
             return next();
@@ -81,17 +72,17 @@ async function requiresLoginSupplier(req, res, next){
             return next(err);
         }
     } else {
-      var err = new Error('You must be logged in to view this page.');
-      err.status = 401;
-      return next(err);
+        var err = new Error('You must be logged in to view this page.');
+        err.status = 401;
+        return next(err);
     }
-  }
-async function requiresLoginShipper(req, res, next){
-    
+}
+async function requiresLoginShipper(req, res, next) {
+
     if (req.session && req.session.userId) {
         var check_type;
-        await check_type_id(req.session.userId,(value)=>{
-            check_type=value;
+        await check_type_id(req.session.userId, (value) => {
+            check_type = value;
         })
         if (check_type == 'shipper')
             return next();
@@ -101,20 +92,48 @@ async function requiresLoginShipper(req, res, next){
             return next(err);
         }
     } else {
-      var err = new Error('You must be logged in to view this page.');
-      err.status = 401;
-      return next(err);
+        var err = new Error('You must be logged in to view this page.');
+        err.status = 401;
+        return next(err);
     }
-  }
-var check_type_id = async(id,callback)=>{
-    var value =null;
-    await userSchema.findById(id,(err,data)=>{
-        if (err) return (err);
-        value = data.type;
-    })
+} */
 
+async function requiresLogin(req, res, next) {
+
+    if (req.session && req.session.userId) {
+        var check_type;
+        await check_type_id(req.session.userId, (value) => {
+            check_type = value;
+        })
+        if (check_type != '')
+            return next();
+        else {
+            var err = new Error('You must be logged in to view this page.');
+            err.status = 401;
+            return next(err);
+        }
+    } else {
+        var err = new Error('You must be logged in to view this page.');
+        err.status = 401;
+        return next(err);
+    }
+}
+
+var check_type_id = async (id, callback) => {
+    var value = null;
+    await userSchema.findById(id, (err, data) => {
+        if (err) return (err);
+        if (data == null || data.length == 0) {
+            value = '';
+        }
+        else {
+            value = data.type;
+        }
+    })
     return callback(value);
 }
+
+
 // Hàm xử lí phân trang
 var createPagination = function (pagination, options) {
     if (!pagination) {
@@ -122,7 +141,7 @@ var createPagination = function (pagination, options) {
     }
 
     var limit = pagination.limit;
-    var queryParams='';
+    var queryParams = '';
     var page = pagination.page;
     var leftText = ' Prev ';
     var rightText = ' Next ';
@@ -134,20 +153,20 @@ var createPagination = function (pagination, options) {
     if (options.hash.paginationClass) paginationClass = options.hash.paginationClass;
 
     // var pageCount = Math.ceil(pagination.totalRows / pagination.limit);
-    var pageCount =  pagination.limit;
+    var pageCount = pagination.limit;
     //query params 
-    if(pagination.queryParams){
+    if (pagination.queryParams) {
         queryParams = '&';
         for (var key in pagination.queryParams) {
             if (pagination.queryParams.hasOwnProperty(key) && key !== 'page') {
-                queryParams += key+"="+pagination.queryParams[key]+"&";
+                queryParams += key + "=" + pagination.queryParams[key] + "&";
             }
         }
-        var lastCharacterOfQueryParams = queryParams.substr(queryParams.length-1,1);
+        var lastCharacterOfQueryParams = queryParams.substr(queryParams.length - 1, 1);
 
-        if(lastCharacterOfQueryParams === "&"){
+        if (lastCharacterOfQueryParams === "&") {
             //trim off last & character
-            queryParams = queryParams.substring(0,queryParams.length-1);
+            queryParams = queryParams.substring(0, queryParams.length - 1);
         }
     }
 
@@ -157,11 +176,11 @@ var createPagination = function (pagination, options) {
     // ========= Previous Button ===============
     if (page === 1) {
         n = 1;
-        template = template + '<li  class="page-item" class="disabled"><a class="page-link" href="#">'+ leftText +'</a></li>';
+        template = template + '<li  class="page-item" class="disabled"><a class="page-link" href="#">' + leftText + '</a></li>';
     }
     else {
         n = page - 1;
-        template = template + '<li  class="page-item"><a class="page-link"  href="?page=' + n + queryParams + '">'+ leftText +'</a></li>';
+        template = template + '<li  class="page-item"><a class="page-link"  href="?page=' + n + queryParams + '">' + leftText + '</a></li>';
     }
 
     // ========= Page Numbers Middle ======
@@ -192,21 +211,18 @@ var createPagination = function (pagination, options) {
     // ========== Next Button ===========
     if (page === pageCount || pageCount === 0) {
         n = pageCount;
-        template = template + '<li class="page-item" class="disabled"><a class="page-link" href="#">'+ rightText +'</i></a></li>';
+        template = template + '<li class="page-item" class="disabled"><a class="page-link" href="#">' + rightText + '</i></a></li>';
     }
     else {
         n = page + 1;
-        template = template + '<li class="page-item"><a  class="page-link" href="?page=' + n + queryParams + '">'+ rightText +'</a></li>';
+        template = template + '<li class="page-item"><a  class="page-link" href="?page=' + n + queryParams + '">' + rightText + '</a></li>';
     }
     template = template + '</ul>';
     return template;
 }
-;
-module.exports={
-    requiresLoginCustom,
-    requiresLoginManufacturer,
-    requiresLoginSupplier,
-    requiresLoginShipper,
+    ;
+module.exports = {
+    requiresLogin,
     isloggedIn,
     createPagination,
 }

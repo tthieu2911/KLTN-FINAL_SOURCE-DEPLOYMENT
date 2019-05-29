@@ -9,12 +9,14 @@ var today = new Date();
 var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_supplier = req.body.supplier_id;
+    var req_quatity = req.body.quatity;
+
     var contract = new contractSchema({
         product_id: id_product,
         seller_id: id_supplier,
         buyer_id: req.session.userId,
         shipper_id: null,
-        quatity: 1,     // fix value
+        quatity: req_quatity,
         price: null,
         currency: 'USD',// fix value
         createBy: req.session.userId,
@@ -27,16 +29,37 @@ var create_contract = async (req, res, next) => {
         status: '0'
     });
 
-    if(contract == null){
+    if (contract == null) {
         console.log('Create new contract failed. Can not create object.');
         req.flash('message', Messages.contract.create.failed);
         res.redirect('/customer');
     }
-    else{
-        contract.save().then(() => {
-            console.log('Create new contract successfully.');
-            req.flash('success', Messages.contract.create.success);
-            res.redirect('/customer');
+    else {
+        warehouseSchema.findOne({ product_id: id_product, supplier_id: id_supplier }, (error, product) => {
+            if  (product == null || product.length == 0){
+                console.log('Create new contract failed.');
+                req.flash('messages', Messages.contract.create.failed);
+                res.redirect('/customer');
+            }
+            else{
+                if (product.quatity <= req_quatity) {
+                    console.log('Accept contract failed. No product left in warehouse.');
+                    req.flash('message', Messages.product.unavailabled);
+                    res.redirect('/customer/manacontract');
+                }
+                else {
+                    product.quatity = product.quatity - req_quatity;
+                    product.save().then(() => {
+                        console.log("Update quatity of seller's warehouse successfully.");
+                    });
+    
+                    contract.save().then(() => {
+                        console.log('Create new contract successfully.');
+                        req.flash('success', Messages.contract.create.success);
+                        res.redirect('/customer');
+                    })
+                }
+            }
         })
     }
 }
@@ -53,17 +76,12 @@ var accept_contract = (req, res, next) => {
         }
         else {
             warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
-                if (product.quatity <= 0) {
+                if (product == null || product.length == 0) {
                     console.log('Accept contract failed. No product left in warehouse.');
                     req.flash('message', Messages.product.unavailabled);
                     res.redirect('/customer/manacontract');
                 }
                 else {
-                    product.quatity = product.quatity - 1;
-                    product.save().then(() => {
-                        console.log("Update quatity of seller's warehouse successfully.");
-                    });
-
                     doc.acceptDate = today;
                     doc.status = "2";
                     doc.save().then(() => {
@@ -72,7 +90,7 @@ var accept_contract = (req, res, next) => {
                         res.redirect('/customer/manacontract');
                     });
                 }
-            })
+            });
         }
     })
 }
@@ -80,7 +98,6 @@ var accept_contract = (req, res, next) => {
 // Hủy đơn mua hàng
 var cancel_contract = (req, res) => {
     var id_contract = req.params.id;
-    console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, $or: [{ 'status': "0" }, { 'status': "1" }] }, function (err, doc) {
         if (doc == null || doc.length == 0) {
             console.log('Cancel contract failed. Can not find contract.');
@@ -88,14 +105,27 @@ var cancel_contract = (req, res) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            doc.status = "6";
-            doc.deleteBy = req.session.userId;
-            doc.deleteDate = today;
-            doc.save().then(() => {
-                console.log('Cancel contract successfully.');
-                req.flash('success', Messages.contract.cancel.success);
-                res.redirect('/customer/manacontract');
-            });
+            warehouseSchema.findOne({ product_id: doc.product_id, supplier_id: doc.seller_id }, (error, product) => {
+                if (product == null || product.length == 0) {
+                    req.flash('success', Messages.contract.cancel.success);
+                    res.redirect('/customer/manacontract');
+                }
+                else {
+                    product.quatity = product.quatity + doc.quatity;
+                    product.save().then(() => {
+                        console.log("Update quatity of seller's warehouse successfully.");
+                    });
+                    
+                    doc.status = "6";
+                    doc.deleteBy = req.session.userId;
+                    doc.deleteDate = today;
+                    doc.save().then(() => {
+                        console.log('Cancel contract successfully.');
+                        req.flash('success', Messages.contract.cancel.success);
+                        res.redirect('/customer/manacontract');
+                    });
+                }
+            })
         }
     });
 }

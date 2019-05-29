@@ -2,13 +2,14 @@
 <html lang="en">
 
 <head>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Định giá đơn hàng</title>
+  <title>Tạo đơn mua hàng</title>
 
   <!-- Custom fonts for this template-->
   <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -27,7 +28,6 @@
 
   <!-- Custom scripts for all pages-->
   <script src="../../assets/js/sb-admin-2.min.js"></script>
-
 
 </head>
 
@@ -94,7 +94,7 @@
             <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block">
-                <img src="https://source.unsplash.com/random/460x410">
+                <img src="https://source.unsplash.com/random/460x650">
               </div>
               <div class="col-lg-6">
                 <!-- Exit button -->
@@ -102,40 +102,56 @@
                   style="margin-bottom: 1%;margin-top: 3%; margin-left: 89%;"> X </button>
 
                 <h4 style="font-weight: bold; text-align:center;">Thông tin đơn hàng</h4>
+                {{# each warehouses}}
+                {{# each this}}
+                <form action="/customer/create_contract/done" method="post" onsubmit="return accept_form()">
+                  <div class="container-fluid">
+                    <table class="table">
+                      <tr>
+                        <th>Tên sản phẩm</th>
+                        <td>{{this.product_id._id}}</td>
+                      </tr>
+                      <tr>
+                        <th>Người bán hàng</th>
+                        <td>{{this.supplier_id._id}}</td>
+                      </tr>
+                      <tr>
+                        <th>Người mua hàng</th>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <th>Đơn vị tính</th>
+                        <td>USD</td>
+                      </tr>
+                      <tr>
+                        <th>Số lượng có thể mua</th>
+                        <td>{{this.quatity}}</td>
+                      </tr>
+                      <tr>
+                        <th>Số lượng</th>
+                        <td>
+                          <input type="number" min="0" max="{{this.quatity}}" class="form-control form-control-user"
+                            id="" name="quatity" required>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Ngày đặt hàng</th>
+                        <td id="createDate"></td>
+                      </tr>
+                    </table>
+                  </div>
+                  <button type="submit" class="btn btn-primary" style="margin-left: 83%; margin-bottom: 5%; width:60px">
+                    <i class="fas fa-plus" aria-hidden="true"></i>
+                  </button>
 
-                <div class="container-fluid">
-                  <form action="/supplier/price" method="post">
-                    <div class="form-group">
-                      {{# each contracts}}
-                      {{# each this}}
-                      <table class="table">
-                        <tr>
-                          <td>Tên sản phẩm:</td>
-                          <td><b>{{this.product_id.name}}</b></td>
-                        </tr>
-                        <tr>
-                          <td>Người mua hàng:</td>
-                          <td><b>{{this.buyer_id.fullName}}</b></td>
-                        </tr>
-                        <tr>
-                          <td>Số lượng:</td>
-                          <td><b>{{this.quatity}}</b></td>
-                        </tr>
-                      </table>
-                      <input type="hidden" name="contract_id" value="{{this._id}}">
-                      {{/each}}
-                      {{/each}}
-                    </div>
-                    <div class="form-group">
-                      <p><b>Tổng giá trị đơn hàng: </b></p>
-                      <input type="number" min="0" class="form-control" id="price" name="price"
-                        placeholder="Giá trị đơn hàng" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="margin-left:86%; margin-bottom:5% ">
-                      <i class="fas fa-check" aria-hidden="true"></i>
-                    </button>
-                  </form>
-                </div>
+                  <input type="hidden" name="product_id" value="{{this.product_id._id}}">
+                  <input type="hidden" name="supplier_id" value="{{this.supplier_id._id}}">
+                  <input type="hidden" name="quatity" value="{{this.quatity}}">
+                  <input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+                </form>
+                {{/each}}
+                {{/each}}
               </div>
             </div>
           </div>
@@ -145,11 +161,32 @@
   </div>
 
   <script>
-    function back() {
-      history.back();
-    }
-  </script>
 
+    $(document).ready(function () {
+
+      $("#createDate").html(Date_to_String());
+
+      function Date_to_String() {
+        var formated_date = new Date();
+
+        var day = formated_date.getDate();
+        var month = formated_date.getMonth() + 1;
+        var year = formated_date.getFullYear();
+        var hour = formated_date.getHours();
+        var minute = formated_date.getMinutes();
+        var second = formated_date.getSeconds();
+
+        var return_format = day + ' - ' + month + ' - ' + year + ', ' + hour + ':' + minute + ':' + second;
+
+        return return_format;
+      }
+
+      function back() {
+        history.back();
+      }
+
+    })
+  </script>
 
 </body>
 

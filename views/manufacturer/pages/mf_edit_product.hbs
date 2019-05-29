@@ -24,6 +24,47 @@
 
 <body class="bg-gradient-primary">
 
+   <!-- Header -->
+  <div class="container">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+      <!-- Home button -->
+      <div>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/manufacturer"></a>
+      </div>
+
+      <!-- Topbar Navbar -->
+      <ul class="navbar-nav ml-auto">
+
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Manufacturer</span>
+            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+          </a>
+
+          <!-- Dropdown - User Information -->
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="/manufacturer/profile">
+              <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
+              Cá nhân
+            </a>
+            <a class="dropdown-item" href="/manufacturer/product">
+              <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí kho
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">
+              <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
   <div class="container">
 
     <!-- Outer Row -->
@@ -45,6 +86,18 @@
                   style="margin-bottom: 1%;margin-top: 3%; margin-left: 89%"> X </button>
 
                 <div class="col-lg-11 container-fluid">
+
+                  {{#if message}}
+                  <div class="alert alert-danger text-center" role="alert">
+                    {{this.message}}
+                  </div>
+                  {{/if}}
+                  {{#if success}}
+                  <div class="alert alert-success text-center" role="alert">
+                    {{this.success}}
+                  </div>
+                  {{/if}}
+                  
                   <h2 style="font-weight: bold; text-align: center">Thông tin sản phẩm</h2>
 
                   {{# each warehouses}}

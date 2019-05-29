@@ -18,7 +18,7 @@ var load_contract = async (req, res, next) => {
         var end = page * perPage;
         var num_page = Math.ceil(docs.length / perPage)
         contractChunks = contractChunks.slice(start, end)
-        
+
         res.render('manufacturer/mf_index', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ status: -1 }).populate('buyer_id product_id shipper_id')
 }
@@ -53,7 +53,7 @@ var load_price = async (req, res) => {
                 contractChunks.push(docs.slice(i, i + chunkSize));
             }
 
-            res.render('manufacturer/pages/mf_send_price', { contracts: contractChunks });
+            res.render('manufacturer/pages/mf_send_price', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message') });
         }).populate('product_id buyer_id')
     })
 }
@@ -103,17 +103,12 @@ var load_detail_contract = async (req, res, next) => {
 var load_update_product = async (req, res) => {
     var id = req.params.id;
     warehouseSchema.find({ product_id: id, supplier_id: req.session.userId }, async (err, doc) => {
-        if (doc == null) {
-            res.redirect('/manufacturer/product');
+        var warehouseChunks = [];
+        var chunkSize = 3;
+        for (var i = 0; i < doc.length; i += chunkSize) {
+            warehouseChunks.push(doc.slice(i, i + chunkSize));
         }
-        else {
-            var warehouseChunks = [];
-            var chunkSize = 3;
-            for (var i = 0; i < doc.length; i += chunkSize) {
-                warehouseChunks.push(doc.slice(i, i + chunkSize));
-            }
-            res.render('manufacturer/pages/mf_edit_product', { warehouses: warehouseChunks });
-        }
+        res.render('manufacturer/pages/mf_edit_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
     }).populate('product_id supplier_id');
 }
 
