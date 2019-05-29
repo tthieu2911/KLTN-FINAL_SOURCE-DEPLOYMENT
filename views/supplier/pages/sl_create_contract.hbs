@@ -104,16 +104,16 @@
                 <h4 style="font-weight: bold; text-align:center;">Thông tin đơn hàng</h4>
                 {{# each warehouses}}
                 {{# each this}}
-                <form action="/customer/create_contract/done" method="post" onsubmit="return accept_form()">
+                <form action="/supplier/contract/buy" method="post" onsubmit="return accept_form()">
                   <div class="container-fluid">
                     <table class="table">
                       <tr>
                         <th>Tên sản phẩm</th>
-                        <td>{{this.product_id._id}}</td>
+                        <td>{{this.product_id.name}}</td>
                       </tr>
                       <tr>
                         <th>Người bán hàng</th>
-                        <td>{{this.supplier_id._id}}</td>
+                        <td>{{this.supplier_id.fullName}}</td>
                       </tr>
                       <tr>
                         <th>Người mua hàng</th>
@@ -131,7 +131,7 @@
                         <th>Số lượng</th>
                         <td>
                           <input type="number" min="0" max="{{this.quatity}}" class="form-control form-control-user"
-                            id="" name="quatity" required>
+                            id="" name="req_quatity" required>
                         </td>
                       </tr>
                       <tr>
@@ -145,8 +145,7 @@
                   </button>
 
                   <input type="hidden" name="product_id" value="{{this.product_id._id}}">
-                  <input type="hidden" name="supplier_id" value="{{this.supplier_id._id}}">
-                  <input type="hidden" name="quatity" value="{{this.quatity}}">
+                  <input type="hidden" name="manufacturer_id" value="{{this.supplier_id._id}}">
                   <input type="hidden" name="_csrf" value="{{csrfToken}}">
 
                 </form>

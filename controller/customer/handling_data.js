@@ -9,7 +9,7 @@ var today = new Date();
 var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_supplier = req.body.supplier_id;
-    var req_quatity = req.body.quatity;
+    var req_quatity = req.body.req_quatity;
 
     var contract = new contractSchema({
         product_id: id_product,
@@ -42,10 +42,10 @@ var create_contract = async (req, res, next) => {
                 res.redirect('/customer');
             }
             else{
-                if (product.quatity <= req_quatity) {
+                if (product.quatity < req_quatity) {
                     console.log('Accept contract failed. No product left in warehouse.');
                     req.flash('message', Messages.product.unavailabled);
-                    res.redirect('/customer/manacontract');
+                    res.redirect('/customer');
                 }
                 else {
                     product.quatity = product.quatity - req_quatity;

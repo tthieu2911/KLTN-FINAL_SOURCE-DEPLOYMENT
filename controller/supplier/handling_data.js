@@ -90,7 +90,7 @@ var delete_contract = (req, res) => {
 var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_manufacturer = req.body.manufacturer_id;
-    var req_quatity = req.body.quatity;
+    var req_quatity = req.body.req_quatity;
     console.log(id_product);
     console.log(id_manufacturer);
     console.log(req_quatity);
@@ -125,7 +125,7 @@ var create_contract = async (req, res, next) => {
                 res.redirect('/supplier/market');
             }
             else{
-                if (product.quatity <= req_quatity) {
+                if (product.quatity < req_quatity) {
                     console.log('Accept contract failed. No product left in warehouse.');
                     req.flash('message', Messages.product.unavailabled);
                     res.redirect('/supplier/market');
@@ -150,7 +150,6 @@ var create_contract = async (req, res, next) => {
 // Chấp nhận báo giá
 var accept_contract = (req, res, next) => {
     var id_contract = req.params.id;
-    console.log(id_contract);
     contractSchema.findOne({ _id: id_contract, status: "1" }, function (err, doc) {
         if (doc == null || doc.length == 0) {
             console.log('Accept contract failed. Can not find contract.');
