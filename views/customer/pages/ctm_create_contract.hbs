@@ -115,10 +115,10 @@
                         <td id="max_quatity">{{this.quatity}}</td>
                       </tr>
                       <tr>
-                        <th>Số lượng<p id="quatity-warn"></p></th>
+                        <th>Số lượng</th>
                         <td>
                           <input type="number" min="1" max="{{this.quatity}}" class="form-control form-control-user"
-                            id="req_quatity" name="req_quatity" required>
+                            id="" name="req_quatity" required>
                         </td>
                       </tr>
                       <tr>
@@ -126,7 +126,7 @@
                         <td id="createDate"></td>
                       </tr>
                       <tr>
-                        <th>Địa chỉ giao hàng</th>
+                        <th>Địa chỉ giao hàng </th>
                         <td>
                           <input type="text" class="form-control form-control-user"
                             id="" name="ship_to" value="{{this.owner_id.address}}" required>
@@ -139,7 +139,7 @@
                   </button>
 
                   <input type="hidden" name="product_id" value="{{this.product_id._id}}">
-                  <input type="hidden" name="supplier_id" value="{{this.owner_id._id}}">
+                  <input type="hidden" name="owner_id" value="{{this.owner_id._id}}">
                   <input type="hidden" name="_csrf" value="{{csrfToken}}">
 
                 </form>
@@ -173,17 +173,6 @@
 
         return return_format;
       }
-
-      $("#req_quatity").on('change', function(){
-        var value = $(this).val();
-        var max = $(this).parent().parent().parent().find("#max-quatity").html();
-        if(value == null || (value != null && value < 1)){
-          $(this).parent().parent().find("#quatity-warn").val('Số lượng phải lớn hơn 1');
-        }
-        if(value != null && value > max){
-          $(this).parent().parent().find("#quatity-warn").val('Số lượng phải nhỏ hơn số lượng trong kho');
-        }
-      })
 
     })
 

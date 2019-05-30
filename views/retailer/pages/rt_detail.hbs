@@ -19,7 +19,6 @@
 
   <!-- Custom styles for this template-->
   <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
-
   <!-- Bootstrap core JavaScript-->
   <script src="../../assets/vendor/jquery/jquery.min.js"></script>
   <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -29,6 +28,8 @@
 
   <!-- Custom scripts for all pages-->
   <script src="../../assets/js/sb-admin-2.min.js"></script>
+
+
 </head>
 
 <body>
@@ -39,7 +40,7 @@
 
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/shipper"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/retailer"></a>
       </div>
 
       <!-- Topbar Navbar -->
@@ -47,21 +48,29 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="/retailer" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Shipper</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Retailer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
+
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-
-            <a class="dropdown-item" href="/shipper/profile">
+            <a class="dropdown-item" href="/retailer/profile">
               <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
               Cá nhân
             </a>
-            <a class="dropdown-item" href="/shipper/manacontract">
+            <a class="dropdown-item" href="/retailer/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn hàng
+              Quản lí đơn mua hàng
+            </a>
+            <a class="dropdown-item" href="/retailer/product">
+              <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí kho
+            </a>
+            <a class="dropdown-item" href="/retailer/market">
+              <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
+              Mua sản phẩm
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">
@@ -86,7 +95,7 @@
             <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block">
-                <img src="https://source.unsplash.com/random/460x650">
+                <img src="https://source.unsplash.com/random/460x700">
               </div>
               <div class="col-lg-6">
                 <!-- Exit button -->
@@ -109,6 +118,10 @@
                     <tr>
                       <th>Người mua hàng</th>
                       <td>{{this.buyer_id.fullName}}</td>
+                    </tr>
+                    <tr>
+                      <th>Người vận chuyển</th>
+                      <td>{{this.shipper_id.fullName}}</td>
                     </tr>
                     <tr>
                       <th>Số lượng</th>
@@ -146,7 +159,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <th>Ngày hoàn thành</th>
+                      <th>Ngày nhận hàng</th>
                       <td id="receiveDate"></td>
                       <input class="hdnReceiveDate" type="hidden" name="hdnReceiveDate" value="{{this.receiveDate}}">
                     </tr>
@@ -243,7 +256,6 @@
     }
 
   </script>
-
 
 </body>
 

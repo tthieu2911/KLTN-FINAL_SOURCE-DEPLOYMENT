@@ -2,14 +2,13 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Chi phí vận chuyển</title>
+  <title>Định giá đơn hàng</title>
 
   <!-- Custom fonts for this template-->
   <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -29,6 +28,7 @@
   <!-- Custom scripts for all pages-->
   <script src="../../assets/js/sb-admin-2.min.js"></script>
 
+
 </head>
 
 <body>
@@ -39,7 +39,7 @@
 
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/shipper"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/retailer"></a>
       </div>
 
       <!-- Topbar Navbar -->
@@ -47,21 +47,29 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="/retailer" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Shipper</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Retailer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
+
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-
-            <a class="dropdown-item" href="/shipper/profile">
+            <a class="dropdown-item" href="/retailer/profile">
               <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
               Cá nhân
             </a>
-            <a class="dropdown-item" href="/shipper/manacontract">
+            <a class="dropdown-item" href="/retailer/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn hàng
+              Quản lí đơn mua hàng
+            </a>
+            <a class="dropdown-item" href="/retailer/product">
+              <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí kho
+            </a>
+            <a class="dropdown-item" href="/retailer/market">
+              <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
+              Mua sản phẩm
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">
@@ -86,7 +94,7 @@
             <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block">
-                <img src="https://source.unsplash.com/random/460x580">
+                <img src="https://source.unsplash.com/random/460x410">
               </div>
               <div class="col-lg-6">
                 <!-- Exit button -->
@@ -94,61 +102,49 @@
                   style="margin-bottom: 1%;margin-top: 3%; margin-left: 89%;"> X </button>
 
                 <h4 style="font-weight: bold; text-align:center;">Thông tin đơn hàng</h4>
-                {{# each contracts}}
-                {{# each this}}
-                <form action="/shipper/price" method="post" onsubmit="return check()">
-                  <div class="container-fluid">
-                    <table class="table">
-                      <tr>
-                        <th>Tên sản phẩm</th>
-                        <td>{{this.product_id.name}}</td>
-                      </tr>
-                      <tr>
-                        <th>Người bán hàng</th>
-                        <td>{{this.seller_id.fullName}}</td>
-                      </tr>
-                      <tr>
-                        <th>Người mua hàng</th>
-                        <td>{{this.buyer_id.fullName}}</td>
-                      </tr>
-                      <tr>
-                        <th>Số lượng</th>
-                        <td>{{this.quatity}}</td>
-                      </tr>
-                      <tr>
-                        <th>Giá trị</th>
-                        <td>{{this.price}}</td>
-                      </tr>
-                      <tr>
-                        <th>Đơn vị tính</th>
-                        <td>{{this.currency}}</td>
-                      </tr>
-                      <tr>
-                        <th>Địa chỉ lấy hàng</th>
-                        <td>{{this.shipFrom}}</td>
-                      </tr>
-                      <tr>
-                        <th>Địa chỉ giao hàng</th>
-                        <td>{{this.shipTo}}</td>
-                      </tr>
-                      <tr>
-                        <th>Chi phí vận chuyển</th>
-                        <td>
-                          <input type="number" min="0" max="{{this.price}}" class="form-control form-control-user" id="" name="ship_price"
-                            value="0" required>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                  <button type="submit" class="btn btn-primary" style="margin-left: 83%; margin-bottom: 5%; width:60px">
-                    <i class="fas fa-check" aria-hidden="true"></i>
-                  </button>
 
-                  <input type="hidden" name="contract_id" value="{{this._id}}">
-                  <input type="hidden" name="_csrf" value="{{csrfToken}}">
-                </form>
-                {{/each}}
-                {{/each}}
+                <div class="container-fluid">
+                  <form action="/retailer/price" method="post">
+                    <div class="form-group">
+                      {{# each contracts}}
+                      {{# each this}}
+                      <table class="table">
+                        <tr>
+                          <th>Tên sản phẩm:</th>
+                          <td>{{this.product_id.name}}</td>
+                        </tr>
+                        <tr>
+                          <th>Người mua hàng:</th>
+                          <td>{{this.buyer_id.fullName}}</td>
+                        </tr>
+                        <tr>
+                          <th>Số lượng:</th>
+                          <td>{{this.quatity}}</td>
+                        </tr>
+                        <tr>
+                          <th>Địa chỉ giao hàng:</th>
+                          <td>{{this.shipTo}}</td>
+                        </tr>
+                        <tr>
+                          <th>Địa chỉ lấy hàng:</th>
+                          <td><input type="text" class="form-control form-control-user"
+                            id="" name="ship_from" value="{{this.seller_id.address}}" required></td>
+                        </tr>
+                      </table>
+                      <input type="hidden" name="contract_id" value="{{this._id}}">
+                      {{/each}}
+                      {{/each}}
+                    </div>
+                    <div class="form-group">
+                      <p><b>Tổng giá trị đơn hàng: </b></p>
+                      <input type="number" min="0" class="form-control" id="price" name="price"
+                        placeholder="Giá trị đơn hàng" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-left:86%; margin-bottom:5% ">
+                      <i class="fas fa-check" aria-hidden="true"></i>
+                    </button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
@@ -158,12 +154,11 @@
   </div>
 
   <script>
-
     function back() {
       history.back();
     }
-
   </script>
+
 
 </body>
 

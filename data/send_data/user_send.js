@@ -6,7 +6,7 @@ var users =[
     new user({
         username: "customer",
         password: "123456",
-        fullName:"togepi",
+        fullName:"Harry don",
         address: "HCM",
         phone: '01223456',
         email: 'topi@gmail.com',
@@ -26,7 +26,7 @@ var users =[
     new user({
         username: "supplier",
         password: "123456",
-        fullName:"manager",
+        fullName:"mizuho logi",
         address: "HCM",
         phone: '0122345',
         email: 'supplier@gmail.com',
@@ -36,7 +36,7 @@ var users =[
     new user({
         username: "shipper",
         password: "123456",
-        fullName:"shipper",
+        fullName:"vanti cat",
         address: "HCM",
         phone: '0122345',
         email: 'supplier@gmail.com',
@@ -44,13 +44,13 @@ var users =[
         del:true,
     }),
     new user({
-        username: "supplier_2",
+        username: "retailer",
         password: "123456",
-        fullName:"supplier_2",
+        fullName:"Koohii",
         address: "HCM",
         phone: '0122345',
-        email: 'supplier@gmail.com',
-        type: "supplier",
+        email: 'retailer@gmail.com',
+        type: "retailer",
         del:true,
     }), 
     new user({

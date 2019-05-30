@@ -39,7 +39,7 @@
 
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/supplier"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/retailer"></a>
       </div>
 
       <!-- Topbar Navbar -->
@@ -47,27 +47,27 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="/supplier" id="userDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="/retailer" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Supplier</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Retailer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
 
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/supplier/profile">
+            <a class="dropdown-item" href="/retailer/profile">
               <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
               Cá nhân
             </a>
-            <a class="dropdown-item" href="/supplier/manacontract">
+            <a class="dropdown-item" href="/retailer/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
               Quản lí đơn mua hàng
             </a>
-            <a class="dropdown-item" href="/supplier/product">
+            <a class="dropdown-item" href="/retailer/product">
               <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
               Quản lí kho
             </a>
-            <a class="dropdown-item" href="/supplier/market">
+            <a class="dropdown-item" href="/retailer/market">
               <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
               Mua sản phẩm
             </a>
@@ -104,7 +104,7 @@
                 <h4 style="font-weight: bold; text-align:center;">Thông tin đơn hàng</h4>
                 {{# each warehouses}}
                 {{# each this}}
-                <form action="/supplier/contract/buy" method="post" onsubmit="return accept_form()">
+                <form action="/retailer/contract/buy" method="post" onsubmit="return accept_form()">
                   <div class="container-fluid">
                     <table class="table">
                       <tr>

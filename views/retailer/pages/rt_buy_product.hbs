@@ -2,22 +2,21 @@
 <html lang="en">
 
 <head>
-  <title>Trang chủ</title>
+  <title>Mua sản phẩm</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link type="text/css" href="assets/css/styles.css" rel="stylesheet">
+  <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- Custom fonts for this template-->
-  <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <script src="assets/js/script.js"></script>
-  <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
-
+  <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
+  <script src="../assets/js/script.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -28,17 +27,17 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+
 </head>
 
 <body>
 
-  <!-- Header -->
   <div class="container">
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/customer"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/retailer"></a>
       </div>
 
       <!-- Topbar Search -->
@@ -56,23 +55,30 @@
 
       <!-- Topbar Navbar -->
       <ul class="navbar-nav ml-auto">
-
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="/customer" id="userDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="/retailer" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Customer</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Retailer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/customer/profile">
-              <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+            <a class="dropdown-item" href="/retailer">
+              <i class="fas fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
+              Trang chủ
+            </a>
+            <a class="dropdown-item" href="/retailer/profile">
+              <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
               Cá nhân
             </a>
-            <a class="dropdown-item" href="/customer/manacontract">
+            <a class="dropdown-item" href="/retailer/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
               Quản lí đơn hàng
+            </a>
+            <a class="dropdown-item" href="/retailer/product">
+              <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí kho
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">
@@ -84,7 +90,6 @@
       </ul>
     </nav>
   </div>
-
   <div class="container">
 
     {{#if message}}
@@ -101,18 +106,17 @@
     <h1 class="text-center">Sản phẩm</h1>
 
     <!-- Product card -->
-    <div class="row">
+    <div class="container row">
       {{# each warehouses}}
       {{# each this}}
-      <div class="col-sm-6 col-md-6">
-        {{!-- <form action="/customer/contract" method="post" onsubmit="return accept_form()"> --}}
-        <form action="/customer/create_contract" method="post" onsubmit="return accept_form()">
+      <div class="col-sm-6 col-md-6 d-none d-lg-block">
+        <form action="/retailer/market/create_contract" method="post" onsubmit="return accept_form()">
           <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
               <!-- Nested Row within Card Body -->
               <div class="row">
                 <div class="col-lg-5 d-none d-lg-block">
-                  <img src="https://source.unsplash.com/random/200x460">
+                  <img src="https://source.unsplash.com/random/200x450">
                 </div>
                 <!-- Product Info -->
                 <div class="col-lg-7 d-none d-lg-block">
@@ -130,7 +134,7 @@
                           <td></td>
                         </tr>
                         <tr>
-                          <th>Nhà bán lẻ: </th>
+                          <th>Nhà phân phối: </th>
                           <td>{{this.owner_id.fullName}}</td>
                         </tr>
                         <tr>
@@ -153,7 +157,7 @@
                     </div>
                   </div>
                   <br>
-                  <div class="col-lg-12 text-right" >
+                  <div class="col-lg-12 text-right">
                     <button type="submit" class="btn btn-success">
                       <i class="fas fa-cart-plus" aria-hidden="true"></i>
                     </button>
@@ -180,7 +184,7 @@
     $(document).ready(function () {
 
       $(".product-content").each(function () {
-
+        
         var crDate = $(this).find(".hdnCreateDate").val();
         $(this).find(".createDate").html(Date_to_String(crDate));
 
@@ -206,6 +210,7 @@
       })
     })
   </script>
+
 </body>
 
 </html>

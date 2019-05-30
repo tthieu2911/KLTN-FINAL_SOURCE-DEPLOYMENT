@@ -188,11 +188,12 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col">Tên sản phẩm</th>
-            <th scope="col">Giá trị</th>
-            <th scope="col">Đơn vị tính</th>
-            <th scope="col">Số lượng</th>
             <th scope="col">Người bán hàng</th>
             <th scope="col">Người vận chuyển</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Giá trị</th>
+            <th scope="col">Phí vận chuyển</th>
+            <th scope="col">Đơn vị tính</th>
             <th scope="col">Phân loại</th>
             <th scope="col" class="text-center">Thao tác</th>
           </tr>
@@ -203,11 +204,12 @@
           <tr>
             <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
             <td>{{this.product_id.name}}</td>
-            <td>{{this.price}}</td>
-            <td>{{this.currency}}</td>
-            <td>{{this.quatity}}</td>
             <td>{{this.seller_id.fullName}}</td>
             <td>{{this.shipper_id.fullName}}</td>
+            <td>{{this.quatity}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.shipPrice}}</td>            
+            <td>{{this.currency}}</td>
             <td id="type"></td>
             <td class="text-center">
               <a href="/supplier/detail/{{this._id}}">

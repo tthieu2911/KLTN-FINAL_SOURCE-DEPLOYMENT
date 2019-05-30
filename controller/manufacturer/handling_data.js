@@ -66,9 +66,7 @@ var edit_product = (req, res, next) => {
     if (dateCreate != null) {
         dateCreate = today;
     }
-    console.log(dateExpire);
-    console.log(dateCreate);
-    
+
     if (dateExpire < dateCreate && dateExpire.length != 0) {
         console.log('Update new product failed. Wrong expiry date.');
         req.flash('message', Messages.product.edit.failed);

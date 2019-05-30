@@ -9,12 +9,12 @@ var today = new Date();
 // Tạo đơn mua hàng
 var create_contract = async (req, res, next) => {
     var id_product = req.body.product_id;
-    var id_supplier = req.body.supplier_id;
+    var id_owner = req.body.owner_id;
     var req_quatity = req.body.req_quatity;
     var to_ship = req.body.ship_to;
     var contract = new contractSchema({
         product_id: id_product,
-        seller_id: id_supplier,
+        seller_id: id_owner,
         buyer_id: req.session.userId,
         shipper_id: null,
         quatity: req_quatity,
@@ -39,7 +39,7 @@ var create_contract = async (req, res, next) => {
         res.redirect('/customer');
     }
     else {
-        warehouseSchema.findOne({ product_id: id_product, owner_id: id_supplier }, (error, product) => {
+        warehouseSchema.findOne({ product_id: id_product, owner_id: id_owner }, (error, product) => {
             if (product == null || product.length == 0) {
                 console.log('Create new contract failed.');
                 req.flash('messages', Messages.contract.create.failed);

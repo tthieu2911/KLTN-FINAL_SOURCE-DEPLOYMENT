@@ -86,11 +86,12 @@
       <thead class="thead-dark">
         <tr>
           <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Giá trị</th>
-          <th scope="col">Đơn vị tính</th>
-          <th scope="col">Số lượng</th>
           <th scope="col">Người bán hàng</th>
           <th scope="col">Người vận chuyển</th>
+          <th scope="col">Số lượng</th>
+          <th scope="col">Giá trị</th>
+          <th scope="col">Phí vận chuyển</th>
+          <th scope="col">Đơn vị tính</th>
           <th scope="col">Trạng thái</th>
           <th colspan="4" scope="col">Thao tác</th>
         </tr>
@@ -101,11 +102,12 @@
         <tr>
           <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
           <td>{{this.product_id.name}}</td>
-          <td>{{this.price}}</td>
-          <td>{{this.currency}}</td>
-          <td>{{this.quatity}}</td>
           <td>{{this.seller_id.fullName}}</td>
           <td>{{this.shipper_id.fullName}}</td>
+          <td>{{this.quatity}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.shipPrice}}</td>
+          <td>{{this.currency}}</td>
           <td id="sttDescription"></td>
           <td>
             <a href="/customer/cancel/{{this._id}}" onclick="return check()">

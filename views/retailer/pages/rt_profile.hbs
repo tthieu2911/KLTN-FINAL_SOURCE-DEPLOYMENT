@@ -36,7 +36,7 @@
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/customer"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/retailer"></a>
       </div>
 
       <!-- Topbar Navbar -->
@@ -44,16 +44,25 @@
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
 
-          <a class="nav-link dropdown-toggle" href="/customer" id="userDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="/retailer" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Customer</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Retailer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/customer/manacontract">
+
+            <a class="dropdown-item" href="/retailer/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn hàng
+              Quản lí đơn mua hàng
+            </a>
+            <a class="dropdown-item" href="/retailer/product">
+              <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí kho
+            </a>
+            <a class="dropdown-item" href="/retailer/market">
+              <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
+              Mua sản phẩm
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">
@@ -78,7 +87,7 @@
       {{this.success}}
     </div>
     {{/if}}
-    
+
     <h1>Thông tin cá nhân</h1>
 
     <form action="/update_profile" method="POST">
@@ -167,22 +176,25 @@
         </td>
       </tr>
       </table>
+
+      <input class="hdnUser_id" type="hidden" name="hdnUser_id" value="{{this._id}}">
       {{/each}}
       {{/each}}
     </form>
 
-    <h3 class="text-center">Lịch sử mua hàng</h3>
+    <h3 class="text-center">Lịch sử mua / bán hàng</h3>
     <form>
       <table class="table" id="contract-list">
         <thead class="thead-dark">
           <tr>
             <th scope="col">Tên sản phẩm</th>
-            <th scope="col">Người bán hàng</th>
+                        <th scope="col">Người bán hàng</th>
             <th scope="col">Người vận chuyển</th>
-            <th scope="col">Số lượng</th>
+                        <th scope="col">Số lượng</th>
             <th scope="col">Giá trị</th>
-            <th scope="col">Phí vận chuyển</th>
+                        <th scope="col">Phí vận chuyển</th>
             <th scope="col">Đơn vị tính</th>
+            <th scope="col">Phân loại</th>
             <th scope="col" class="text-center">Thao tác</th>
           </tr>
         </thead>
@@ -196,10 +208,11 @@
             <td>{{this.shipper_id.fullName}}</td>
             <td>{{this.quatity}}</td>
             <td>{{this.price}}</td>
-            <td>{{this.quatity}}</td>
+            <td>{{this.shipPrice}}</td>
             <td>{{this.currency}}</td>
+            <td id="type"></td>
             <td class="text-center">
-              <a href="/customer/detail/{{this._id}}">
+              <a href="/retailer/detail/{{this._id}}">
                 <button type="button" class="btn btn-info">
                   <i class="fas fa-info" aria-hidden="true"></i>
                 </button>
@@ -207,6 +220,9 @@
             </td>
           </tr>
         </tbody>
+
+        <input class="hdnSeller_id" type="hidden" name="hdnSeller_id" value="{{this.seller_id._id}}">
+        <input class="hdnBuyer_id" type="hidden" name="hdnBuyer_id" value="{{this.buyer_id._id}}">
         {{/each}}
         {{/each}}
       </table>
@@ -284,6 +300,7 @@
         $("#btnAcceptPassword").hide();
       });
 
+      var user = $(".hdnUser_id").val();
       $("#contract-list tr").each(function () {
         var stt = $(this).find(".hdnStatus").val();
         // handle for Status Description
@@ -317,6 +334,16 @@
           case '8':
             sttDescription.html("Đã hủy");
             break;
+        }
+
+        var seller = $(this).parent().parent().find(".hdnSeller_id").val();
+        var buyer = $(this).parent().parent().find(".hdnBuyer_id").val();
+
+        if (user == seller) {
+          $(this).find("#type").html('Bán hàng');
+        }
+        if (user == buyer) {
+          $(this).find("#type").html('Mua hàng');
         }
       })
 

@@ -2,20 +2,20 @@
 <html lang="en">
 
 <head>
-  <title>Trang chủ</title>
+  <title>Quản lí đơn hàng</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link type="text/css" href="assets/css/styles.css" rel="stylesheet">
+  <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <!-- Custom fonts for this template-->
-  <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -31,13 +31,11 @@
 
 <body>
 
-  <!-- Header -->
   <div class="container">
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/supplier"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/retailer"></a>
       </div>
 
       <!-- Topbar Search -->
@@ -58,27 +56,23 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="/supplier" id="userDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="/retailer" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Supplier</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Retailer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
 
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/supplier/profile">
+            <a class="dropdown-item" href="/retailer/profile">
               <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
               Cá nhân
             </a>
-            <a class="dropdown-item" href="/supplier/manacontract">
-              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn mua hàng
-            </a>
-            <a class="dropdown-item" href="/supplier/product">
+            <a class="dropdown-item" href="/retailer/product">
               <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
               Quản lí kho
             </a>
-            <a class="dropdown-item" href="/supplier/market">
+            <a class="dropdown-item" href="/retailer/market">
               <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
               Mua sản phẩm
             </a>
@@ -92,7 +86,7 @@
       </ul>
     </nav>
   </div>
-  
+
   <div class="container">
 
     {{#if message}}
@@ -105,22 +99,23 @@
       {{this.success}}
     </div>
     {{/if}}
-
-    <!-- Incoming Contract -->
-    <h3> Danh sách đơn bán hàng chờ xử lý</h3>
+    
+    <h1>Quản lí thông tin đơn mua hàng</h1>
     <br>
-    <table ID="contract-list" class="table table-striped ">
+
+    <h3 class="text-center">Danh sách đơn hàng</h3>
+    <table id="contract-list" class="table">
       <thead class="thead-dark">
         <tr>
           <th scope="col">Tên sản phẩm</th>
-          <th scope="col">Người mua hàng</th>
+          <th scope="col">Người bán hàng</th>
           <th scope="col">Người vận chuyển</th>
           <th scope="col">Số lượng</th>
           <th scope="col">Giá trị</th>
           <th scope="col">Phí vận chuyển</th>
           <th scope="col">Đơn vị tính</th>
           <th scope="col">Trạng thái</th>
-          <th colspan="5" scope="col" class="text-center">Thao tác</th>
+          <th colspan="4" scope="col" class="text-center">Thao tác</th>
         </tr>
       </thead>
       <tbody>
@@ -129,7 +124,7 @@
         <tr>
           <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
           <td>{{this.product_id.name}}</td>
-          <td>{{this.buyer_id.fullName}}</td>
+          <td>{{this.seller_id.fullName}}</td>
           <td>{{this.shipper_id.fullName}}</td>
           <td>{{this.quatity}}</td>
           <td>{{this.price}}</td>
@@ -137,36 +132,21 @@
           <td>{{this.currency}}</td>
           <td id="sttDescription"></td>
           <td class="text-center">
-            <a href="/supplier/contract/delete/{{this._id}}">
-              <button type="" class="btn btn-danger btnDelete">
+            <a href="/retailer/cancel/{{this._id}}"><button type="" class="btn btn-danger btnCancel">
                 <i class="fas fa-trash" aria-hidden="true"></i>
-              </button>
-            </a>
+              </button></a>
           </td>
           <td class="text-center">
-            <a href="/supplier/contract/{{this._id}}">
-              <button type="" class="btn btn-success btnPrice">
-                <i class="fas fa-tag" aria-hidden="true"></i>
-              </button>
-            </a>
-          </td>
-          <td class="text-center">
-            <a href="/supplier/contract/delivery/{{this._id}}">
-              <button type="" class="btn btn-warning btnShip">
-                <i class="fas fa-truck" aria-hidden="true"></i>
-              </button>
-            </a>
-          </td>
-          <td class="text-center">
-            <a href="/supplier/contract/delivery/accept/{{this._id}}">
-              <button type="" class="btn btn-primary btnPriceShip">
+            <a href="/retailer/accept/{{this._id}}"><button type="" class="btn btn-success btnAccept">
                 <i class="fas fa-clipboard-check" aria-hidden="true"></i>
-              </button>
-            </a>
+              </button></a>
           </td>
           <td class="text-center">
-            <a href="/supplier/detail/{{this._id}}">
-              <button type="" class="btn btn-info btnDetail">
+            <a href="/retailer/done/{{this._id}}"><button type="" class="btn btn-warning btnReceive">
+                <i class="fas fa-box-open" aria-hidden="true"></i>
+          </td>
+          <td class="text-center">
+            <a href="/retailer/detail/{{this._id}}"><button type="" class="btn btn-info btnDetail">
                 <i class="fas fa-info" aria-hidden="true"></i>
               </button>
             </a>
@@ -179,7 +159,10 @@
     <nav aria-label="Page navigation example">
       {{{paginateHelper pagination}}}
     </nav>
+
   </div>
+
+
 
   <!-- Jquery handling -->
   <script>
@@ -190,48 +173,41 @@
         var stt = $(this).find(".hdnStatus").val();
 
         // Disable all button
-        $(this).find(".btnDelete").hide();
-        $(this).find(".btnPrice").hide();
-        $(this).find(".btnShip").hide();
+        $(this).find(".btnCancel").hide();
+        $(this).find(".btnAccept").hide();
+        $(this).find(".btnReceive").hide();
 
         $(this).find(".btnDetail").show();
 
-        // handle for Delete button
+        // handle for Cancel button
         if (stt == "0" || stt == "1") {
-          $(this).find(".btnDelete").show();
+          $(this).find(".btnCancel").show();
         }
         else {
-          $(this).find(".btnDelete").hide();
+          $(this).find(".btnCancel").hide();
+        }
+
+        // handle for Accept price button
+        if (stt == "1") {
+          $(this).find(".btnAccept").show();
+        }
+        else {
+          $(this).find(".btnAccept").hide();
         }
 
         // handle for Send price button
-        if (stt == "0") {
-          $(this).find(".btnPrice").show();
+        if (stt =="6") {
+          $(this).find(".btnReceive").show();
         }
         else {
-          $(this).find(".btnPrice").hide();
+          $(this).find(".btnReceive").hide();
         }
 
-        // handle for approve ship button
-        if (stt == "2") {
-          $(this).find(".btnShip").show();
-        }
-        else {
-          $(this).find(".btnShip").hide();
-        }
-
-        // handle for approve ship price button
-        if (stt == "4") {
-          $(this).find(".btnPriceShip").show();
-        }
-        else {
-          $(this).find(".btnPriceShip").hide();
-        }
 
         // handle for Status Description
         var sttDescription = $(this).find("#sttDescription");
-        
-        switch(stt) {
+
+        switch (stt) {
           case '0':
             sttDescription.html("Đặt hàng");
             break;
@@ -261,8 +237,8 @@
             break;
         }
       })
-    });
 
+    });
   </script>
 
 </body>

@@ -56,6 +56,34 @@ app.get('/manufacturer/profile',mf_load_data.load_profile);
 app.get('/manufacturer/detail/:id',mf_load_data.load_detail_contract);
 
 
+// Retailer
+var rt_load_data = require('../controller/retailer/load_data');
+var rt_handling = require('../controller/retailer/handling_data');
+//- Sell
+app.use('/retailer',load_page.requiresLogin);
+app.get('/retailer',rt_load_data.load_contract);
+app.get("/retailer/contract/:id",rt_load_data.load_price);
+app.post("/retailer/price",rt_handling.send_price);         // Send price
+app.get("/retailer/contract/delivery/:id",rt_handling.delivery_contract);
+app.get("/retailer/contract/delivery/accept/:id",rt_handling.accept_ship_price);
+app.get("/retailer/contract/delete/:id",rt_handling.delete_contract);
+//- Warehouse
+app.get('/retailer/product',rt_load_data.load_product);
+app.get('/retailer/product/delete/:id',rt_handling.delete_product);
+//- Buy
+app.get('/retailer/market',rt_load_data.load_product_to_buy);
+app.post('/retailer/market/create_contract',rt_load_data.load_contract_to_buy);
+app.post('/retailer/contract/buy',rt_handling.create_contract);
+app.get('/retailer/manacontract',rt_load_data.load_contract_manager);
+app.get('/retailer/cancel/:id',rt_handling.cancel_contract);
+app.get('/retailer/accept/:id',rt_handling.accept_contract);
+app.get('/retailer/done/:id',rt_handling.done_contract);
+//- Profile
+app.get('/retailer/profile',rt_load_data.load_profile);
+app.get('/retailer/detail/:id',rt_load_data.load_detail_contract);
+
+
+
 // Supplier
 var sl_load_data = require('../controller/supplier/load_data');
 var sl_handling = require('../controller/supplier/handling_data');

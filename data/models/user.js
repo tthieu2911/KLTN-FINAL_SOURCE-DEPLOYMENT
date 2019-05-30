@@ -10,7 +10,7 @@ var  userSchema = new Schema({
     phone: String,
     email: String,
     createDate: Date,
-    type: {type:String}, // customer - manufacturer - supplier - shipper - admin
+    type: {type:String}, //  manufacturer - supplier - retailer - customer - shipper
 })
 
 module.exports = mongoose.model('Users',userSchema)

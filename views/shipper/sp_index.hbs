@@ -117,9 +117,10 @@
           <th scope="col">Tên sản phẩm</th>
           <th scope="col">Người bán hàng</th>
           <th scope="col">Người mua hàng</th>
-          <th scope="col">Giá trị</th>
-          <th scope="col">Đơn vị tính</th>
           <th scope="col">Số lượng</th>
+          <th scope="col">Giá trị</th>
+          <th scope="col">Phí vận chuyển</th>
+          <th scope="col">Đơn vị tính</th>
           <th scope="col">Trạng thái</th>
           <th scope="col" colspan="3" class="text-center">Thao tác</th>
         </tr>
@@ -132,9 +133,10 @@
           <td>{{this.product_id.name}}</td>
           <td>{{this.seller_id.fullName}}</td>
           <td>{{this.buyer_id.fullName}}</td>
-          <td>{{this.price}}</td>
-          <td>{{this.currency}}</td>
           <td>{{this.quatity}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.shipPrice}}</td>
+          <td>{{this.currency}}</td>
           <td id="sttDescription"></td>
           <td class="text-center">
             {{!-- <a href="/shipper/delivery/{{this.id}}"> --}}

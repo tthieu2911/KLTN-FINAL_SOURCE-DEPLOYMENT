@@ -20,7 +20,7 @@ var load_contract = async (req, res, next) => {
         contractChunks = contractChunks.slice(start, end)
 
         res.render('manufacturer/mf_index', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-    }).sort({ status: -1 }).populate('buyer_id product_id shipper_id')
+    }).sort({ createDate: -1 }).populate('buyer_id product_id shipper_id')
 }
 
 // load dữ liệu sản phẩm của manufacturer đang đăng nhập
@@ -39,7 +39,7 @@ var load_product = async (req, res, next) => {
         warehouseChunks = warehouseChunks.slice(start, end)
 
         res.render('manufacturer/pages/mf_list_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-    }).sort({ product_id: -1 }).populate('product_id manufacturer_id owner_id')
+    }).sort({ name: -1 }).populate('product_id manufacturer_id owner_id')
 }
 
 // load dữ liệu báo giá sản phẩm
@@ -81,7 +81,7 @@ var load_profile = async (req, res, next) => {
             contractChunks = contractChunks.slice(start, end)
 
             res.render('manufacturer/pages/mf_profile', { contracts: contractChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-        }).sort({ receiveDate: -1 }).populate('product_id shipper_id seller_id buyer_id')
+        }).sort({ createDate: -1 }).populate('product_id shipper_id seller_id buyer_id')
     })
 }
 

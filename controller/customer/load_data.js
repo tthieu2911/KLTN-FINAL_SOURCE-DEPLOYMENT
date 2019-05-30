@@ -8,9 +8,8 @@ var user_load = require('../user/load_page');
 
 // load dữ liệu sản phẩm để mua
 var load_product = async (req, res, next) => {
-    userSchema.find({ type: "supplier" }, async (error, user) => {
-        var id_supplier = user;
-        warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_supplier }, (error, docs) => {
+    userSchema.find({ type: "retailer" }, async (error, user) => {
+        warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_seller }, (error, docs) => {
             var warehouseChunks = [];
             var chunkSize = 1;
             for (var i = 0; i < docs.length; i += chunkSize) {
@@ -22,15 +21,15 @@ var load_product = async (req, res, next) => {
             var end = page * perPage;
             var num_page = Math.ceil(docs.length / perPage)
             warehouseChunks = warehouseChunks.slice(start, end)
-            res.render('customer/ctm_index', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-        }).sort({ name: -1 }).populate('product_id manufacturer_id owner_id')
+            res.render('customer/ctm_index', { warehouses: warehouseChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        }).sort({ name: -1 }).populate('product_id owner_id')
     })
 }
 
 var load_contract_to_buy = async (req, res, next) => {
     var id_product = req.body.product_id;
-    var id_supplier = req.body.supplier_id;
-    warehouseSchema.find({ product_id: id_product, owner_id: id_supplier }, (err, product) => {
+    var id_owner = req.body.owner_id;
+    warehouseSchema.find({ product_id: id_product, owner_id: id_owner }, (err, product) => {
         if(product == null || product.length == 0){
             console.log('create contract failed. No product left in warehouse.');
             req.flash('message', Messages.product.unavailabled);
@@ -68,7 +67,7 @@ var load_profile = async (req, res, next) => {
             var num_page = Math.ceil(docs.length / perPage)
             contractChunks = contractChunks.slice(start, end)
             res.render('customer/pages/ctm_profile', { contracts: contractChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-        }).sort({ status: -1 }).populate('product_id shipper_id seller_id')
+        }).sort({ createDate: -1 }).populate('product_id shipper_id seller_id')
     })
 }
 
@@ -87,7 +86,7 @@ var load_contract_manager = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         contractChunks = contractChunks.slice(start, end)
         res.render('customer/pages/ctm_contract', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-    }).sort({ status: -1 }).populate('product_id shipper_id seller_id')
+    }).sort({ createDate: -1 }).populate('product_id shipper_id seller_id')
 }
 
 // load chi tiết đơn hàng

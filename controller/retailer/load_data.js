@@ -4,10 +4,13 @@ var productSchema = require('../../data/models/product')
 var warehouseSchema = require('../../data/models/warehouse')
 var user_load = require('../user/load_page');
 var Messages = require('./../../data/messages.json');
+var mongoose = require('mongoose');
+var DBurl = require('../../data/config');
+mongoose.connect(DBurl.url)
 
 // Danh sách đơn bán hàng
 var load_contract = async (req, res, next) => {
-    await contractSchema.find({ seller_id: req.session.userId, status:{$ne:'7'} }, (err, docs) => {
+    await contractSchema.find({ seller_id: req.session.userId, status: { $ne: '7' } }, (err, docs) => {
         var contractChunks = [];
         var chunkSize = 1;
         for (var i = 0; i < docs.length; i += chunkSize) {
@@ -20,13 +23,13 @@ var load_contract = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         contractChunks = contractChunks.slice(start, end)
 
-        res.render('supplier/sl_index', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        res.render('retailer/rt_index', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ createDate: -1 }).populate('buyer_id product_id shipper_id')
 }
 
 // load dữ liệu sản phẩm để mua
 var load_product_to_buy = async (req, res, next) => {
-    userSchema.find({ type: "manufacturer" }, async (error, user) => {
+    userSchema.find({ type: "supplier" }, async (error, user) => {
         var id_owner = user;
         warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
             var warehouseChunks = [];
@@ -41,12 +44,49 @@ var load_product_to_buy = async (req, res, next) => {
             var num_page = Math.ceil(docs.length / perPage)
             warehouseChunks = warehouseChunks.slice(start, end)
 
-            res.render('supplier/pages/sl_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-        }).sort({ name: -1 }).populate('product_id manufacturer_id owner_id')
+            res.render('retailer/pages/rt_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        }).sort({ name: -1 }).populate('product_id owner_id')
     })
+
+    /*     var id_owner;
+        var id_product;
+        userSchema.find({ type: "supplier" }, (error, user) => {
+            id_owner = user;
+        })
+    
+        warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
+            console.log(docs);
+            warehouse = docs;
+            for (var i = 0; i < docs.length; i += 1) {
+    
+                id_product = docs[i].product_id;
+                console.log(id_product);
+            }
+        })
+        
+        warehouseSchema.aggregate([
+            {
+                "$lookup":{
+                    "from":"productSchema",
+                    "let":{
+                        "product_id":"$_id",
+                        "owner_id.type":"supplier"
+                    }
+                }
+            }
+            {
+                $sort: {
+                    product_name: -1
+                }
+            }
+        ], function (err, doc) {
+    
+            console.log(doc);
+        }) */
+
 }
 
-// load danh sách sản phẩm của supplier đang đăng nhập
+// load danh sách sản phẩm của retailer đang đăng nhập
 var load_product = async (req, res, next) => {
     warehouseSchema.find({ owner_id: req.session.userId }, async (error, docs) => {
         var warehouseChunks = [];
@@ -61,7 +101,7 @@ var load_product = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         warehouseChunks = warehouseChunks.slice(start, end)
 
-        res.render('supplier/pages/sl_list_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        res.render('retailer/pages/rt_list_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ name: -1 }).populate('product_id manufacturer_id owner_id')
 }
 
@@ -76,12 +116,12 @@ var load_price = async (req, res) => {
                 contractChunks.push(docs.slice(i, i + chunkSize));
             }
 
-            res.render('supplier/pages/sl_send_price', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message') });
+            res.render('retailer/pages/rt_send_price', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message') });
         }).populate('product_id buyer_id')
     })
 }
 
-// load thông tin tài khoản supplier
+// load thông tin tài khoản retailer
 var load_profile = async (req, res, next) => {
     await userSchema.find({ _id: req.session.userId }, async (err, docs) => {
         var userChunks = [];
@@ -89,7 +129,7 @@ var load_profile = async (req, res, next) => {
         for (var i = 0; i < docs.length; i += chunkSize) {
             userChunks.push(docs.slice(i, i + chunkSize));
         }
-        await contractSchema.find({ $or:[{buyer_id: req.session.userId}, {seller_id: req.session.userId}], status: "7" }, (err, docs) => {
+        await contractSchema.find({ $or: [{ buyer_id: req.session.userId }, { seller_id: req.session.userId }], status: "7" }, (err, docs) => {
             var contractChunks = [];
             var chunkSize = 1;
             for (var i = 0; i < docs.length; i += chunkSize) {
@@ -102,14 +142,14 @@ var load_profile = async (req, res, next) => {
             var num_page = Math.ceil(docs.length / perPage)
             contractChunks = contractChunks.slice(start, end)
 
-            res.render('supplier/pages/sl_profile', { contracts: contractChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+            res.render('retailer/pages/rt_profile', { contracts: contractChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
         }).sort({ createDate: -1 }).populate('product_id shipper_id seller_id')
     })
 }
 
 //Load dữ liệu theo dõi tình trạng đơn mua hàng
 var load_contract_manager = async (req, res, next) => {
-    await contractSchema.find({ buyer_id: req.session.userId, status:{$ne:'7'}}, (err, docs) => {
+    await contractSchema.find({ buyer_id: req.session.userId, status: { $ne: '7' } }, (err, docs) => {
         var contractChunks = [];
         var chunkSize = 1;
         for (var i = 0; i < docs.length; i += chunkSize) {
@@ -122,7 +162,7 @@ var load_contract_manager = async (req, res, next) => {
         var num_page = Math.ceil(docs.length / perPage)
         contractChunks = contractChunks.slice(start, end)
 
-        res.render('supplier/pages/sl_contract', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        res.render('retailer/pages/rt_contract', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ createDate: -1 }).populate('product_id shipper_id seller_id')
 }
 
@@ -136,12 +176,12 @@ var load_detail_contract = async (req, res, next) => {
             contractChunks.push(docs.slice(i, i + chunkSize));
         }
 
-        res.render('supplier/pages/sl_detail', { contracts: contractChunks });
+        res.render('retailer/pages/rt_detail', { contracts: contractChunks });
     }).populate('product_id shipper_id buyer_id seller_id')
 }
 
 // load chi tiết đơn mua hàng
-var load_detail_contract_supplier = async (req, res, next) => {
+var load_detail_contract_retailer = async (req, res, next) => {
     var id_contract = req.params.id;
     await contractSchema.find({ _id: id_contract }, (err, docs) => {
         var contractChunks = [];
@@ -149,8 +189,8 @@ var load_detail_contract_supplier = async (req, res, next) => {
         for (var i = 0; i < docs.length; i += chunkSize) {
             contractChunks.push(docs.slice(i, i + chunkSize));
         }
-        
-        res.render('supplier/pages/sl_detail', { contracts: contractChunks });
+
+        res.render('retailer/pages/rt_detail', { contracts: contractChunks });
     }).populate('product_id shipper_id buyer_id seller_id')
 }
 
@@ -158,18 +198,18 @@ var load_contract_to_buy = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_owner = req.body.owner_id;
     warehouseSchema.find({ product_id: id_product, owner_id: id_owner }, (err, product) => {
-        if(product == null || product.length == 0){
+        if (product == null || product.length == 0) {
             console.log('create contract failed. No product left in warehouse.');
             req.flash('message', Messages.product.unavailabled);
-            res.redirect('/supplier/market');
+            res.redirect('/retailer/market');
         }
-        else{
+        else {
             var warehouseChunks = [];
             var chunkSize = 1;
             for (var i = 0; i < product.length; i += chunkSize) {
                 warehouseChunks.push(product.slice(i, i + chunkSize));
             }
-            res.render('supplier/pages/sl_create_contract', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
+            res.render('retailer/pages/rt_create_contract', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
         }
     }).populate('product_id owner_id')
 }
@@ -182,6 +222,6 @@ module.exports = {
     load_profile,
     load_contract_manager,
     load_detail_contract,
-    load_detail_contract_supplier,
+    load_detail_contract_retailer,
     load_contract_to_buy,
 }

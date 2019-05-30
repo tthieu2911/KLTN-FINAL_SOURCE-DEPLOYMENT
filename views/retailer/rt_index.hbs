@@ -37,7 +37,7 @@
 
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/supplier"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/retailer"></a>
       </div>
 
       <!-- Topbar Search -->
@@ -58,27 +58,27 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="/supplier" id="userDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="/retailer" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Supplier</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Retailer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
 
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/supplier/profile">
+            <a class="dropdown-item" href="/retailer/profile">
               <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
               Cá nhân
             </a>
-            <a class="dropdown-item" href="/supplier/manacontract">
+            <a class="dropdown-item" href="/retailer/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
               Quản lí đơn mua hàng
             </a>
-            <a class="dropdown-item" href="/supplier/product">
+            <a class="dropdown-item" href="/retailer/product">
               <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
               Quản lí kho
             </a>
-            <a class="dropdown-item" href="/supplier/market">
+            <a class="dropdown-item" href="/retailer/market">
               <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
               Mua sản phẩm
             </a>
@@ -92,7 +92,7 @@
       </ul>
     </nav>
   </div>
-  
+
   <div class="container">
 
     {{#if message}}
@@ -137,35 +137,35 @@
           <td>{{this.currency}}</td>
           <td id="sttDescription"></td>
           <td class="text-center">
-            <a href="/supplier/contract/delete/{{this._id}}">
+            <a href="/retailer/contract/delete/{{this._id}}">
               <button type="" class="btn btn-danger btnDelete">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
-            <a href="/supplier/contract/{{this._id}}">
+            <a href="/retailer/contract/{{this._id}}">
               <button type="" class="btn btn-success btnPrice">
                 <i class="fas fa-tag" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
-            <a href="/supplier/contract/delivery/{{this._id}}">
+            <a href="/retailer/contract/delivery/{{this._id}}">
               <button type="" class="btn btn-warning btnShip">
                 <i class="fas fa-truck" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
-            <a href="/supplier/contract/delivery/accept/{{this._id}}">
+            <a href="/retailer/contract/delivery/accept/{{this._id}}">
               <button type="" class="btn btn-primary btnPriceShip">
                 <i class="fas fa-clipboard-check" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
-            <a href="/supplier/detail/{{this._id}}">
+            <a href="/retailer/detail/{{this._id}}">
               <button type="" class="btn btn-info btnDetail">
                 <i class="fas fa-info" aria-hidden="true"></i>
               </button>
@@ -230,8 +230,8 @@
 
         // handle for Status Description
         var sttDescription = $(this).find("#sttDescription");
-        
-        switch(stt) {
+
+        switch (stt) {
           case '0':
             sttDescription.html("Đặt hàng");
             break;
