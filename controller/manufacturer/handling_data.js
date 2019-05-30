@@ -168,6 +168,35 @@ var delivery_contract = (req, res) => {
     })
 }
 
+// Chấp nhận chi phí vận chuyển
+var accept_ship_price = (req, res, next) => {
+    var id_contract = req.params.id;
+    contractSchema.findOne({ _id: id_contract, status: "4" }, function (err, doc) {
+        if (doc == null || doc.length == 0) {
+            console.log('Accept contract failed. Can not find contract.');
+            req.flash('message', Messages.contract.price_notFound);
+            res.redirect('/manufacturer');
+        }
+        else {
+            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
+                if (product == null || product.length == 0) {
+                    console.log('Accept contract failed. No product left in warehouse.');
+                    req.flash('message', Messages.product.unavailabled);
+                    res.redirect('/manufacturer');
+                }
+                else {
+                    doc.status = "5";
+                    doc.save().then(() => {
+                        console.log('Accept contract successfully');
+                        req.flash('success', Messages.contract.accept.success);
+                        res.redirect('/manufacturer');
+                    });
+                }
+            })
+        }
+    })
+}
+
 // Xóa đơn hàng
 var delete_contract = (req, res) => {
     var id_contract = req.params.id;
@@ -209,5 +238,6 @@ module.exports = {
     edit_product,
     send_price,
     delivery_contract,
+    accept_ship_price,
     delete_contract
 }

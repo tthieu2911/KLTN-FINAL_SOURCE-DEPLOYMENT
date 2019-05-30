@@ -111,7 +111,7 @@
           <th scope="col">Đơn vị tính</th>
           <th scope="col">Số lượng</th>
           <th scope="col">Trạng thái</th>
-          <th colspan="4" scope="col" class="text-center">Thao tác</th>
+          <th colspan="5" scope="col" class="text-center">Thao tác</th>
         </tr>
       </thead>
       <tbody>
@@ -144,6 +144,13 @@
             <a href="/manufacturer/contract/delivery/{{this._id}}">
               <button type="" class="btn btn-warning btnShip">
                 <i class="fas fa-truck" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="/manufacturer/contract/delivery/accept/{{this._id}}">
+              <button type="" class="btn btn-primary btnPriceShip">
+                <i class="fas fa-clipboard-check" aria-hidden="true"></i>
               </button>
             </a>
           </td>
@@ -201,6 +208,14 @@
         }
         else {
           $(this).find(".btnShip").hide();
+        }
+
+        // handle for approve ship price button
+        if (stt == "4") {
+          $(this).find(".btnPriceShip").show();
+        }
+        else {
+          $(this).find(".btnPriceShip").hide();
         }
 
         // handle for Status Description

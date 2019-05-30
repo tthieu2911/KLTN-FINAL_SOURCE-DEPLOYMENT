@@ -39,6 +39,7 @@ app.use('/manufacturer',load_page.requiresLogin);
 app.get('/manufacturer',mf_load_data.load_contract);
 app.get("/manufacturer/contract/:id",mf_load_data.load_price);
 app.post("/manufacturer/price",mf_handling.send_price);         // Send price
+app.get("/manufacturer/contract/delivery/accept/:id",mf_handling.accept_ship_price);
 app.get("/manufacturer/contract/delivery/:id",mf_handling.delivery_contract);
 app.get("/manufacturer/contract/delete/:id",mf_handling.delete_contract);
 //- Warehouse
