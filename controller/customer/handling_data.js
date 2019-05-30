@@ -144,13 +144,48 @@ var done_contract = (req, res, next) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            doc.status = "7";
-            doc.receiveDate = today;
-            doc.save().then(() => {
-                console.log('Received product successfully.');
-                req.flash('success', Messages.contract.receive.success);
-                res.redirect('/customer/manacontract');
-            });
+            warehouseSchema.find({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
+                if (product == null || product.length == 0) {
+                    var warehouse = new warehouseSchema({
+                        product_id: doc.product_id,
+                        owner_id: req.session.userId,
+                        quatity: doc.quatity
+                    })
+
+                    if (warehouse == null) {
+                        console.log("Update quatity of seller's warehouse failed. Can not create object.");
+                        req.flash('message', Messages.contract.receive.failed);
+                        res.redirect('/customer/manacontract');
+                    }
+                    else {
+                        warehouse.save().then(() => {
+                            console.log("Update quatity of seller's warehouse successfully.");
+                        })
+
+                        doc.status = "7";
+                        doc.receiveDate = today;
+                        doc.save().then(() => {
+                            console.log('Received product successfully.');
+                            req.flash('success', Messages.contract.receive.success);
+                            res.redirect('/customer/manacontract');
+                        });
+                    }
+                }
+                else {
+                    product[0].quatity = product[0].quatity + 1;
+                    product[0].save().then(() => {
+                        console.log("Update quatity of seller's warehouse successfully.");
+                    });
+
+                    doc.status = "7";
+                    doc.receiveDate = today;
+                    doc.save().then(() => {
+                        console.log('Received product successfully.');
+                        req.flash('success', Messages.contract.receive.success);
+                        res.redirect('/customer/manacontract');
+                    });
+                }
+            })
         }
     })
 }
