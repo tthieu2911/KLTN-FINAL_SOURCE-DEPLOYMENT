@@ -50,7 +50,7 @@ var create_user = (req, res, next)  => {
     }
 }
 
-//  Sửa sản phẩm
+//  Sửa thông tin người dùng
 var edit_user = (req, res, next) => {
     var id_user = req.params.id;
     var fullName = req.body.fullName;
@@ -81,7 +81,7 @@ var edit_user = (req, res, next) => {
     });
 }
 
-// Xóa sản phẩm khỏi kho chứa
+// Xóa người dùng
 var delete_user = (req, res, next) => {
     var id_user = req.params.id;
     console.log(id_user)
