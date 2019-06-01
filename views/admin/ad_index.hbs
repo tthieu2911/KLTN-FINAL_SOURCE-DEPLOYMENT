@@ -1,1 +1,145 @@
-<h1>Page ADMIN</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Quản lý người dùng</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Custom fonts for this template-->
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
+  <script lang="javascript" src="../assets/js/script.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script href="../assets/js/script.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+   <!-- Header -->
+  <div class="container">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+      <!-- Home button -->
+      <div>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/admin"></a>
+      </div>
+
+      <!-- Topbar Navbar -->
+      <ul class="navbar-nav ml-auto">
+
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="/admin" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrator</span>
+            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+          </a>
+
+          <!-- Dropdown - User Information -->
+          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="/admin/create_user">
+              <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
+              Thêm người dùng mới
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">
+              <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container">
+
+    {{#if message}}
+    <div class="alert alert-danger text-center" role="alert">
+      {{this.message}}
+    </div>
+    {{/if}}
+    {{#if success}}
+    <div class="alert alert-success text-center" role="alert">
+      {{this.success}}
+    </div>
+    {{/if}}
+
+    <h2>Danh sách người dùng</h2>
+    <a id="Create" href="/admin/create_user">
+      <button class="btn btn-primary" style="margin-bottom:20px;">
+        <i class="fas fa-plus" aria-hidden="true"></i>
+      </button>
+    </a>
+
+    <table class="table table-striped ">
+      <thead class="thead-dark text-center">
+        <tr>
+          <th scope="col">Tên tài khoản</th>
+          <th scope="col">Họ và tên</th>
+          <th scope="col">Email</th>
+          <th scope="col">Điện thoại</th>
+          <th scope="col">Địa chỉ</th>
+          <th scope="col">Loại người dùng</th>
+          <th colspan="2" scope="col">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{# each users}}
+        {{# each this}}
+        <tr>
+          <td>{{this.username}}</td>
+          <td>{{this.fullName}}</td>
+          <td>{{this.email}}</td>
+          <td>{{this.phone}}</td>
+          <td>{{this.address}}</td>
+          <td>{{this.type}}</td>
+          <td class="text-center">
+            <a id="delete" href="/admin/delete_user/{{this._id}}" onclick="return check()">
+              <button type="button" class="btn btn-danger">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td class="text-center">
+            <a id="edit" href="/admin/edit_user/{{this._id}}">
+              <button type="button" class="btn btn-info">
+                <i class="fas fa-edit" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+        </tr>
+        {{/each}}
+        {{/each}}
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+      {{{paginateHelper pagination}}}
+    </nav>
+  </div>
+
+  <!-- Jquery handling -->
+  <script>
+
+  </script>
+
+</body>
+
+</html>

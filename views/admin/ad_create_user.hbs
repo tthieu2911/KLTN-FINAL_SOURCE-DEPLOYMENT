@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Thêm sản phẩm mới</title>
+  <title>Thêm người dùng mới</title>
 
   <!-- Custom fonts for this template-->
   <link href="../../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -32,24 +32,11 @@
   <!-- Header -->
   <div class="container">
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+ 
       <!-- Home button -->
       <div>
         <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/admin"></a>
       </div>
-
-      <!-- Topbar Search -->
-      <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-          <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm..." aria-label="Search"
-            aria-describedby="basic-addon2">
-          <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
-              <i class="fas fa-search fa-sm"></i>
-            </button>
-          </div>
-        </div>
-      </form>
 
       <!-- Topbar Navbar -->
       <ul class="navbar-nav ml-auto">
@@ -64,7 +51,7 @@
 
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/supplier/profile">
+            <a class="dropdown-item" href="/admin">
               <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
               Cá nhân
             </a>
@@ -92,7 +79,7 @@
 
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block">
-                <img src="https://source.unsplash.com/random/450x520">
+                <img src="https://source.unsplash.com/random/450x580">
               </div>
 
               <div class="col-lg-6 d-none d-lg-block">
@@ -112,32 +99,43 @@
                   </div>
                   {{/if}}
 
-                  <h2 style="font-weight: bold; text-align: center">Thông tin sản phẩm</h2>
+                  <h2 style="font-weight: bold; text-align: center">Thông tin người dùng</h2>
 
-                  <form class="user" method="POST" action="/manufacturer/create_product">
+                  <form class="user" method="POST" action="/admin/create_user">
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="" name="nameProduct"
-                        placeholder="Tên sản phẩm" required>
+                      <input type="text" class="form-control form-control-user" id="" name="userName"
+                        placeholder="Tài khoản" value="" required>{{!-- password default: 123456 --}}
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="" name="desription"
-                        placeholder="Mô tả sản phẩm" required>
+                      <input type="text" class="form-control form-control-user" id="" name="fullName"
+                        placeholder="Họ và tên" value="" >
                     </div>
                     <div class="form-group">
-                      <input type="number" min="0" class="form-control form-control-user" id="" name="quatity"
-                        placeholder="Số lượng" required>
+                      <input type="email" class="form-control form-control-user" id="" name="email" placeholder="Email"
+                        value="" >
                     </div>
+                    <div class="form-group">
+                      <input type="number" min="0" class="form-control form-control-user" id="" name="phone"
+                        placeholder="Điện thoại" value="" >
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control form-control-user" id="" name="address"
+                        placeholder="Địa chỉ" value="" >
+                    </div>
+                    <div class="form-group">
+                      <select class="form-control" id="type" placeholder="Loại người dùng" required>
+                        <option></option>
+                        <option>Manufacturer</option>
+                        <option>Supplier</option>
+                        <option>Retailer</option>
+                        <option>Customer</option>
+                      </select>
+                    </div>
+                    <input class="selected_type" type="hidden" name="selected_type" value="">
                     <hr>
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="createDate" name="createDate"
-                        placeholder="Ngày sản xuất">
-                    </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="expireDate" name="expireDate"
-                        placeholder="Ngày hết hạn">
-                    </div>
+
                     <button type="submit" class="btn btn-primary" style="margin-left: 83%; width:60px">
-                      <i class="fas fa-plus" aria-hidden="true"></i>
+                      <i class="fas fa-check" aria-hidden="true"></i>
                     </button>
                   </form>
                 </div>
@@ -155,9 +153,10 @@
     }
 
     $(document).ready(function () {
-      $("#createDate").datepicker();
-      $("#expireDate").datepicker();
-
+      $("#type").on('change', function(){
+        var value = $(this).val();
+        $(".selected_type").val(value);
+      });
     })
   </script>
 

@@ -1,13 +1,24 @@
 {
     "user":{
         "notNull":"Dữ liệu đang bị bỏ trống",
+        "not_Found":"Không tìm thấy người dùng",
         "profile":{
             "update_success": "Cập nhật thông tin cá nhân thành công!",
             "update_failed": "Cập nhật thông tin cá nhân thất bại!"
+        },
+        "delete":{
+            "success": "Xóa người dùng thành công!",
+            "failed": "Xóa người dùng thất bại!"
+        },
+        "create":{
+            "exist": "Tài khoản đã tồn tại",
+            "missing_username": "Chưa nhập tên tài khoản",
+            "missing_type":"Chưa chọn loại người dùng"
         }
     },
     "signup":{
         "success":"Tài khoản được tạo thành công!",
+        "failed":"Tài khoản tạo thất bại!",
         "duplicateAccount":"Tên tài khoản đã được sử dụng!",
         "pass_equal_pass":"Mật khẩu lặp lại chưa trùng khớp!"
         

@@ -4,6 +4,8 @@ var mongoose = require('mongoose')
 var DBurl = require('./../../data/config')
 mongoose.connect(DBurl.url)
 
+var today = new Date();
+
 var save_data= async(req,res,done)=>{
     var userName = req.body.userName;
     var passWord = req.body.passWord;
@@ -27,11 +29,25 @@ var save_data= async(req,res,done)=>{
     }
     else
     { 
-        var users = new userSchema({username:userName,password:passWord,fullname:fullName,address:'',phone:phone,email:'',type:'customer'})
-        users.save().then(()=>{
-            console.log('insert success');
-            })
-        return res.render('signup',{message_sc:Messages.signup.success})
+        var users = new userSchema({
+            username: userName,
+            password: passWord,
+            fullname: fullName,
+            address: null,
+            phone: phone,
+            email: null,
+            type: null,
+            createDate: today});
+        
+        if(users == null){
+            return res.render('signup',{message_sc:Messages.signup.failed})
+        }
+        else{
+            users.save().then(()=>{
+                console.log('create user successfully!');
+                })
+            return res.render('signup',{message_sc:Messages.signup.success})
+        }
     }
 }
 

@@ -9,6 +9,20 @@ var csrfProtection = csrf();
 var ctm_handling_payment = require('../controller/payment/handling_payment');
 
 
+// Administrator
+var ad_load_data = require('../controller/admin/load_data');
+var ad_handling = require('../controller/admin/handling_data');
+app.use('/admin',load_page.requiresLogin);
+app.get('/admin',ad_load_data.load_user);
+app.get('/admin/create_user', (req, res) => {
+    res.render('../views/admin/ad_create_user',{success: req.flash('success'), message: req.flash('message')});
+});
+app.post('/admin/create_user',ad_handling.create_user);
+app.get('/admin/edit_user/:id',ad_load_data.load_edit_user);
+app.post('/admin/edit_user/:id',ad_handling.edit_user);
+app.get('/admin/delete_user/:id',ad_handling.delete_user);
+
+
 // Custommer
 var ctm_load_data = require('../controller/customer/load_data');
 var ctm_handling = require('../controller/customer/handling_data');

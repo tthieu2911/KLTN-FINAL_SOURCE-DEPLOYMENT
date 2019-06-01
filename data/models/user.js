@@ -10,6 +10,7 @@ var  userSchema = new Schema({
     phone: String,
     email: String,
     createDate: Date,
+    updateDate: Date,
     type: {type:String}, //  manufacturer - supplier - retailer - customer - shipper
 })
 

@@ -223,7 +223,8 @@ var done_contract = (req, res, next) => {
                     var warehouse = new warehouseSchema({
                         product_id: doc.product_id,
                         owner_id: req.session.userId,
-                        quatity: doc.quatity
+                        quatity: doc.quatity,
+                        createDate: today
                     })
 
                     if (warehouse == null) {
@@ -247,6 +248,7 @@ var done_contract = (req, res, next) => {
                 }
                 else {
                     product[0].quatity = product[0].quatity + 1;
+                    product[0].updateDate = today;
                     product[0].save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
@@ -280,8 +282,9 @@ var cancel_contract = (req, res) => {
                     res.redirect('/retailer/manacontract');
                 }
                 else {
-                    product.quatity = product.quatity + doc.quatity;
-                    product.save().then(() => {
+                    product[0].quatity = product[0].quatity + doc.quatity;
+                    product[0].updateDate = today;
+                    product[0].save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 
@@ -302,7 +305,7 @@ var cancel_contract = (req, res) => {
 // Xóa sản phẩm khỏi kho chứa
 var delete_product = (req, res, next) => {
     var id_product = req.params.id;
-    warehouseSchema.remove({ product_id: id_product, owner_id: req.session.userId }, (error, product) => {
+    warehouseSchema.deleteMany({ product_id: id_product, owner_id: req.session.userId }, (error, product) => {
         if (product == null || product.length == 0) {
             console.log("Remove product failed. Can not find product.");
             req.flash('message', Messages.product.unavailabled);

@@ -37,7 +37,8 @@ var create_product = (req, res) => {
         var warehouse = new warehouseSchema({
             product_id: product._id,
             owner_id: req.session.userId,
-            quatity: quatity
+            quatity: quatity,
+            createDate: today
         })
 
         if (product == null || warehouse == null) {
@@ -94,6 +95,7 @@ var edit_product = (req, res, next) => {
                     doc.desription = description;
                     doc.createDate = dateCreate;
                     doc.expireDate = dateExpire;
+                    doc.updateDate = today;
                     doc.save().then(() => {
                         console.log('Update product successfully.');
                         req.flash('success', Messages.product.edit.success);
@@ -108,7 +110,7 @@ var edit_product = (req, res, next) => {
 // Xóa sản phẩm khỏi kho chứa
 var delete_product = (req, res, next) => {
     var id_product = req.params.id;
-    warehouseSchema.remove({ product_id: id_product, owner_id: req.session.userId }, (error, product) => {
+    warehouseSchema.deleteMany({ product_id: id_product, owner_id: req.session.userId }, (error, product) => {
         if (product == null || product.length == 0) {
             console.log("Can not find product in warehouse.");
             req.flash('message', Messages.product.unavailabled);
