@@ -10,7 +10,12 @@ var isloggedIn = async (req, res, next) => {
             check_type = value;
         })
 
-        res.redirect('/' + check_type);
+        if (check_type != null){
+            res.redirect('/' + check_type);
+        }
+        else {
+            res.redirect('/invalid_user');
+        }
     }
 
 }
