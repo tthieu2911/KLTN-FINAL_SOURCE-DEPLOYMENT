@@ -10,8 +10,7 @@ var users =[
         address: "HCM",
         phone: '01223456',
         email: 'topi@gmail.com',
-        type: "customer",
-        del:true,
+        type: "customer"
     }), 
     new user({
         username: "manufacturer",
@@ -20,8 +19,7 @@ var users =[
         address: "HCM",
         phone: '036224521',
         email: 'manufacturer@gmail.com',
-        type: "manufacturer",
-        del:true,
+        type: "manufacturer"
     }),
     new user({
         username: "supplier",
@@ -30,8 +28,7 @@ var users =[
         address: "HCM",
         phone: '0122345',
         email: 'supplier@gmail.com',
-        type: "supplier",
-        del:true,
+        type: "supplier"
     }),
     new user({
         username: "shipper",
@@ -40,8 +37,7 @@ var users =[
         address: "HCM",
         phone: '0122345',
         email: 'supplier@gmail.com',
-        type: "shipper",
-        del:true,
+        type: "shipper"
     }),
     new user({
         username: "retailer",
@@ -50,18 +46,16 @@ var users =[
         address: "HCM",
         phone: '0122345',
         email: 'retailer@gmail.com',
-        type: "retailer",
-        del:true,
+        type: "retailer"
     }), 
     new user({
         username: "admin",
         password: "admin@123",
-        fullName:"admin",
-        address: "HCM",
-        phone: '0122345',
-        email: 'supplier@gmail.com',
-        type: "admin",
-        del:true,
+        fullName:"administrator",
+        address: "HCMUS - VNU, Tp.HCM",
+        phone: '00999999999',
+        email: 'admin.123@gmail.com',
+        type: "admin"
     }) 
 ];
 var done = 0;
