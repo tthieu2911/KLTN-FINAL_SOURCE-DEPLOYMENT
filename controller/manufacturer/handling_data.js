@@ -41,6 +41,7 @@ var create_product = (req, res) => {
             createDate: today
         })
 
+        
         if (product == null || warehouse == null) {
             console.log('create new product failed. Can not create Object.');
             req.flash('message', Messages.product.create.failed);
@@ -64,15 +65,7 @@ var edit_product = (req, res, next) => {
     var quatity = req.body.quatity;
     var dateExpire = req.body.expireDate;
     var dateCreate = req.body.createDate;
-    if (dateCreate != null) {
-        dateCreate = today;
-    }
 
-    if (dateExpire < dateCreate && dateExpire.length != 0) {
-        console.log('Update new product failed. Wrong expiry date.');
-        req.flash('message', Messages.product.edit.failed);
-        res.redirect('/manufacturer/product/edit/' + id_product);
-    }
     productSchema.findOne({ _id: id_product, manufacturer_id: req.session.userId }, (err, doc) => {
         if (doc == null || doc.length == 0) {
             console.log("Update manufacturer 's warehouse failed. Can not find product in warehouse.");
@@ -87,10 +80,26 @@ var edit_product = (req, res, next) => {
                     res.redirect('/manufacturer/product');
                 }
                 else {
+                    if (dateCreate.length == 0) {
+                        dateCreate = product.product_id.createDate;
+                    }
+
+                    if (dateExpire.length == 0) {
+                        dateExpire = product.product_id.expireDate;
+                    }
+
+                    if (dateExpire < dateCreate && dateExpire.length != 0) {
+                        console.log('Update new product failed. Wrong expiry date.');
+                        req.flash('message', Messages.product.edit.failed);
+                        res.redirect('/manufacturer/product/edit/' + id_product);
+                    }
+
                     product.quatity = quatity;
+                    product.updateDate = today;
                     product.save().then(() => {
                         console.log("Update manufacturer 's warehouse successful.");
                     })
+                    
                     doc.name = nameproduct;
                     doc.desription = description;
                     doc.createDate = dateCreate;

@@ -247,9 +247,9 @@ var done_contract = (req, res, next) => {
                     }
                 }
                 else {
-                    product[0].quatity = product[0].quatity + 1;
-                    product[0].updateDate = today;
-                    product[0].save().then(() => {
+                    product.quatity = product.quatity + doc.quatity;
+                    product.updateDate = today;
+                    product.save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 
@@ -282,9 +282,9 @@ var cancel_contract = (req, res) => {
                     res.redirect('/retailer/manacontract');
                 }
                 else {
-                    product[0].quatity = product[0].quatity + doc.quatity;
-                    product[0].updateDate = today;
-                    product[0].save().then(() => {
+                    product.quatity = product.quatity + doc.quatity;
+                    product.updateDate = today;
+                    product.save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 

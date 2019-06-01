@@ -20,11 +20,15 @@
   <!-- Custom styles for this template-->
   <link href="../../../assets/css/sb-admin-2.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 </head>
 
 <body class="bg-gradient-primary">
 
-   <!-- Header -->
+  <!-- Header -->
   <div class="container">
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -38,8 +42,8 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Manufacturer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
@@ -97,7 +101,7 @@
                     {{this.success}}
                   </div>
                   {{/if}}
-                  
+
                   <h2 style="font-weight: bold; text-align: center">Thông tin sản phẩm</h2>
 
                   {{# each warehouses}}
@@ -116,14 +120,18 @@
                         value="{{this.quatity}}" required>
                     </div>
                     <div class="form-group">
-                      <input type="date" class="form-control form-control-user" id="createDate" name="createDate"
+                      <input type="text" class="form-control form-control-user" id="createDate" name="createDate"
                         value="{{this.product_id.createDate}}">
                     </div>
                     <div class="form-group">
-                      <input type="date" class="form-control form-control-user" id="expireDate" name="expireDate"
+                      <input type="text" class="form-control form-control-user" id="expireDate" name="expireDate"
                         value="{{this.product_id.expireDate}}">
                     </div>
+
                     <input type="hidden" name="id_product" value="{{this.product_id._id}}">
+                    <input id="hdnCreateDate" type="hidden" name="hdnCreateDate" value="{{this.product_id.createDate}}">
+                    <input id="hdnExpireDate" type="hidden" name="hdnExpireDate" value="{{this.product_id.expireDate}}">
+
                     <button type="submit" class="btn btn-primary" style="margin-left: 83%; width:60px">
                       <i class="fas fa-edit" aria-hidden="true"></i>
                     </button>
@@ -144,8 +152,16 @@
       history.back();
     }
 
-    $(document).ready(function(){
-      
+    $(document).ready(function () {
+
+      var crDate = $("#hdnCreateDate").val();
+      var epDate = $("#hdnExpireDate").val();
+
+      $("#expireDate").datepicker();
+      $("#createDate").datepicker("setDate", crDate);
+      $("#expireDate").datepicker();
+
+
     })
   </script>
 
