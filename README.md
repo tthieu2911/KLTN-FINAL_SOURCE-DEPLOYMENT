@@ -1,7 +1,7 @@
 
 ####	Có 5 loại người dùng:
 
-# 	Manufacturer: Nhà sản xuất.
+## 	Manufacturer: Nhà sản xuất.
 	+ Chức năng riêng:
 		.	Xem danh sách hàng hóa trong kho chứa hàng
 		.	Thêm sản phẩm vào kho chứa hàng
@@ -17,7 +17,7 @@
 		.	Xem danh sách đơn hàng đã bán thành công
 		.	Xem thông tin chi tiết đơn bán hàng
 		
-#	Supplier: Nhà phân phối.
+##	Supplier: Nhà phân phối.
 	+ Chức năng riêng:
 		.	Xem danh sách hàng hóa trong kho chứa hàng
 		.	Xóa sản phẩm khỏi kho chứa hàng
@@ -38,7 +38,7 @@
 		.	Xem thông tin chi tiết đơn mua hàng
 		.	Xem thông tin chi tiết đơn bán hàng
 		
-#	Retailer: Nhà bán lẻ.
+##	Retailer: Nhà bán lẻ.
 	+ Chức năng riêng:
 		.	Xem danh sách hàng hóa trong kho chứa hàng
 		.	Xóa sản phẩm khỏi kho chứa hàng
@@ -59,7 +59,7 @@
 		.	Xem thông tin chi tiết đơn mua hàng
 		.	Xem thông tin chi tiết đơn bán hàng
 		
-#	Customer: Người tiêu dùng.
+##	Customer: Người tiêu dùng.
 	+ Chức năng riêng:
 		.	Mua sản phẩm từ Retailer (chỉ từ Retailer, không mua được từ Manufacturer hay supplier) - tức là Tạo đơn mua hàng. Khi đó sẽ yêu cầu nhập địa chỉ giao hàng (mặc định sẽ tự lưu là địa chỉ cá nhân của Customer)
 		.	Chấp nhận đơn báo giá từ Retailer (sau khi Retailer gửi đơn báo giá)
@@ -70,7 +70,7 @@
 		.	Xem danh sách đơn hàng đã mua thành công
 		.	Xem thông tin chi tiết đơn mua hàng
 		
-#	Shipper: Người vận chuyển.
+##	Shipper: Người vận chuyển.
 	+ Chức năng riêng:
 		.	Nhận đơn hàng và gửi đơn báo giá đến cho người bán (Sau khi người bán cho phép vận chuyển)
 		.	Xác nhận nhận hàng để vận chuyển (Sau khi người bán chấp nhận đơn báo giá)
@@ -79,21 +79,20 @@
 		.	Xem danh sách đơn giao hàng đã giao thành công
 		.	Xem thông tin chi tiết đơn giao hàng
 		
-		
-		
+			
 ###	Chức năng chung:
 	.	Xem và chỉnh sửa thông tin cá nhân
 	.	Đổi mật khẩu
 
 
-#	Administrator:	Quản lý hệ thống.
+##	Administrator:	Quản lý hệ thống.
 	+ Chức năng:
 		.	Thêm người dùng mới (có kèm LOẠI người dùng. Còn khi bình thường đăng ký chưa là người dùng nào hết. Chưa đăng nhập hệ thống được)
 		.	Xem danh sách tài khoản người dùng
 		.	Chỉnh sửa hồ sơ người dùng (chỉnh sửa LOẠI người dùng cho những account chưa có loại)
 		.	Xóa người dùng
 		
-###	Tài khoản đăng nhập:
+##	Tài khoản đăng nhập:
 
 	*	Manufacturer:		manufacturer	/	123456
 	*	Supplier:			supplier		/	123456
