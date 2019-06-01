@@ -55,7 +55,7 @@ var users =[
     }), 
     new user({
         username: "admin",
-        password: "123456",
+        password: "admin@123",
         fullName:"admin",
         address: "HCM",
         phone: '0122345',
