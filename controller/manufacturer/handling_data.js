@@ -12,7 +12,7 @@ var today = new Date();
 var create_product = (req, res) => {
     var nameProduct = req.body.nameProduct;
     var quatity = req.body.quatity;
-    var desription = req.body.desription;
+    var description = req.body.description;
     var dateExpire = req.body.expireDate;
     var dateCreate = req.body.createDate;
 
@@ -28,7 +28,7 @@ var create_product = (req, res) => {
     else {
          var product = new productSchema({
             name: nameProduct,
-            desription: desription,
+            description: description,
             manufacturer_id: req.session.userId,
             createDate: dateCreate,
             expireDate: dateExpire,
@@ -101,7 +101,7 @@ var edit_product = (req, res, next) => {
                     })
                     
                     doc.name = nameproduct;
-                    doc.desription = description;
+                    doc.description = description;
                     doc.createDate = dateCreate;
                     doc.expireDate = dateExpire;
                     doc.updateDate = today;

@@ -55,7 +55,7 @@ var create_payment_transaction = (req, res) => {
                                 "currency": "USD",
                                 "total": doc.price
                             },
-                            "description": prod.desription
+                            "description": prod.description
                         }]
                     };
 
