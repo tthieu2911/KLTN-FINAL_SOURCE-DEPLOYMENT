@@ -9,6 +9,7 @@ var user_load = require('../user/load_page');
 // load dữ liệu sản phẩm để mua
 var load_product = async (req, res, next) => {
     userSchema.find({ type: "retailer" }, async (error, user) => {
+        var id_seller = user._id;
         warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_seller }, (error, docs) => {
             var warehouseChunks = [];
             var chunkSize = 1;
@@ -21,7 +22,7 @@ var load_product = async (req, res, next) => {
             var end = page * perPage;
             var num_page = Math.ceil(docs.length / perPage)
             warehouseChunks = warehouseChunks.slice(start, end)
-            res.render('customer/ctm_index', { warehouses: warehouseChunks, users: userChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+            res.render('customer/ctm_index', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
         }).sort({ name: -1 }).populate('product_id owner_id')
     })
 }
