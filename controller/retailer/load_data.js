@@ -1,4 +1,4 @@
-var contractSchema = require('../../data/models/contract')
+﻿var contractSchema = require('../../data/models/contract')
 var userSchema = require('./../../data/models/user')
 var productSchema = require('../../data/models/product')
 var warehouseSchema = require('../../data/models/warehouse')
@@ -29,7 +29,7 @@ var load_contract = async (req, res, next) => {
 
 // load dữ liệu sản phẩm để mua
 var load_product_to_buy = async (req, res, next) => {
-    /*     userSchema.find({ type: "supplier" }, async (error, user) => {
+         userSchema.find({ type: "supplier" }, async (error, user) => {
             var id_owner = user;
             warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
     
@@ -49,36 +49,7 @@ var load_product_to_buy = async (req, res, next) => {
     
                 res.render('retailer/pages/rt_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
             }).sort({ name: -1 }).populate('product_id owner_id product_id.manufacturer_id')
-        }) */
-
-    userSchema.find({ type: "supplier" }, (error, user) => {
-        id_supplier = user;
-        console.log(id_supplier);
-        /*         warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
-                    for (var i = 0; i < docs.length; i += 1) {
-                        id_product.push(docs[i]);
-                    }
-                }) */
-
-        warehouseSchema.aggregate([
-            {
-                "$lookup": {
-                    "from": "productSchema",
-                    "localField": "product_id",
-                    "foreignField": "_id",
-                    "as": "Product_Info"
-                }
-            }], (error, docs) => {
-
-                console.log(docs);
-                //console.log(docs[0].Product_Info);
-            })
-    })
-
-
-
-
-
+        })
 }
 
 // load danh sách sản phẩm của retailer đang đăng nhập
