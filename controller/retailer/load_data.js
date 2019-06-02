@@ -32,6 +32,9 @@ var load_product_to_buy = async (req, res, next) => {
     userSchema.find({ type: "supplier" }, async (error, user) => {
         var id_owner = user;
         warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
+
+            console.log(docs);
+            
             var warehouseChunks = [];
             var chunkSize = 1;
             for (var i = 0; i < docs.length; i += chunkSize) {

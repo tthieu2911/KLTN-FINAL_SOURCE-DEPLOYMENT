@@ -14,6 +14,7 @@ app.get('/',load_page.isloggedIn,(req,res)=>{
 app.get('/invalid_user', (req, res) => {
   res.render('error');
 })
+
 app.post('/',signin.checked);
 // signup
 app.get('/signup',(req,res)=>{
