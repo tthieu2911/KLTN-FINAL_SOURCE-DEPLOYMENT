@@ -19,7 +19,7 @@
     "express-session": "^1.15.6",
     "flash": "^1.1.0",
     "hbs": "^4.0.4",
-    "mongoose": "^5.4.20",
+    "mongoose": "^5.5.12",
     "nodemon": "^1.18.11",
     "passport": "^0.4.0",
     "paypal-rest-sdk": "^1.8.1",

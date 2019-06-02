@@ -29,63 +29,30 @@ var load_contract = async (req, res, next) => {
 
 // load dữ liệu sản phẩm để mua
 var load_product_to_buy = async (req, res, next) => {
-    userSchema.find({ type: "supplier" }, async (error, user) => {
-        var id_owner = user;
-        warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
-
-            console.log(docs);
-
-            var warehouseChunks = [];
-            var chunkSize = 1;
-            for (var i = 0; i < docs.length; i += chunkSize) {
-                warehouseChunks.push(docs.slice(i, i + chunkSize));
-            }
-            var page = parseInt(req.query.page) || 1;
-            var perPage = 6;
-            var start = (page - 1) * perPage;
-            var end = page * perPage;
-            var num_page = Math.ceil(docs.length / perPage)
-            warehouseChunks = warehouseChunks.slice(start, end)
-
-            res.render('retailer/pages/rt_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-        }).sort({ name: -1 }).populate('product_id owner_id product_id.manufacturer_id')
-    })
-
-    /*     var id_owner;
-        var id_product;
-        userSchema.find({ type: "supplier" }, (error, user) => {
-            id_owner = user;
-        })
+        userSchema.find({ type: "supplier" }, async (error, user) => {
+            var id_owner = user;
+            warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
     
-        warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
-            console.log(docs);
-            warehouse = docs;
-            for (var i = 0; i < docs.length; i += 1) {
+                console.log(docs);
     
-                id_product = docs[i].product_id;
-                console.log(id_product);
-            }
-        })
-        
-        warehouseSchema.aggregate([
-            {
-                "$lookup":{
-                    "from":"productSchema",
-                    "let":{
-                        "product_id":"$_id",
-                        "owner_id.type":"supplier"
-                    }
+                var warehouseChunks = [];
+                var chunkSize = 1;
+                for (var i = 0; i < docs.length; i += chunkSize) {
+                    warehouseChunks.push(docs.slice(i, i + chunkSize));
                 }
-            }
-            {
-                $sort: {
-                    product_name: -1
-                }
-            }
-        ], function (err, doc) {
+                var page = parseInt(req.query.page) || 1;
+                var perPage = 6;
+                var start = (page - 1) * perPage;
+                var end = page * perPage;
+                var num_page = Math.ceil(docs.length / perPage)
+                warehouseChunks = warehouseChunks.slice(start, end)
     
-            console.log(doc);
-        }) */
+                res.render('retailer/pages/rt_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+            }).sort({ name: -1 }).populate('product_id owner_id product_id.manufacturer_id')
+        }) 
+
+
+
 
 }
 
@@ -200,7 +167,7 @@ var load_detail_contract_retailer = async (req, res, next) => {
 var load_contract_to_buy = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_owner = req.body.owner_id;
-    warehouseSchema.find({ product_id: id_product, owner_id: id_owner }, (err, product) => {
+    warehouseSchema.findOne({ product_id: id_product, owner_id: id_owner }, (err, product) => {
         if (product == null || product.length == 0) {
             console.log('create contract failed. No product left in warehouse.');
             req.flash('message', Messages.product.unavailabled);

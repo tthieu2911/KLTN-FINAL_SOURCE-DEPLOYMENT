@@ -30,7 +30,7 @@ var load_product = async (req, res, next) => {
 var load_contract_to_buy = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_owner = req.body.owner_id;
-    warehouseSchema.find({ product_id: id_product, owner_id: id_owner }, (err, product) => {
+    warehouseSchema.findOne({ product_id: id_product, owner_id: id_owner }, (err, product) => {
         if(product == null || product.length == 0){
             console.log('create contract failed. No product left in warehouse.');
             req.flash('message', Messages.product.unavailabled);

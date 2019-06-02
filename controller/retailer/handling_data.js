@@ -218,7 +218,7 @@ var done_contract = (req, res, next) => {
             res.redirect('/retailer/manacontract');
         }
         else {
-            warehouseSchema.find({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
+            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
                 if (product == null || product.length == 0) {
                     var warehouse = new warehouseSchema({
                         product_id: doc.product_id,
