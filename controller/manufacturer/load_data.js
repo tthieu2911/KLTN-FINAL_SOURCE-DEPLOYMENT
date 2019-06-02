@@ -102,7 +102,7 @@ var load_detail_contract = async (req, res, next) => {
 // load thông tin sản phẩm để chỉnh sửa
 var load_update_product = async (req, res) => {
     var id = req.params.id;
-    warehouseSchema.findOne({ product_id: id, owner_id: req.session.userId }, async (err, doc) => {
+    warehouseSchema.find({ product_id: id, owner_id: req.session.userId }, async (err, doc) => {
         var warehouseChunks = [];
         var chunkSize = 3;
         for (var i = 0; i < doc.length; i += chunkSize) {

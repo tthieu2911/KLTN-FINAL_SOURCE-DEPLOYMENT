@@ -28,7 +28,7 @@ var load_contract = async (req, res, next) => {
 var load_product_to_buy = async (req, res, next) => {
     userSchema.find({ type: "manufacturer" }, async (error, user) => {
         var id_owner = user;
-        warehouseSchema.findOne({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
+        warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
             var warehouseChunks = [];
             var chunkSize = 1;
             for (var i = 0; i < docs.length; i += chunkSize) {
@@ -157,7 +157,7 @@ var load_detail_contract_supplier = async (req, res, next) => {
 var load_contract_to_buy = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_owner = req.body.owner_id;
-    warehouseSchema.findOne({ product_id: id_product, owner_id: id_owner }, (err, product) => {
+    warehouseSchema.find({ product_id: id_product, owner_id: id_owner }, (err, product) => {
         if(product == null || product.length == 0){
             console.log('create contract failed. No product left in warehouse.');
             req.flash('message', Messages.product.unavailabled);

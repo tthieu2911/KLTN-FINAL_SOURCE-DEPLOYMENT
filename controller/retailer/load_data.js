@@ -29,7 +29,7 @@ var load_contract = async (req, res, next) => {
 
 // load dữ liệu sản phẩm để mua
 var load_product_to_buy = async (req, res, next) => {
-        userSchema.find({ type: "supplier" }, async (error, user) => {
+    /*     userSchema.find({ type: "supplier" }, async (error, user) => {
             var id_owner = user;
             warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
     
@@ -49,7 +49,32 @@ var load_product_to_buy = async (req, res, next) => {
     
                 res.render('retailer/pages/rt_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
             }).sort({ name: -1 }).populate('product_id owner_id product_id.manufacturer_id')
-        }) 
+        }) */
+
+    userSchema.find({ type: "supplier" }, (error, user) => {
+        id_supplier = user;
+        console.log(id_supplier);
+        /*         warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
+                    for (var i = 0; i < docs.length; i += 1) {
+                        id_product.push(docs[i]);
+                    }
+                }) */
+
+        warehouseSchema.aggregate([
+            {
+                "$lookup": {
+                    "from": "productSchema",
+                    "localField": "product_id",
+                    "foreignField": "_id",
+                    "as": "Product_Info"
+                }
+            }], (error, docs) => {
+
+                console.log(docs);
+                //console.log(docs[0].Product_Info);
+            })
+    })
+
 
 
 
@@ -167,7 +192,7 @@ var load_detail_contract_retailer = async (req, res, next) => {
 var load_contract_to_buy = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_owner = req.body.owner_id;
-    warehouseSchema.findOne({ product_id: id_product, owner_id: id_owner }, (err, product) => {
+    warehouseSchema.find({ product_id: id_product, owner_id: id_owner }, (err, product) => {
         if (product == null || product.length == 0) {
             console.log('create contract failed. No product left in warehouse.');
             req.flash('message', Messages.product.unavailabled);

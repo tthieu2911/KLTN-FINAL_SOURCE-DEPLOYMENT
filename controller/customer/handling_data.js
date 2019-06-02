@@ -39,7 +39,7 @@ var create_contract = async (req, res, next) => {
         res.redirect('/customer');
     }
     else {
-        warehouseSchema.findOne({ product_id: id_product, owner_id: id_owner }, (error, product) => {
+        warehouseSchema.find({ product_id: id_product, owner_id: id_owner }, (error, product) => {
             if (product == null || product.length == 0) {
                 console.log('Create new contract failed.');
                 req.flash('messages', Messages.contract.create.failed);
@@ -79,7 +79,7 @@ var accept_contract = (req, res, next) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: doc.seller_id }, (error, product) => {
+            warehouseSchema.find({ product_id: doc.product_id, owner_id: doc.seller_id }, (error, product) => {
                 if (product == null || product.length == 0) {
                     console.log('Accept contract failed. No product left in warehouse.');
                     req.flash('message', Messages.product.unavailabled);
@@ -109,7 +109,7 @@ var cancel_contract = (req, res) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: doc.seller_id }, (error, product) => {
+            warehouseSchema.find({ product_id: doc.product_id, owner_id: doc.seller_id }, (error, product) => {
                 if (product == null || product.length == 0) {
                     req.flash('success', Messages.contract.cancel.success);
                     res.redirect('/customer/manacontract');
@@ -144,7 +144,7 @@ var done_contract = (req, res, next) => {
             res.redirect('/customer/manacontract');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
+            warehouseSchema.find({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
                 if (product == null || product.length == 0) {
                     var warehouse = new warehouseSchema({
                         product_id: doc.product_id,

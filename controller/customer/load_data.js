@@ -9,7 +9,7 @@ var user_load = require('../user/load_page');
 // load dữ liệu sản phẩm để mua
 var load_product = async (req, res, next) => {
     userSchema.find({ type: "retailer" }, async (error, user) => {
-        var id_seller = user._id;
+        var id_seller = user;
         warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_seller }, (error, docs) => {
             var warehouseChunks = [];
             var chunkSize = 1;
@@ -30,7 +30,7 @@ var load_product = async (req, res, next) => {
 var load_contract_to_buy = async (req, res, next) => {
     var id_product = req.body.product_id;
     var id_owner = req.body.owner_id;
-    warehouseSchema.findOne({ product_id: id_product, owner_id: id_owner }, (err, product) => {
+    warehouseSchema.find({ product_id: id_product, owner_id: id_owner }, (err, product) => {
         if(product == null || product.length == 0){
             console.log('create contract failed. No product left in warehouse.');
             req.flash('message', Messages.product.unavailabled);
@@ -42,6 +42,7 @@ var load_contract_to_buy = async (req, res, next) => {
             for (var i = 0; i < product.length; i += chunkSize) {
                 warehouseChunks.push(product.slice(i, i + chunkSize));
             }
+            console.log(warehouseChunks);
             res.render('customer/pages/ctm_create_contract', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
         }
     }).populate('product_id owner_id')

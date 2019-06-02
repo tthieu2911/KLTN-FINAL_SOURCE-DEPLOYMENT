@@ -73,7 +73,7 @@ var edit_product = (req, res, next) => {
             res.redirect('/manufacturer/product');
         }
         else {
-            warehouseSchema.findOne({ product_id: id_product, owner_id: req.session.userId }, (err, product) => {
+            warehouseSchema.find({ product_id: id_product, owner_id: req.session.userId }, (err, product) => {
                 if (product == null || product.length == 0) {
                     console.log("Update manufacturer 's warehouse failed. Can not find product in warehouse.");
                     req.flash('message', Messages.product.unavailabled);
@@ -187,7 +187,7 @@ var accept_ship_price = (req, res, next) => {
             res.redirect('/manufacturer');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
+            warehouseSchema.find({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
                 if (product == null || product.length == 0) {
                     console.log('Accept contract failed. No product left in warehouse.');
                     req.flash('message', Messages.product.unavailabled);
@@ -216,7 +216,7 @@ var delete_contract = (req, res) => {
             res.redirect('/manufacturer');
         }
         else {
-            warehouseSchema.findOne({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
+            warehouseSchema.find({ product_id: doc.product_id, owner_id: req.session.userId }, (error, product) => {
                 if (product == null || product.length == 0) {
                     req.flash('success', Messages.contract.delete.success);
                     res.redirect('/manufacturer');
