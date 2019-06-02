@@ -34,7 +34,7 @@ var load_product_to_buy = async (req, res, next) => {
         warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
 
             console.log(docs);
-            
+
             var warehouseChunks = [];
             var chunkSize = 1;
             for (var i = 0; i < docs.length; i += chunkSize) {
@@ -48,7 +48,7 @@ var load_product_to_buy = async (req, res, next) => {
             warehouseChunks = warehouseChunks.slice(start, end)
 
             res.render('retailer/pages/rt_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
-        }).sort({ name: -1 }).populate('product_id owner_id')
+        }).sort({ name: -1 }).populate('product_id owner_id product_id.manufacturer_id')
     })
 
     /*     var id_owner;
