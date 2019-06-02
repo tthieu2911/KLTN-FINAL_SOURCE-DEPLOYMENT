@@ -13,6 +13,7 @@ var create_product = (req, res) => {
     var nameProduct = req.body.nameProduct;
     var quatity = req.body.quatity;
     var description = req.body.description;
+    var address = req.body.warehouse_address;
     var dateExpire = req.body.expireDate;
     var dateCreate = req.body.createDate;
 
@@ -38,6 +39,7 @@ var create_product = (req, res) => {
             product_id: product._id,
             owner_id: req.session.userId,
             quatity: quatity,
+            warehouse_address: address,
             createDate: today
         })
 
@@ -63,6 +65,7 @@ var edit_product = (req, res, next) => {
     var description = req.body.description;
     var id_product = req.body.id_product;
     var quatity = req.body.quatity;
+    var address = req.body.warehouse_address;
     var dateExpire = req.body.expireDate;
     var dateCreate = req.body.createDate;
 
@@ -94,9 +97,10 @@ var edit_product = (req, res, next) => {
                         res.redirect('/manufacturer/product/edit/' + id_product);
                     }
 
-                    product.quatity = quatity;
-                    product.updateDate = today;
-                    product.save().then(() => {
+                    product[0].quatity = quatity;
+                    product[0].warehouse_address = address,
+                    product[0].updateDate = today;
+                    product[0].save().then(() => {
                         console.log("Update manufacturer 's warehouse successful.");
                     })
                     

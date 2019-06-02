@@ -120,12 +120,20 @@
                         value="{{this.quatity}}" required>
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="createDate" name="createDate"
-                        value="{{this.product_id.createDate}}">
+                      <input type="text"class="form-control form-control-user" id="" name="warehouse_address"
+                        placeholder="Địa chỉ kho hàng" value="{{this.warehouse_address}}" required>
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="expireDate" name="expireDate"
-                        value="{{this.product_id.expireDate}}">
+                      <input type="text" class="form-control form-control-user" id="txtCreateDate" name="createDate"
+                        value="">
+                      <input type="text" class="form-control" id="createDate" name="createDate"
+                        value="">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control form-control-user" id="txtExpireDate" name="createDate"
+                        value="">
+                      <input type="text" class="form-control" id="expireDate" name="expireDate"
+                        value="">
                     </div>
 
                     <input type="hidden" name="id_product" value="{{this.product_id._id}}">
@@ -145,8 +153,8 @@
         </div>
       </div>
     </div>
-
   </div>
+
   <script>
     function back() {
       history.back();
@@ -154,14 +162,47 @@
 
     $(document).ready(function () {
 
+      $("#createDate").hide();
+      $("#expireDate").hide();
+
       var crDate = $("#hdnCreateDate").val();
       var epDate = $("#hdnExpireDate").val();
 
-      $("#expireDate").datepicker();
-      $("#createDate").datepicker("setDate", crDate);
-      $("#expireDate").datepicker();
+      $("#txtCreateDate").val(Date_to_String(crDate));
+      $("#txtExpireDate").val(Date_to_String(epDate));
 
+      $("#txtCreateDate").on('click', function(){
 
+        $(this).hide();
+
+        $("#createDate").show();
+        $("#createDate").datepicker();
+      })
+
+      $("#txtExpireDate").on('click', function(){
+
+        $(this).hide();
+
+        $("#expireDate").show();
+        $("#expireDate").datepicker();
+      })
+
+      function Date_to_String(date_model) {
+
+        if (date_model == null || date_model.length == 0) {
+          return '';
+        }
+        else {
+          var formated_date = new Date(date_model);
+          var day = formated_date.getDate();
+          var month = formated_date.getMonth() + 1;
+          var year = formated_date.getFullYear();
+
+          var return_format = day + ' - ' + month + ' - ' + year;
+
+          return return_format;
+        }
+      }
     })
   </script>
 

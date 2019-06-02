@@ -53,7 +53,14 @@ var load_price = async (req, res) => {
                 contractChunks.push(docs.slice(i, i + chunkSize));
             }
 
-            res.render('manufacturer/pages/mf_send_price', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message') });
+            var warehouseChunks = [];
+            warehouseSchema.find({product_id: docs[0].product_id, owner_id: docs[0].seller_id}, (e, product) => {
+                for (var i = 0; i < product.length; i += 1) {
+                    warehouseChunks.push(product.slice(i, i + 1));
+                }
+            })
+
+            res.render('manufacturer/pages/mf_send_price', { contracts: contractChunks, warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
         }).populate('product_id buyer_id')
     })
 }

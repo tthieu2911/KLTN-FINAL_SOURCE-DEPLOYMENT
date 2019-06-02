@@ -47,8 +47,8 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Manufacturer</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
@@ -86,7 +86,7 @@
             <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block">
-                <img src="https://source.unsplash.com/random/460x410">
+                <img src="https://source.unsplash.com/random/460x510">
               </div>
               <div class="col-lg-6">
                 <!-- Exit button -->
@@ -98,9 +98,10 @@
                 <div class="container-fluid">
                   <form action="/manufacturer/price" method="post">
                     <div class="form-group">
-                      {{# each contracts}}
-                      {{# each this}}
                       <table class="table">
+                        {{# each contracts}}
+                        {{# each this}}
+                        <input type="hidden" name="contract_id" value="{{this._id}}">
                         <tr>
                           <th>Tên sản phẩm:</th>
                           <td>{{this.product_id.name}}</td>
@@ -117,23 +118,26 @@
                           <th>Địa chỉ giao hàng:</th>
                           <td>{{this.shipTo}}</td>
                         </tr>
+                        {{/each}}
+                        {{/each}}
+                        {{# each warehouses}}
+                        {{# each this}}
                         <tr>
                           <th>Địa chỉ lấy hàng:</th>
-                          <td><input type="text" class="form-control form-control-user"
-                            id="" name="ship_from" value="{{this.seller_id.address}}" required></td>
+                          <td><input type="text" class="form-control form-control-user" id="" name="ship_from"
+                              value="{{this.warehouse_address}}" required></td>
                         </tr>
+                        {{/each}}
+                        {{/each}}
                       </table>
-                      <input type="hidden" name="contract_id" value="{{this._id}}">
-                      {{/each}}
-                      {{/each}}
                     </div>
                     <div class="form-group">
                       <p><b>Tổng giá trị đơn hàng: </b></p>
                       <input type="number" min="0" class="form-control" id="price" name="price"
-                        placeholder="Giá trị đơn hàng" required >
+                        placeholder="Giá trị đơn hàng" required>
                     </div>
                     <button type="submit" class="btn btn-primary" style="margin-left:86%; margin-bottom:5% ">
-                      <i class="fas fa-check" aria-hidden="true"></i>    
+                      <i class="fas fa-check" aria-hidden="true"></i>
                     </button>
                   </form>
                 </div>
