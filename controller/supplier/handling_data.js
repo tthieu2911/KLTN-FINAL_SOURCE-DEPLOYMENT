@@ -163,8 +163,8 @@ var create_contract = async (req, res, next) => {
                     res.redirect('/supplier/market');
                 }
                 else {
-                    product.quatity = product.quatity - req_quatity;
-                    product.save().then(() => {
+                    product[0].quatity = product[0].quatity - req_quatity;
+                    product[0].save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
     

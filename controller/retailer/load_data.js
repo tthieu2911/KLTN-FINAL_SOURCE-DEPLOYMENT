@@ -1,4 +1,4 @@
-﻿var contractSchema = require('../../data/models/contract')
+var contractSchema = require('../../data/models/contract')
 var userSchema = require('./../../data/models/user')
 var productSchema = require('../../data/models/product')
 var warehouseSchema = require('../../data/models/warehouse')
@@ -29,7 +29,7 @@ var load_contract = async (req, res, next) => {
 
 // load dữ liệu sản phẩm để mua
 var load_product_to_buy = async (req, res, next) => {
-         userSchema.find({ type: "supplier" }, async (error, user) => {
+    /*     userSchema.find({ type: "supplier" }, async (error, user) => {
             var id_owner = user;
             warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
     
@@ -49,7 +49,75 @@ var load_product_to_buy = async (req, res, next) => {
     
                 res.render('retailer/pages/rt_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
             }).sort({ name: -1 }).populate('product_id owner_id product_id.manufacturer_id')
-        })
+        }) */
+
+    userSchema.find({ type: "supplier" }, (error, user) => {
+        id_supplier = user;
+        /*         warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
+                    for (var i = 0; i < docs.length; i += 1) {
+                        id_product.push(docs[i]);
+                    }
+                }) */
+
+        warehouseSchema.aggregate([
+            {
+                "$lookup": {
+                    "from": "products",
+                    "localField":"product_id",
+                    "foreignField":"_id",
+                    "as":"product_info"
+                }
+            },
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField":"owner_id",
+                    "foreignField":"_id",
+                    "as": "owner_info"
+                },
+            },
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField":"product_info.manufacturer_id",
+                    "foreignField":"_id",
+                    "as": "manu_info"
+                },
+            },
+            {
+                "$project":{
+                    "product_id": 1,
+                    "product_name": "$product_info.name",
+                    "createDate": "$product_info.createDate",
+                    "expireDate": "$product_info.expireDate",
+                    "description": "$product_info.description:",
+                    "owner_id": "$owner_info._id ",
+                    "owner_name": "$owner_info.fullName",
+                    "manu_name": "$manu_info.fullName"
+                }
+            }
+        ], (error, docs) => {
+                console.log(docs[1]);
+                var resultChunks = [];
+                var chunkSize = 1;
+                for (var i = 0; i < docs.length; i += chunkSize) {
+                    resultChunks.push(docs.slice(i, i + chunkSize));
+                }
+                var page = parseInt(req.query.page) || 1;
+                var perPage = 6;
+                var start = (page - 1) * perPage;
+                var end = page * perPage;
+                var num_page = Math.ceil(docs.length / perPage)
+                resultChunks = resultChunks.slice(start, end)
+
+                res.render('retailer/pages/rt_buy_product', { results: resultChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+            })
+    })
+
+
+
+
+
 }
 
 // load danh sách sản phẩm của retailer đang đăng nhập

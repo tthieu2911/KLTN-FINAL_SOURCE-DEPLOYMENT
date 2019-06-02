@@ -106,8 +106,8 @@
     <h1 class="text-center">Sản phẩm</h1>
 
     <!-- Product card -->
-    <div class="container row">
-      {{# each warehouses}}
+    <div class="row">
+      {{# each results}}
       {{# each this}}
       <div class="col-sm-6 col-md-6 d-none d-lg-block">
         <form action="/retailer/market/create_contract" method="post" onsubmit="return accept_form()">
@@ -124,22 +124,22 @@
                   <h4 style="font-weight:bold; text-align:center; margin-top:8%">Thông tin sản phẩm</h4>
                   <hr>
                   <div class="product-text text-center ">
-                    <h3>{{this.product_id.name}}</h3>
-                    <h2>{{this.owner_id.fullName}}</h2>
+                    <h3>{{this.product_name}}</h3>
+                    <h2>{{this.owner_name}}</h2>
 
                     <div class="card-text text-left">
                       <table class="product-content">
                         <tr>
                           <th>Nhà sản xuất: </th>
-                          <td{{this.product_id.manufacturer_id.fullName}}></td>
+                          <td{{this.manu_name}}></td>
                         </tr>
                         <tr>
                           <th>Nhà phân phối: </th>
-                          <td>{{this.owner_id.fullName}}</td>
+                          <td>{{this.owner_name}}</td>
                         </tr>
                         <tr>
                           <th>Mô tả: </th>
-                          <td>{{this.product_id.desription}}</td>
+                          <td>{{this.desription}}</td>
                         </tr>
                         <tr>
                           <th>Ngày sản xuất: </th>
@@ -150,9 +150,9 @@
                           <td class="expireDate"></td>
                         </tr>
                         <input class="hdnCreateDate" type="hidden" name="hdnCreateDate"
-                          value="{{this.product_id.createDate}}">
+                          value="{{this.createDate}}">
                         <input class="hdnExpireDate" type="hidden" name="hdnExpireDate"
-                          value="{{this.product_id.expireDate}}">
+                          value="{{this.expireDate}}">
                       </table>
                     </div>
                   </div>
@@ -165,8 +165,8 @@
                 </div>
               </div>
             </div>
-            <input type="hidden" name="product_id" value="{{this.product_id._id}}">
-            <input type="hidden" name="owner_id" value="{{this.owner_id._id}}">
+            <input type="hidden" name="product_id" value="{{this.product_id}}">
+            <input type="hidden" name="owner_id" value="{{this.owner_id}}">
             <input type="hidden" name="_csrf" value="{{csrfToken}}">
           </div>
         </form>
