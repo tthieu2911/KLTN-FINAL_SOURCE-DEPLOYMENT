@@ -113,7 +113,7 @@
           <th scope="col">Số lượng trong kho</th>
           <th scope="col">Ngày sản xuất</th>
           <th scope="col">Ngày hết hạn</th>
-          <th scope="col" class="text-center">Thao tác</th>
+          <th scope="col" colspan="2" class="text-center">Thao tác</th>
         </tr>
       </thead>
       <tbody>
@@ -130,6 +130,13 @@
             <a id="delete" href="/supplier/product/delete/{{this.product_id._id}}" onclick="return check()">
               <button type="button" class="btn btn-danger">
                 <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </a>
+          </td>
+          <td class="text-center">
+            <a id="delete" href="/supplier/product/edit/{{this.product_id._id}}">
+              <button type="button" class="btn btn-info">
+                <i class="fas fa-edit" aria-hidden="true"></i>
               </button>
             </a>
           </td>

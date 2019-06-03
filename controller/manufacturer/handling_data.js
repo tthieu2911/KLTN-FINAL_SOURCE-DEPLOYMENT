@@ -210,6 +210,28 @@ var accept_ship_price = (req, res, next) => {
     })
 }
 
+// Không chấp nhận chi phí vận chuyển
+var cancel_ship_price = (req, res, next) => {
+    var id_contract = req.params.id;
+    contractSchema.findOne({ _id: id_contract, status: "4" }, function (err, doc) {
+        if (doc == null || doc.length == 0) {
+            console.log('Accept contract failed. Can not find contract.');
+            req.flash('message', Messages.contract.price_notFound);
+            res.redirect('/manufacturer');
+        }
+        else {
+            doc.status = "3";
+            doc.shipper_id = null;
+            doc.shipDate = null;
+            doc.save().then(() => {
+                console.log('Cancel delivery successfully');
+                req.flash('success', Messages.contract.deny_to_ship.success);
+                res.redirect('/manufacturer');
+            });
+        }
+    })
+}
+
 // Xóa đơn hàng
 var delete_contract = (req, res) => {
     var id_contract = req.params.id;
@@ -252,5 +274,6 @@ module.exports = {
     send_price,
     delivery_contract,
     accept_ship_price,
+    cancel_ship_price,
     delete_contract
 }

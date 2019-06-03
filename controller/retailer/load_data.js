@@ -142,7 +142,14 @@ var load_price = async (req, res) => {
                 contractChunks.push(docs.slice(i, i + chunkSize));
             }
 
-            res.render('retailer/pages/rt_send_price', { contracts: contractChunks, success: req.flash('success'), message: req.flash('message') });
+            var warehouseChunks = [];
+            warehouseSchema.find({product_id: docs[0].product_id, owner_id: docs[0].seller_id}, (e, product) => {
+                for (var i = 0; i < product.length; i += 1) {
+                    warehouseChunks.push(product.slice(i, i + 1));
+                }
+            })
+
+            res.render('retailer/pages/rt_send_price', { contracts: contractChunks, warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
         }).populate('product_id buyer_id')
     })
 }
@@ -240,6 +247,19 @@ var load_contract_to_buy = async (req, res, next) => {
     }).populate('product_id owner_id')
 }
 
+// load thông tin sản phẩm để chỉnh sửa
+var load_update_product = async (req, res) => {
+    var id = req.params.id;
+    warehouseSchema.find({ product_id: id, owner_id: req.session.userId }, async (err, doc) => {
+        var warehouseChunks = [];
+        var chunkSize = 3;
+        for (var i = 0; i < doc.length; i += chunkSize) {
+            warehouseChunks.push(doc.slice(i, i + chunkSize));
+        }
+        res.render('retailer/pages/rt_edit_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
+    }).populate('product_id owner_id');
+}
+
 module.exports = {
     load_contract,
     load_product_to_buy,
@@ -250,4 +270,5 @@ module.exports = {
     load_detail_contract,
     load_detail_contract_retailer,
     load_contract_to_buy,
+    load_update_product
 }

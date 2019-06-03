@@ -34,7 +34,7 @@
 
       <!-- Home button -->
       <div>
-        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/manufacturer"></a>
+        <a class="fa fa-home" style="font-size:25px;color:dimgrey" href="/supplier"></a>
       </div>
 
       <!-- Topbar Navbar -->
@@ -42,21 +42,29 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-          <a class="nav-link dropdown-toggle" href="/manufacturer" id="userDropdown" role="button"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Manufacturer</span>
+          <a class="nav-link dropdown-toggle" href="/supplier" id="userDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Supplier</span>
             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
           </a>
 
           <!-- Dropdown - User Information -->
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/manufacturer/profile">
+            <a class="dropdown-item" href="/supplier/profile">
               <i class="fas fa-address-card fa-sm fa-fw mr-2 text-gray-400"></i>
               Cá nhân
             </a>
-            <a class="dropdown-item" href="/manufacturer/product">
+            <a class="dropdown-item" href="/supplier/manacontract">
+              <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+              Quản lí đơn mua hàng
+            </a>
+            <a class="dropdown-item" href="/supplier/product">
               <i class="fas fa-calendar-alt fa-sm fa-fw mr-2 text-gray-400"></i>
               Quản lí kho
+            </a>
+            <a class="dropdown-item" href="/supplier/market">
+              <i class="fas fa-shopping-cart fa-sm fa-fw mr-2 text-gray-400"></i>
+              Mua sản phẩm
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">
@@ -81,11 +89,11 @@
             <!-- Nested Row within Card Body -->
 
             <div class="row">
-              <div class="col-lg-6 d-none d-lg-block">
+              <div class="col-lg-5 d-none d-lg-block">
                 <img src="https://source.unsplash.com/random/440x520">
               </div>
 
-              <div class="col-lg-6 d-none d-lg-block">
+              <div class="col-lg-7 d-none d-lg-block">
                 <button class="btn btn-primary" onclick="back()"
                   style="margin-bottom: 1%;margin-top: 3%; margin-left: 89%"> X </button>
 
@@ -106,35 +114,39 @@
 
                   {{# each warehouses}}
                   {{# each this}}
-                  <form class="user" method="POST" action="/manufacturer/product/edit">
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="" name="nameproduct"
-                        value="{{this.product_id.name}}" required>
-                    </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="" name="description"
-                        value="{{this.product_id.description}}" required>
-                    </div>
-                    <div class="form-group">
-                      <input type="number" min="0" class="form-control form-control-user" id="" name="quatity"
-                        value="{{this.quatity}}" required>
-                    </div>
-                    <div class="form-group">
-                      <input type="text"class="form-control form-control-user" id="" name="warehouse_address"
-                        placeholder="Địa chỉ kho hàng" value="{{this.warehouse_address}}" required>
-                    </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="txtCreateDate" name="createDate"
-                        value="">
-                      <input type="text" class="form-control" id="createDate" name="createDate"
-                        value="">
-                    </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="txtExpireDate" name="createDate"
-                        value="">
-                      <input type="text" class="form-control" id="expireDate" name="expireDate"
-                        value="">
-                    </div>
+                  <form class="user" method="POST" action="/supplier/product/edit">
+                    <table class="table" id="product-detail">
+                      <input type="hidden" name="contract_id" value="{{this._id}}">
+                      <tr>
+                        <th>Tên sản phẩm:</th>
+                        <td>{{this.product_id.name}}</td>
+                      </tr>
+                      <tr>
+                        <th>Nhà sản xuất:</th>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <th>Nhà phân phối:</th>
+                        <td>{{this.owner_id.fullName}}</td>
+                      </tr>
+                      <tr>
+                        <th>Ngày sản xuất</th>
+                        <td id="CreateDate"></td>
+                      </tr>
+                      <tr>
+                        <th>Ngày hết hạn</th>
+                        <td id="ExpireDate"></td>
+                      </tr>
+                      <tr>
+                        <th>Số lượng:</th>
+                        <td>{{this.quatity}}</td>
+                      </tr>
+                      <tr>
+                        <th>Địa chỉ kho hàng:</th>
+                        <td><input type="text" class="form-control" id="" name="ship_from"
+                            value="{{this.warehouse_address}}" required></td>
+                      </tr>
+                    </table>
 
                     <input type="hidden" name="id_product" value="{{this.product_id._id}}">
                     <input id="hdnCreateDate" type="hidden" name="hdnCreateDate" value="{{this.product_id.createDate}}">
@@ -162,30 +174,11 @@
 
     $(document).ready(function () {
 
-      $("#createDate").hide();
-      $("#expireDate").hide();
-
       var crDate = $("#hdnCreateDate").val();
       var epDate = $("#hdnExpireDate").val();
 
-      $("#txtCreateDate").val(Date_to_String(crDate));
-      $("#txtExpireDate").val(Date_to_String(epDate));
-
-      $("#txtCreateDate").on('click', function(){
-
-        $(this).hide();
-
-        $("#createDate").show();
-        $("#createDate").datepicker();
-      })
-
-      $("#txtExpireDate").on('click', function(){
-
-        $(this).hide();
-
-        $("#expireDate").show();
-        $("#expireDate").datepicker();
-      })
+      $("#CreateDate").html(Date_to_String(crDate));
+      $("#ExpireDate").html(Date_to_String(epDate));
 
       function Date_to_String(date_model) {
 

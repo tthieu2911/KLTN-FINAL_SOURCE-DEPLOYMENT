@@ -81,6 +81,28 @@ var accept_ship_price = (req, res, next) => {
     })
 }
 
+// Không chấp nhận chi phí vận chuyển
+var cancel_ship_price = (req, res, next) => {
+    var id_contract = req.params.id;
+    contractSchema.findOne({ _id: id_contract, status: "4" }, function (err, doc) {
+        if (doc == null || doc.length == 0) {
+            console.log('Accept contract failed. Can not find contract.');
+            req.flash('message', Messages.contract.price_notFound);
+            res.redirect('/supplier');
+        }
+        else {
+            doc.status = "3";
+            doc.shipper_id = null;
+            doc.shipDate = null;
+            doc.save().then(() => {
+                console.log('Cancel delivery successfully');
+                req.flash('success', Messages.contract.deny_to_ship.success);
+                res.redirect('/supplier');
+            });
+        }
+    })
+}
+
 // Xóa đơn hàng
 var delete_contract = (req, res) => {
     var id_contract = req.params.id;
@@ -320,11 +342,34 @@ var delete_product = (req, res, next) => {
     })
 }
 
+//  Sửa sản phẩm
+var edit_product = (req, res, next) => {
+    var id_product = req.body.id_product;
+    var address = req.body.warehouse_address;
+
+    warehouseSchema.find({ product_id: id_product, owner_id: req.session.userId }, (err, product) => {
+        if (product == null || product.length == 0) {
+            console.log("Update supplier 's warehouse failed. Can not find product in warehouse.");
+            req.flash('message', Messages.product.unavailabled);
+            res.redirect('/supplier/product');
+        }
+        else {
+            product[0].warehouse_address = address
+            product[0].save().then(() => {
+                console.log("Update supplier 's warehouse successful.");
+                req.flash('success', Messages.product.edit.success);
+                res.redirect('/supplier/product');
+            })
+        }
+    });
+}
+
 module.exports = {
     // Handling selling biz
     send_price,
     delivery_contract,
     accept_ship_price,
+    cancel_ship_price,    
     cancel_contract,
     delete_contract,
 
@@ -335,4 +380,5 @@ module.exports = {
 
     // Handling product in warehouse
     delete_product,
+    edit_product
 }

@@ -106,9 +106,11 @@
                 <div class="container-fluid">
                   <form action="/supplier/price" method="post">
                     <div class="form-group">
-                      {{# each contracts}}
-                      {{# each this}}
+
                       <table class="table">
+                        {{# each contracts}}
+                        {{# each this}}
+                        <input type="hidden" name="contract_id" value="{{this._id}}">
                         <tr>
                           <th>Tên sản phẩm:</th>
                           <td>{{this.product_id.name}}</td>
@@ -125,15 +127,18 @@
                           <th>Địa chỉ giao hàng:</th>
                           <td>{{this.shipTo}}</td>
                         </tr>
+                        {{/each}}
+                        {{/each}}
+                        {{# each warehouses}}
+                        {{# each this}}
                         <tr>
                           <th>Địa chỉ lấy hàng:</th>
-                          <td><input type="text" class="form-control form-control-user"
-                            id="" name="ship_from" value="{{this.seller_id.address}}" required></td>
+                          <td><input type="text" class="form-control form-control-user" id="" name="ship_from"
+                              value="{{this.warehouse_address}}" required></td>
                         </tr>
+                        {{/each}}
+                        {{/each}}
                       </table>
-                      <input type="hidden" name="contract_id" value="{{this._id}}">
-                      {{/each}}
-                      {{/each}}
                     </div>
                     <div class="form-group">
                       <p><b>Tổng giá trị đơn hàng: </b></p>
@@ -158,7 +163,6 @@
       history.back();
     }
   </script>
-
 
 </body>
 

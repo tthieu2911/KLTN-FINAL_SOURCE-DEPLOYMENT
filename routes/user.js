@@ -54,6 +54,7 @@ app.get('/manufacturer',mf_load_data.load_contract);
 app.get("/manufacturer/contract/:id",mf_load_data.load_price);
 app.post("/manufacturer/price",mf_handling.send_price);         // Send price
 app.get("/manufacturer/contract/delivery/accept/:id",mf_handling.accept_ship_price);
+app.get("/manufacturer/contract/delivery/cancel/:id",mf_handling.cancel_ship_price);
 app.get("/manufacturer/contract/delivery/:id",mf_handling.delivery_contract);
 app.get("/manufacturer/contract/delete/:id",mf_handling.delete_contract);
 //- Warehouse
@@ -80,6 +81,7 @@ app.get("/retailer/contract/:id",rt_load_data.load_price);
 app.post("/retailer/price",rt_handling.send_price);         // Send price
 app.get("/retailer/contract/delivery/:id",rt_handling.delivery_contract);
 app.get("/retailer/contract/delivery/accept/:id",rt_handling.accept_ship_price);
+app.get("/retailer/contract/delivery/cancel/:id",rt_handling.cancel_ship_price);
 app.get("/retailer/contract/delete/:id",rt_handling.delete_contract);
 //- Warehouse
 app.get('/retailer/product',rt_load_data.load_product);
@@ -95,7 +97,9 @@ app.get('/retailer/done/:id',rt_handling.done_contract);
 //- Profile
 app.get('/retailer/profile',rt_load_data.load_profile);
 app.get('/retailer/detail/:id',rt_load_data.load_detail_contract);
-
+//- Product
+app.get('/retailer/product/edit/:id',rt_load_data.load_update_product);
+app.post('/retailer/product/edit',rt_handling.edit_product);
 
 
 // Supplier
@@ -108,6 +112,7 @@ app.get("/supplier/contract/:id",sl_load_data.load_price);
 app.post("/supplier/price",sl_handling.send_price);         // Send price
 app.get("/supplier/contract/delivery/:id",sl_handling.delivery_contract);
 app.get("/supplier/contract/delivery/accept/:id",sl_handling.accept_ship_price);
+app.get("/supplier/contract/delivery/cancel/:id",sl_handling.cancel_ship_price);
 app.get("/supplier/contract/delete/:id",sl_handling.delete_contract);
 //- Warehouse
 app.get('/supplier/product',sl_load_data.load_product);
@@ -123,7 +128,9 @@ app.get('/supplier/done/:id',sl_handling.done_contract);
 //- Profile
 app.get('/supplier/profile',sl_load_data.load_profile);
 app.get('/supplier/detail/:id',sl_load_data.load_detail_contract);
-
+//- Product
+app.get('/supplier/product/edit/:id',sl_load_data.load_update_product);
+app.post('/supplier/product/edit',sl_handling.edit_product);
 
 // Shipper
 var sp_load_data = require('../controller/shipper/load_data');
