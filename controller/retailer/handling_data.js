@@ -269,9 +269,9 @@ var done_contract = (req, res, next) => {
                     }
                 }
                 else {
-                    product.quatity = product.quatity + doc.quatity;
-                    product.updateDate = today;
-                    product.save().then(() => {
+                    product[0].quatity = product[0].quatity + doc.quatity;
+                    product[0].updateDate = today;
+                    product[0].save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 
