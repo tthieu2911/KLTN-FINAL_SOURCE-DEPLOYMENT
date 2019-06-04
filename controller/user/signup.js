@@ -36,7 +36,7 @@ var save_data= async(req,res,done)=>{
             address: null,
             phone: phone,
             email: null,
-            type: "customer",
+            type: null,
             createDate: today});
         
         if(users == null){
