@@ -241,8 +241,8 @@ var delete_contract = (req, res) => {
                     res.redirect('/manufacturer');
                 }
                 else {
-                    product.quatity = product.quatity + doc.quatity;
-                    product.save().then(() => {
+                    product[0].quatity = product[0].quatity + doc[0].quatity;
+                    product[0].save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 

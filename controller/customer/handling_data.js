@@ -115,8 +115,8 @@ var cancel_contract = (req, res) => {
                     res.redirect('/customer/manacontract');
                 }
                 else {
-                    product.quatity = product.quatity + doc.quatity;
-                    product.save().then(() => {
+                    product[0].quatity = product[0].quatity + doc.quatity;
+                    product[0].save().then(() => {
                         console.log("Update quatity of seller's warehouse successfully.");
                     });
 
