@@ -34,7 +34,7 @@ var create_user = (req, res, next)  => {
     }
     else {
         userSchema.findOne({ username: userName }, (err, doc) => {
-            if (doc != null || doc.length != 0) {
+            if (doc != null) {
                 console.log("create user failed. Username exsited.");
                 req.flash('message', Messages.user.create.exist);
                 res.redirect('/admin/create_user');
