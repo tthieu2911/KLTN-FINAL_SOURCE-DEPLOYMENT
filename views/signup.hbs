@@ -13,15 +13,23 @@
 
   <!-- Custom fonts for this template-->
   <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
-  
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
 
 </head>
 
@@ -41,34 +49,39 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Tạo Tài Khoản!</h1>
                 {{#if message}}
-                  <div class="alert alert-danger text-center" role="alert">
-                    {{this.message}}
-                  </div>
+                <div class="alert alert-danger text-center" role="alert">
+                  {{this.message}}
+                </div>
                 {{/if}}
                 {{#if message_sc}}
-                  <div class="alert alert-success text-center" role="alert">
-                    {{this.message_sc}}
-                  </div>
+                <div class="alert alert-success text-center" role="alert">
+                  {{this.message_sc}}
+                </div>
                 {{/if}}
               </div>
               <form class="user" method="POST" action="/signup">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="" name="fullName" required placeholder="Họ tên">
+                    <input type="text" class="form-control form-control-user" id="" name="fullName" required
+                      placeholder="Họ tên">
                   </div>
                   <div class="col-sm-6">
-                    <input type="number" class="form-control form-control-user" id="" name="phone" required placeholder="Số điện thoại">
+                    <input type="number" class="form-control form-control-user" id="" name="phone" required
+                      placeholder="Số điện thoại">
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control form-control-user" id="" name="userName" required placeholder="Tên đăng nhập">
+                  <input type="text" class="form-control form-control-user" id="" name="userName" required
+                    placeholder="Tên đăng nhập">
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" required id="exampleInputPassword" name="passWord" placeholder="Mật khẩu">
+                    <input type="password" class="form-control form-control-user" required id="exampleInputPassword"
+                      name="passWord" placeholder="Mật khẩu">
                   </div>
                   <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" required id="exampleRepeatPassword" name="repeatPassWord" placeholder="Nhập lại mật khẩu">
+                    <input type="password" class="form-control form-control-user" required id="exampleRepeatPassword"
+                      name="repeatPassWord" placeholder="Nhập lại mật khẩu">
                   </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-user btn-block">
@@ -94,9 +107,7 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </body>
 
 </html>
