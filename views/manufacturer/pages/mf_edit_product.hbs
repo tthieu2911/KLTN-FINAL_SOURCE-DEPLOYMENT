@@ -82,7 +82,7 @@
 
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block">
-                <img src="https://source.unsplash.com/random/440x520">
+                <img src="https://source.unsplash.com/random/440x560">
               </div>
 
               <div class="col-lg-6 d-none d-lg-block">
@@ -124,13 +124,13 @@
                         placeholder="Địa chỉ kho hàng" value="{{this.warehouse_address}}" required>
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="txtCreateDate" name="createDate"
+                      <input type="text" class="form-control form-control-user" id="txtCreateDate" name="txtCreateDate"
                         value="">
                       <input type="text" class="form-control" id="createDate" name="createDate"
                         value="">
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="txtExpireDate" name="createDate"
+                      <input type="text" class="form-control form-control-user" id="txtExpireDate" name="txtExpireDate"
                         value="">
                       <input type="text" class="form-control" id="expireDate" name="expireDate"
                         value="">
@@ -140,7 +140,7 @@
                     <input id="hdnCreateDate" type="hidden" name="hdnCreateDate" value="{{this.product_id.createDate}}">
                     <input id="hdnExpireDate" type="hidden" name="hdnExpireDate" value="{{this.product_id.expireDate}}">
 
-                    <button type="submit" class="btn btn-primary" style="margin-left: 83%; width:60px">
+                    <button type="submit" class="btn btn-primary btnEdit" style="margin-left: 83%; width:60px">
                       <i class="fas fa-edit" aria-hidden="true"></i>
                     </button>
                   </form>
@@ -185,6 +185,15 @@
 
         $("#expireDate").show();
         $("#expireDate").datepicker();
+      })
+
+      $(".btnEdit").on('click', function(){
+        if ($("#createDate").val() == ''){
+          $("#createDate").val(crDate);
+        }
+        if ($("#expireDate").val() == ''){
+          $("#expireDate").val(epDate);
+        }
       })
 
       function Date_to_String(date_model) {

@@ -83,13 +83,6 @@ var edit_product = (req, res, next) => {
                     res.redirect('/manufacturer/product');
                 }
                 else {
-                    if (dateCreate.length == 0) {
-                        dateCreate = product.product_id.createDate;
-                    }
-
-                    if (dateExpire.length == 0) {
-                        dateExpire = product.product_id.expireDate;
-                    }
 
                     if (dateExpire < dateCreate && dateExpire.length != 0) {
                         console.log('Update new product failed. Wrong expiry date.');
