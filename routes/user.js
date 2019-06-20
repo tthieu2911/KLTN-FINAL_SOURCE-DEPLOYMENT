@@ -6,9 +6,6 @@ var handling = require('./../controller/user/handling_user');
 var csrfProtection = csrf();
 // app.use(csrfProtection); 
 
-var ctm_handling_payment = require('../controller/payment/handling_payment');
-
-
 // Administrator
 var ad_load_data = require('../controller/admin/load_data');
 var ad_handling = require('../controller/admin/handling_data');
@@ -38,12 +35,6 @@ app.get('/customer/done/:id',ctm_handling.done_contract);
 app.get('/customer/manacontract',ctm_load_data.load_contract_manager);
 app.get('/customer/detail/:id',ctm_load_data.load_detail_contract);
 app.get('/customer/profile',ctm_load_data.load_profile);
-
-// Test
-app.get('/customer/create-payment/:id',ctm_load_data.load_contract_for_payment);
-app.post('/customer/create-payment/:id',ctm_handling_payment.create_payment_transaction);
-app.get('/customer/execute-payment/:id',ctm_handling_payment.execute_payment_transaction);
-
 
 // Manufacturer
 var mf_load_data = require('../controller/manufacturer/load_data');
