@@ -109,7 +109,6 @@
         <tr>
           <th scope="col">Tên sản phẩm</th>
           <th scope="col">Nhà sản xuất</th>
-          <th scope="col">Nhà phân phối</th>
           <th scope="col">Mô tả</th>
           <th scope="col">Số lượng trong kho</th>
           <th scope="col">Ngày sản xuất</th>
@@ -118,13 +117,12 @@
         </tr>
       </thead>
       <tbody>
-        {{# each warehouses}}
+        {{# each results}}
         {{# each this}}
         <tr>
-          <td>{{this.product_id.name}}</td>
-          <td>{{this.owner_id.fullName}}</td>
-          <td></td>
-          <td>{{this.product_id.description}}</td>
+          <td>{{this.product_name}}</td>
+          <td>{{this.manu_name}}</td>
+          <td>{{this.description}}</td>
           <td class="text-center">{{this.quatity}}</td>
           <td id="createDate"></td>
           <td id="expireDate"></td>
@@ -142,8 +140,8 @@
               </button>
             </a>
           </td>
-          <input class="hdnCreateDate" type="hidden" name="hdnCreateDate" value="{{this.product_id.createDate}}">
-          <input class="hdnExpireDate" type="hidden" name="hdnExpireDate" value="{{this.product_id.expireDate}}">
+          <input class="hdnCreateDate" type="hidden" name="hdnCreateDate" value="{{this.createDate}}">
+          <input class="hdnExpireDate" type="hidden" name="hdnExpireDate" value="{{this.expireDate}}">
         </tr>
         {{/each}}
         {{/each}}

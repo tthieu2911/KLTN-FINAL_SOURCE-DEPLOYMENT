@@ -118,7 +118,7 @@ var load_product_to_buy = async (req, res, next) => {
 
 // load danh sách sản phẩm của retailer đang đăng nhập
 var load_product = async (req, res, next) => {
-    warehouseSchema.find({ owner_id: req.session.userId }, async (error, docs) => {
+    /* warehouseSchema.find({ owner_id: req.session.userId }, async (error, docs) => {
         var warehouseChunks = [];
         var chunkSize = 1;
         for (var i = 0; i < docs.length; i += chunkSize) {
@@ -133,6 +133,71 @@ var load_product = async (req, res, next) => {
 
         res.render('retailer/pages/rt_list_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
     }).sort({ name: -1 }).populate('product_id manufacturer_id owner_id')
+    */
+    userSchema.find({_id: req.session.userId}, (error, user) => {
+        id_user = user;
+        
+        warehouseSchema.aggregate([
+            {
+                "$lookup": {
+                    "from": "products",
+                    "localField": "product_id",
+                    "foreignField": "_id",
+                    "as": "product_info",
+                },
+            },
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "owner_id",
+                    "foreignField": "_id",
+                    "as": "owner_info"
+                },
+            },
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "product_info.manufacturer_id",
+                    "foreignField": "_id",
+                    "as": "manu_info"
+                },
+            },
+            {
+                "$match": {
+                    "owner_info._id": mongoose.Types.ObjectId(req.session.userId)
+                }
+            },
+            {
+                "$project": {
+                    "product_id": 1,
+                    "quatity": 1,
+                    "product_name": "$product_info.name",
+                    "createDate": "$product_info.createDate",
+                    "expireDate": "$product_info.expireDate",
+                    "description": "$product_info.description",
+                    "owner_id": 1,
+                    "owner_name": "$owner_info.fullName",
+                    "owner_address": "$owner_info.address",
+                    "manu_name": "$manu_info.fullName",
+                }
+            }
+        ], (error, docs) => {
+            var resultChunks = [];
+            var chunkSize = 1;
+            for (var i = 0; i < docs.length; i += chunkSize) {
+                resultChunks.push(docs.slice(i, i + chunkSize));
+            }
+
+            var page = parseInt(req.query.page) || 1;
+            var perPage = 6;
+            var start = (page - 1) * perPage;
+            var end = page * perPage;
+            var num_page = Math.ceil(docs.length / perPage)
+            resultChunks = resultChunks.slice(start, end)
+
+            res.render('retailer/pages/rt_list_product', { results: resultChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
+        })
+    })
 }
 
 // load trang báo giá sản phẩm
