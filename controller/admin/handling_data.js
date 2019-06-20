@@ -84,9 +84,7 @@ var edit_user = (req, res, next) => {
 // Xóa người dùng
 var delete_user = (req, res, next) => {
     var id_user = req.params.id;
-    console.log(id_user)
     userSchema.deleteMany({ _id: id_user}, (error, doc) => {
-        console.log(doc);
         if (doc == null || doc.length == 0) {
             console.log("Can not find user.");
             req.flash('message', Messages.user.delete.failed);

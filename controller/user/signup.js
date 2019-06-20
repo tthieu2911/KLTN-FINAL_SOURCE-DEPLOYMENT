@@ -15,16 +15,14 @@ var save_data= async(req,res,done)=>{
     var check = null;
     await check_dulicate(userName,(value)=>{
         check = value;
-    
     });
+    
     if(check == true)
     {
-        console.log(Messages.signup.duplicateAccount)
         return res.render('signup',{message:Messages.signup.duplicateAccount})
     }
     else if(passWord!=passWrord_2)
     {
-        console.log(Messages.signup.pass_equal_pass)
         return res.render('signup',{message:Messages.signup.pass_equal_pass})
     }
     else

@@ -46,7 +46,7 @@ var load_product = async (req, res, next) => {
 var load_price = async (req, res) => {
     var id = req.params.id;
     contractSchema.find({ _id: id, status: '0' }, async (err, doc) => {
-        await contractSchema.find({ '_id': id }, (err, docs) => {
+        await contractSchema.find({ _id: id }, (err, docs) => {
             var contractChunks = [];
             var chunkSize = 3;
             for (var i = 0; i < docs.length; i += chunkSize) {
@@ -58,9 +58,10 @@ var load_price = async (req, res) => {
                 for (var i = 0; i < product.length; i += 1) {
                     warehouseChunks.push(product.slice(i, i + 1));
                 }
-            })
 
-            res.render('manufacturer/pages/mf_send_price', { contracts: contractChunks, warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
+                res.render('manufacturer/pages/mf_send_price', { contracts: contractChunks, warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
+            })
+            
         }).populate('product_id buyer_id')
     })
 }

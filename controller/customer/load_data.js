@@ -42,7 +42,7 @@ var load_contract_to_buy = async (req, res, next) => {
             for (var i = 0; i < product.length; i += chunkSize) {
                 warehouseChunks.push(product.slice(i, i + chunkSize));
             }
-            console.log(warehouseChunks);
+
             res.render('customer/pages/ctm_create_contract', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
         }
     }).populate('product_id owner_id')

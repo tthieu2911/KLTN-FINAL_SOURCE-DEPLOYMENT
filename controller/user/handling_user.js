@@ -18,7 +18,7 @@ var update_profile = (req, res, next) => {
             doc.phone = phone;
             doc.email = email;
             doc.save().then(() => {
-                console.log('Cập nhật cá nhân')
+                console.log('Update profile successfully!')
             });
             req.flash('success', Messages.user.profile.update_success);
             res.redirect('/' + doc.type + '/profile');
@@ -68,7 +68,7 @@ var update_user_pass = async (req, res, next) => {
                 if (doc.email == get_email) {
                     doc.password = passWord;
                     doc.save().then(() => {
-                        console.log('Lấy lại pass')
+                        console.log('Update password successfully!')
                     });
                     res.redirect('/');
                 }

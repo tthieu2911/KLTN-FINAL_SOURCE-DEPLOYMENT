@@ -33,8 +33,6 @@ var load_product_to_buy = async (req, res, next) => {
         var id_owner = user;
         warehouseSchema.find({ quatity: { $ne: 0 }, owner_id: id_owner }, (error, docs) => {
 
-            console.log(docs);
-
             var warehouseChunks = [];
             var chunkSize = 1;
             for (var i = 0; i < docs.length; i += chunkSize) {
@@ -47,7 +45,6 @@ var load_product_to_buy = async (req, res, next) => {
             var num_page = Math.ceil(docs.length / perPage)
             warehouseChunks = warehouseChunks.slice(start, end)
 
-            console.log(warehouseChunks);
             res.render('retailer/pages/rt_buy_product', { warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message'), pagination: { page: page, limit: num_page }, paginateHelper: user_load.createPagination });
         }).sort({ name: -1 }).populate('product_id owner_id product_id.manufacturer_id')
     })
@@ -147,9 +144,10 @@ var load_price = async (req, res) => {
                 for (var i = 0; i < product.length; i += 1) {
                     warehouseChunks.push(product.slice(i, i + 1));
                 }
+                
+                res.render('retailer/pages/rt_send_price', { contracts: contractChunks, warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
             })
-
-            res.render('retailer/pages/rt_send_price', { contracts: contractChunks, warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
+            
         }).populate('product_id buyer_id')
     })
 }

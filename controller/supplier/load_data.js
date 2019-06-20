@@ -81,9 +81,10 @@ var load_price = async (req, res) => {
                 for (var i = 0; i < product.length; i += 1) {
                     warehouseChunks.push(product.slice(i, i + 1));
                 }
+
+                res.render('supplier/pages/sl_send_price', { contracts: contractChunks, warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
             })
 
-            res.render('supplier/pages/sl_send_price', { contracts: contractChunks, warehouses: warehouseChunks, success: req.flash('success'), message: req.flash('message') });
         }).populate('product_id buyer_id')
     })
 }
