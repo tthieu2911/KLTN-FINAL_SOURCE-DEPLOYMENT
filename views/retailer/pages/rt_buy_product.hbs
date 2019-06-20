@@ -107,7 +107,7 @@
 
     <!-- Product card -->
     <div class="container row">
-      {{# each warehouses}}
+      {{# each results}}
       {{# each this}}
       <div class="col-sm-6 col-md-6 d-none d-lg-block">
         <form action="/retailer/market/create_contract" method="post" onsubmit="return accept_form()">
@@ -124,22 +124,22 @@
                   <h4 style="font-weight:bold; text-align:center; margin-top:8%">Thông tin sản phẩm</h4>
                   <hr>
                   <div class="product-text text-center ">
-                    <h3>{{this.product_id.name}}</h3>
-                    <h2>{{this.owner_id.fullName}}</h2>
+                    <h3>{{this.product_name}}</h3>
+                    <h2>{{this.owner_name}}</h2>
 
                     <div class="card-text text-left">
                       <table class="product-content">
                         <tr>
                           <th>Nhà sản xuất: </th>
-                          <td></td>
+                          <td>{{this.manu_name}}</td>
                         </tr>
                         <tr>
                           <th>Nhà phân phối: </th>
-                          <td>{{this.owner_id.fullName}}</td>
+                          <td>{{this.owner_name}}</td>
                         </tr>
                         <tr>
                           <th>Mô tả: </th>
-                          <td>{{this.product_id.description}}</td>
+                          <td>{{this.description}}</td>
                         </tr>
                         <tr>
                           <th>Ngày sản xuất: </th>
@@ -150,9 +150,9 @@
                           <td class="expireDate"></td>
                         </tr>
                         <input class="hdnCreateDate" type="hidden" name="hdnCreateDate"
-                          value="{{this.product_id.createDate}}">
+                          value="{{this.createDate}}">
                         <input class="hdnExpireDate" type="hidden" name="hdnExpireDate"
-                          value="{{this.product_id.expireDate}}">
+                          value="{{this.expireDate}}">
                       </table>
                     </div>
                   </div>

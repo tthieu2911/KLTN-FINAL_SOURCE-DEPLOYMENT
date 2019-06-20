@@ -102,11 +102,10 @@
 
     <!-- Product card -->
     <div class="row">
-      {{# each warehouses}}
+      {{# each results}}
       {{# each this}}
-      <div class="col-sm-6 col-md-6">
-        {{!-- <form action="/customer/contract" method="post" onsubmit="return accept_form()"> --}}
-        <form action="/customer/create_contract" method="post" onsubmit="return accept_form()">
+      <div class="col-sm-6 col-md-6 d-none d-lg-block">
+        <form action="/retailer/market/create_contract" method="post" onsubmit="return accept_form()">
           <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
               <!-- Nested Row within Card Body -->
@@ -120,22 +119,22 @@
                   <h4 style="font-weight:bold; text-align:center; margin-top:8%">Thông tin sản phẩm</h4>
                   <hr>
                   <div class="product-text text-center ">
-                    <h3>{{this.product_id.name}}</h3>
-                    <h2>{{this.owner_id.fullName}}</h2>
+                    <h3>{{this.product_name}}</h3>
+                    <h2>{{this.owner_name}}</h2>
 
                     <div class="card-text text-left">
                       <table class="product-content">
                         <tr>
                           <th>Nhà sản xuất: </th>
-                          <td></td>
+                          <td>{{this.manu_name}}</td>
                         </tr>
                         <tr>
-                          <th>Nhà bán lẻ: </th>
-                          <td>{{this.owner_id.fullName}}</td>
+                          <th>Nhà phân phối: </th>
+                          <td>{{this.owner_name}}</td>
                         </tr>
                         <tr>
                           <th>Mô tả: </th>
-                          <td>{{this.product_id.description}}</td>
+                          <td>{{this.description}}</td>
                         </tr>
                         <tr>
                           <th>Ngày sản xuất: </th>
@@ -146,14 +145,14 @@
                           <td class="expireDate"></td>
                         </tr>
                         <input class="hdnCreateDate" type="hidden" name="hdnCreateDate"
-                          value="{{this.product_id.createDate}}">
+                          value="{{this.createDate}}">
                         <input class="hdnExpireDate" type="hidden" name="hdnExpireDate"
-                          value="{{this.product_id.expireDate}}">
+                          value="{{this.expireDate}}">
                       </table>
                     </div>
                   </div>
                   <br>
-                  <div class="col-lg-12 text-right" >
+                  <div class="col-lg-12 text-right">
                     <button type="submit" class="btn btn-success">
                       <i class="fas fa-cart-plus" aria-hidden="true"></i>
                     </button>
