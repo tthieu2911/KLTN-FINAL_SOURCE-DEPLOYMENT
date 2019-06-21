@@ -6,7 +6,7 @@
 	.	1512162 - Trần Trung Hiếu 	- 1512162@student.hcmus.edu.vn - 0369115712
 
 ### Giáo viên hướng dẫn:
-	Tiến sĩ Nguyễn Trần Minh Thư - Trưởng bộ môn Hệ thống Thông tin, Đại học Khoa Học Tự Nhiên
+	.	Tiến sĩ Nguyễn Trần Minh Thư - Trưởng bộ môn Hệ thống Thông tin, Đại học Khoa Học Tự Nhiên
 
 
 ### Mục tiêu: 
