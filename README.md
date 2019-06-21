@@ -28,7 +28,7 @@
 ***
 
 ###	Workflow
-![../../../THESIS/HTML/images/FIG03-03.gif]
+![](../../../THESIS/HTML/images/FIG03-03.gif)
 
 
 ###	Có 5 loại người dùng:
