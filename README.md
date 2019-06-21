@@ -2,11 +2,11 @@
 ## Đề tài: TÌM HIỂU CÔNG NGHỆ BLOCKCHAIN VÀ XÂY DỰNG ỨNG DỤNG MINH HỌA TRONG LĨNH VỰC THƯƠNG MẠI ĐIỆN TỬ
 
 ### Nhóm tác giả:
-	- 1512008 - Hồ Nhật An 			- 1512008@student.hcmus.edu.vn - 0973732035
-	- 1512162 - Trần Trung Hiếu 	- 1512162@student.hcmus.edu.vn - 0369115712
+	.	1512008 - Hồ Nhật An 		- 1512008@student.hcmus.edu.vn - 0973732035
+	.	1512162 - Trần Trung Hiếu 	- 1512162@student.hcmus.edu.vn - 0369115712
 
 ### Giáo viên hướng dẫn:
-  Tiến sĩ Nguyễn Trần Minh Thư - Trưởng bộ môn Hệ thống Thông tin, Đại học Khoa Học Tự Nhiên
+	Tiến sĩ Nguyễn Trần Minh Thư - Trưởng bộ môn Hệ thống Thông tin, Đại học Khoa Học Tự Nhiên
 
 
 ### Mục tiêu: 
@@ -127,12 +127,12 @@
 ##	Tài khoản đăng nhập:
 
 	*	Manufacturer:		manufacturer	/	123456
-	*	Supplier:			supplier		/	123456
-	*	Retailer:			retailer		/	123456
-	*	Customer:			customer		/	123456
-	*	Shipper:			shipper			/	123456
+	*	Supplier:		supplier		/	123456
+	*	Retailer:		retailer		/	123456
+	*	Customer:		customer		/	123456
+	*	Shipper:		shipper			/	123456
 	
 	
-	**	ADMIN:				admin			/	admin@123
+	**	ADMIN:		admin			/	admin@123
 		
 		
