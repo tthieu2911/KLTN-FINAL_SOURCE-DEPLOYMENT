@@ -1,5 +1,37 @@
+#  LUẬN VĂN TỐT NGHIỆP 
+## Đề tài: TÌM HIỂU CÔNG NGHỆ BLOCKCHAIN VÀ XÂY DỰNG ỨNG DỤNG MINH HỌA TRONG LĨNH VỰC THƯƠNG MẠI ĐIỆN TỬ
 
-####	Có 5 loại người dùng:
+### Nhóm tác giả:
+  1512008 - Hồ Nhật An 			- 1512008@student.hcmus.edu.vn - 0973732035
+  1512162 - Trần Trung Hiếu 	- 1512162@student.hcmus.edu.vn - 0369115712
+
+### Giáo viên hướng dẫn:
+  Tiến sĩ Nguyễn Trần Minh Thư - Trưởng bộ môn Hệ thống Thông tin, Đại học Khoa Học Tự Nhiên
+
+
+### Mục tiêu: 
+	.	Quản lý được con đường xuất - nhập, mua - bán của các hàng hóa thông qua con đường thương mại điện tử. 
+	.	Quản lý các hợp đồng giao dịch một cách tập trung, an toàn, minh bạch, không thể thay đổi sử dụng công nghệ blockchain.
+	.	Đảm bảo tính trung thực về thông tin hàng hóa sau khi đi qua các đơn vị trung gian đến tay người tiêu dùng.
+
+### Nội dung: 
+	.	Xây dựng ứng dụng minh họa hệ thống quản lý chuỗi cung ứng trong lĩnh vực thương mại điện tử, có ứng dụng công nghệ blockchain vào quản lý các hợp đồng giao dịch, mua bán giữa các bên. 
+	.	Đối tượng nhắm đến là các mô hình Thương mại điện tử quen thuộc: B2B, B2C, B2B2C.
+	.	Thực hiện quản lý được con đường di chuyển của hàng hóa thông qua con đường thương mại điện tử đến tay người tiêu dùng.
+	.	Thực hiện quản lý được một cách tập trung, minh bạch, bảo mật cho các giao dịch thương mại trên mạng Internet.
+	.	Thực hiện quản lý được thông tin hàng hóa khó bị sai lệch, chỉnh sửa sau khi vận chuyển qua các đơn vị trung gian đến tay người tiêu dùng
+
+### Kết quả đạt được: 
+	.	Xây dựng thành công hệ thống quản lý chuỗi cung ứng ở mức độ cơ bản, triển khai đúng được theo ý tưởng workflow đề xuất; 
+	.	Ứng dụng được công nghệ blockchain **Hyperledger Fabric** trong việc tạo và quản lý các hợp đồng giao dịch.
+
+***
+
+###	Workflow
+![](../../../THESIS/HTML/images/FIG03-03.gif)
+
+
+###	Có 5 loại người dùng:
 
 ## 	Manufacturer: Nhà sản xuất.
 	+ Chức năng riêng:
