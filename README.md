@@ -130,9 +130,9 @@
 	*	Supplier:		supplier	/	123456
 	*	Retailer:		retailer	/	123456
 	*	Customer:		customer	/	123456
-	*	Shipper:		shipper	/	123456
+	*	Shipper:		shipper		/	123456
 	
 	
-	**	ADMIN:			admin	/	admin@123
+	**	ADMIN:			admin		/	admin@123
 		
 		
