@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Quản lí đơn hàng</title>
+  <title>Quản lí đơn mua hàng</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
@@ -138,21 +138,21 @@
           <td id="sttDescription"></td>
           <td class="text-center">
             <a href="/shipper/cancel/{{this._id}}">
-              <button type="" class="btn btn-danger btnCancel" >
+              <button type="" class="btn btn-danger btnCancel" title="Hủy nhận đơn giao hàng">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
             <a href="/shipper/delivery/{{this.id}}">
-              <button type="" class="btn btn-warning btnShip">
+              <button type="" class="btn btn-warning btnShip" title="Đã lấy hàng chuẩn bị giao">
                 <i class="fas fa-truck" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
             <a href="/shipper/detail/{{this._id}}">
-              <button type="" class="btn btn-success">
+              <button type="" class="btn btn-success" title="Chi tiết đơn hàng">
                 <i class="fas fa-info" aria-hidden="true"></i>
               </button>
             </a>
@@ -205,7 +205,7 @@
             sttDescription.html("Chấp nhận báo giá");
             break;
           case '3':
-            sttDescription.html("Cho phép giao hàng");
+            sttDescription.html("Cho phép nhận giao hàng");
             break;
           case '4':
             sttDescription.html("Báo giá giao hàng");

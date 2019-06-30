@@ -96,7 +96,7 @@
 
     <h2>Quản lý Hàng Hóa</h2>
     <a id="Create" href="/manufacturer/product/create_product">
-      <button class="btn btn-primary" style="margin-bottom:20px;">
+      <button class="btn btn-primary" style="margin-bottom:20px;" title="Tạo sản phẩm mới">
         <i class="fas fa-plus" aria-hidden="true"></i>
       </button>
     </a>
@@ -123,14 +123,14 @@
           <td id="expireDate"></td>
           <td class="text-center">
             <a id="delete" href="/manufacturer/product/delete/{{this.product_id._id}}" onclick="return check()">
-              <button type="button" class="btn btn-danger">
+              <button type="button" class="btn btn-danger" title="Xóa sản phẩm">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
             <a id="edit" href="/manufacturer/product/edit/{{this.product_id._id}}">
-              <button type="button" class="btn btn-info">
+              <button type="button" class="btn btn-info" title="Thông tin sản phẩm">
                 <i class="fas fa-edit" aria-hidden="true"></i>
               </button>
             </a>

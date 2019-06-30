@@ -99,7 +99,7 @@
               </div>
               <div class="col-lg-6">
                 <!-- Exit button -->
-                <button class="btn btn-primary" onclick="back()"
+                <button class="btn btn-primary" onclick="back()" title="Trở lại"
                   style="margin-bottom: 1%;margin-top: 3%; margin-left: 89%;"> X </button>
 
                 <h4 style="font-weight: bold; text-align:center;">Thông tin đơn hàng</h4>
@@ -130,10 +130,6 @@
                     <tr>
                       <th>Giá trị </th>
                       <td>{{this.price}}</td>
-                    </tr>
-                    <tr>
-                      <th>Phí vận chuyển </th>
-                      <td>{{this.shipPrice}}</td>
                     </tr>
                     <tr>
                       <th>Đơn vị tính</th>
@@ -210,16 +206,16 @@
             sttDescription.html("Chấp nhận báo giá");
             break;
           case '3':
-            sttDescription.html("Cho phép giao hàng");
+            sttDescription.html("Shipper đang nhận hàng để giao");
             break;
           case '4':
-            sttDescription.html("Báo giá giao hàng");
+            sttDescription.html("Shipper đang nhận hàng để giao");
             break;
           case '5':
-            sttDescription.html("Chấp nhận giao hàng");
+            sttDescription.html("Shipper đang nhận hàng để giao");
             break;
           case '6':
-            sttDescription.html("Chờ giao hàng");
+            sttDescription.html("Đang giao hàng");
             break;
           case '7':
             sttDescription.html("Đã nhận hàng");

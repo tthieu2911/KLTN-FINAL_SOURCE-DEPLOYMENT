@@ -67,7 +67,7 @@
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
             <a class="dropdown-item" href="/shipper/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn hàng
+              Quản lí đơn giao hàng
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">
@@ -97,14 +97,14 @@
 
     <form action="/update_profile" method="POST">
       <!-- Edit profile Buttons -->
-      <button type="button" id="btnEditProfile" class="btn btn-primary" style="margin-bottom:20px;">
+      <button type="button" id="btnEditProfile" class="btn btn-primary" style="margin-bottom:20px;" title="Cập nhật thông tin cá nhân">
         <i class="fas fa-edit" aria-hidden="true"></i>
       </button>
 
-      <button type="submit" id="btnAcceptProfile" class="btn btn-primary btn-success" style="margin-bottom:20px;">
+      <button type="submit" id="btnAcceptProfile" class="btn btn-primary btn-success" style="margin-bottom:20px;" title="Xác nhận">
         <i class="fas fa-check" aria-hidden="true"></i>
       </button>
-      <button type="button" id="btnCancelProfile" class="btn btn-primary btn-danger" style="margin-bottom:20px;">
+      <button type="button" id="btnCancelProfile" class="btn btn-primary btn-danger" style="margin-bottom:20px;" title="Hủy bỏ">
         <i class="fas fa-times" aria-hidden="true"></i>
       </button>
 
@@ -168,14 +168,14 @@
         </td>
         <td>
           <!-- Change password Buttons -->
-          <button type="button" id="btnEditPassword" class="btn btn-primary" style="margin-bottom:20px;">
+          <button type="button" id="btnEditPassword" class="btn btn-primary" style="margin-bottom:20px;" title="Đổi mật khẩu">
             <i class="fas fa-key" aria-hidden="true"></i>
           </button>
 
-          <button type="submit" id="btnAcceptPassword" class="btn btn-primary btn-success" style="margin-bottom:20px;">
+          <button type="submit" id="btnAcceptPassword" class="btn btn-primary btn-success" style="margin-bottom:20px;" title="Xác nhận">
             <i class="fas fa-check" aria-hidden="true"></i>
           </button>
-          <button type="button" id="btnCancelPassword" class="btn btn-primary btn-danger" style="margin-bottom:20px;">
+          <button type="button" id="btnCancelPassword" class="btn btn-primary btn-danger" style="margin-bottom:20px;" title="Hủy bỏ">
             <i class="fas fa-times" aria-hidden="true"></i>
           </button>
         </td>
@@ -215,7 +215,7 @@
             <td>{{this.currency}}</td>
             <td class="text-center">
               <a href="/shipper/detail/{{this._id}}">
-                <button type="button" class="btn btn-info btnDetail">
+                <button type="button" class="btn btn-info btnDetail" title="Chi tiết đơn hàng">
                   <i class="fas fa-info" aria-hidden="true"></i>
                 </button>
               </a>

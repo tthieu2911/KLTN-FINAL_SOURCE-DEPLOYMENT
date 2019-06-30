@@ -36,8 +36,8 @@ var cancel_delivery = (req, res) => {
         }
         else {
             doc.status = '3';
-            doc.shipper_id = null;
-            doc.shipDate = null;
+            doc.shipper_id = "";
+            doc.shipDate = "";
             doc.save().then(() => {
                 console.log('Cancel delivery successfully');
                 req.flash('success', Messages.contract.deny_to_ship.success);

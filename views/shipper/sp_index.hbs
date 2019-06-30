@@ -83,7 +83,7 @@
             </a>
             <a class="dropdown-item" href="/shipper/manacontract">
               <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-              Quản lí đơn hàng
+              Quản lí đơn giao hàng
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/logout">
@@ -139,16 +139,15 @@
           <td>{{this.currency}}</td>
           <td id="sttDescription"></td>
           <td class="text-center">
-            {{!-- <a href="/shipper/delivery/{{this.id}}"> --}}
             <a href="/shipper/contract/{{this.id}}">
-              <button type="" class="btn btn-success btnPrice">
+              <button type="" class="btn btn-success btnPrice" title="Nhận đơn hàng và báo giá vận chuyển">
                 <i class="fas fa-tag" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
             <a href="/shipper/detail/{{this._id}}">
-              <button type="" class="btn btn-info btnDetail">
+              <button type="" class="btn btn-info btnDetail" title="Chi tiết đơn hàng">
                 <i class="fas fa-info" aria-hidden="true"></i>
               </button>
             </a>

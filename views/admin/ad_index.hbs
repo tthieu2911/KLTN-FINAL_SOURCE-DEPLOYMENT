@@ -84,7 +84,7 @@
 
     <h2>Danh sách người dùng</h2>
     <a id="Create" href="/admin/create_user">
-      <button class="btn btn-primary" style="margin-bottom:20px;">
+      <button class="btn btn-primary" style="margin-bottom:20px;" title="Tạo người dùng mới">
         <i class="fas fa-plus" aria-hidden="true"></i>
       </button>
     </a>
@@ -113,14 +113,14 @@
           <td>{{this.type}}</td>
           <td class="text-center">
             <a id="delete" href="/admin/delete_user/{{this._id}}" onclick="return check()">
-              <button type="button" class="btn btn-danger">
+              <button type="button" class="btn btn-danger" title="Xóa người dùng">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td class="text-center">
             <a id="edit" href="/admin/edit_user/{{this._id}}">
-              <button type="button" class="btn btn-info">
+              <button type="button" class="btn btn-info" title="Thông tin người dùng">
                 <i class="fas fa-edit" aria-hidden="true"></i>
               </button>
             </a>

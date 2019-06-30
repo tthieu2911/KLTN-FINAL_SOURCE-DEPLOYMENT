@@ -92,14 +92,14 @@
 
     <form action="/update_profile" method="POST">
       <!-- Edit profile Buttons -->
-      <button type="button" id="btnEditProfile" class="btn btn-primary" style="margin-bottom:20px;">
+      <button type="button" id="btnEditProfile" class="btn btn-primary" style="margin-bottom:20px;" title="Cập nhật thông tin cá nhân">
         <i class="fas fa-edit" aria-hidden="true"></i>
       </button>
 
-      <button type="submit" id="btnAcceptProfile" class="btn btn-primary btn-success" style="margin-bottom:20px;">
+      <button type="submit" id="btnAcceptProfile" class="btn btn-primary btn-success" style="margin-bottom:20px;" title="Xác nhận">
         <i class="fas fa-check" aria-hidden="true"></i>
       </button>
-      <button type="button" id="btnCancelProfile" class="btn btn-primary btn-danger" style="margin-bottom:20px;">
+      <button type="button" id="btnCancelProfile" class="btn btn-primary btn-danger" style="margin-bottom:20px;" title="Hủy bỏ">
         <i class="fas fa-times" aria-hidden="true"></i>
       </button>
 
@@ -163,14 +163,14 @@
         </td>
         <td>
           <!-- Change password Buttons -->
-          <button type="button" id="btnEditPassword" class="btn btn-primary" style="margin-bottom:20px;">
+          <button type="button" id="btnEditPassword" class="btn btn-primary" style="margin-bottom:20px;" title="Đổi mật khẩu">
             <i class="fas fa-key" aria-hidden="true"></i>
           </button>
 
-          <button type="submit" id="btnAcceptPassword" class="btn btn-primary btn-success" style="margin-bottom:20px;">
+          <button type="submit" id="btnAcceptPassword" class="btn btn-primary btn-success" style="margin-bottom:20px;" title="Xác nhận">
             <i class="fas fa-check" aria-hidden="true"></i>
           </button>
-          <button type="button" id="btnCancelPassword" class="btn btn-primary btn-danger" style="margin-bottom:20px;">
+          <button type="button" id="btnCancelPassword" class="btn btn-primary btn-danger" style="margin-bottom:20px;" title="Hủy bỏ">
             <i class="fas fa-times" aria-hidden="true"></i>
           </button>
         </td>
@@ -213,7 +213,7 @@
             <td id="type"></td>
             <td class="text-center">
               <a href="/supplier/detail/{{this._id}}">
-                <button type="button" class="btn btn-info">
+                <button type="button" class="btn btn-info" title="Chi tiết đơn hàng">
                   <i class="fas fa-info" aria-hidden="true"></i>
                 </button>
               </a>

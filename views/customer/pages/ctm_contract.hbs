@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Quản lí đơn hàng</title>
+  <title>Quản lí đơn mua hàng</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
@@ -111,35 +111,28 @@
           <td id="sttDescription"></td>
           <td>
             <a href="/customer/cancel/{{this._id}}" onclick="return check()">
-              <button type="" class="btn btn-danger btnCancel">
+              <button type="" class="btn btn-danger btnCancel" title="Hủy đơn hàng">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td>
             <a href="/customer/accept/{{this._id}}" onclick="return check()">
-              <button type="" class="btn btn-success btnAccept">
+              <button type="" class="btn btn-success btnAccept" title="Chấp nhận báo giá">
                 <i class="fas fa-clipboard-check" aria-hidden="true"></i>
               </button>
             </a>
-            <!--
-              <a href="/customer/create-payment/{{this._id}}" onclick="return check()">
-                <button type="" class="btn btn-success btnAccept" >
-                  <i class="fas fa-info" aria-hidden="true"></i>
-                </button>
-              </a>
-              -->
           </td>
           <td>
             <a href="/customer/done/{{this._id}}">
-              <button type="" class="btn btn-warning btnReceive">
+              <button type="" class="btn btn-warning btnReceive" title="Xác nhận đã nhận hàng">
                 <i class="fas fa-box-open" aria-hidden="true"></i>
               </button>
             </a>
           </td>
           <td>
             <a href="/customer/detail/{{this._id}}">
-              <button type="" class="btn btn-info btnDetail">
+              <button type="" class="btn btn-info btnDetail" title="Chi tiết đơn hàng">
                 <i class="fas fa-info" aria-hidden="true"></i>
               </button>
             </a>

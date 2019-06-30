@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Quản lí đơn hàng</title>
+  <title>Quản lí đơn mua hàng</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
@@ -99,7 +99,7 @@
       {{this.success}}
     </div>
     {{/if}}
-    
+
     <h1>Quản lí thông tin đơn mua hàng</h1>
     <br>
 
@@ -107,12 +107,12 @@
     <table id="contract-list" class="table">
       <thead class="thead-dark">
         <tr>
+          <th scope="col">Ngày tạo</th>
           <th scope="col">Tên sản phẩm</th>
           <th scope="col">Người bán hàng</th>
           <th scope="col">Người vận chuyển</th>
           <th scope="col">Số lượng</th>
           <th scope="col">Giá trị</th>
-          <th scope="col">Phí vận chuyển</th>
           <th scope="col">Đơn vị tính</th>
           <th scope="col">Trạng thái</th>
           <th colspan="4" scope="col" class="text-center">Thao tác</th>
@@ -123,30 +123,31 @@
         {{# each this}}
         <tr>
           <input class="hdnStatus" type="hidden" name="hdnStt" value="{{this.status}}">
+          <input class="hdnCreateDate" type="hidden" name="hdnCreateDate" value="{{this.createDate}}">
+          <td id="createDate"></td>
           <td>{{this.product_id.name}}</td>
           <td>{{this.seller_id.fullName}}</td>
           <td>{{this.shipper_id.fullName}}</td>
           <td>{{this.quatity}}</td>
           <td>{{this.price}}</td>
-          <td>{{this.shipPrice}}</td>
           <td>{{this.currency}}</td>
           <td id="sttDescription"></td>
           <td class="text-center">
-            <a href="/supplier/cancel/{{this._id}}"><button type="" class="btn btn-danger btnCancel">
+            <a href="/supplier/cancel/{{this._id}}"><button type="" class="btn btn-danger btnCancel" title="Hủy đơn hàng">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button></a>
           </td>
           <td class="text-center">
-            <a href="/supplier/accept/{{this._id}}"><button type="" class="btn btn-success btnAccept">
+            <a href="/supplier/accept/{{this._id}}"><button type="" class="btn btn-success btnAccept" title="Chấp nhận báo giá">
                 <i class="fas fa-clipboard-check" aria-hidden="true"></i>
               </button></a>
           </td>
           <td class="text-center">
-            <a href="/supplier/done/{{this._id}}"><button type="" class="btn btn-warning btnReceive">
+            <a href="/supplier/done/{{this._id}}"><button type="" class="btn btn-warning btnReceive" title="Xác nhận nhận hàng thành công">
                 <i class="fas fa-box-open" aria-hidden="true"></i>
           </td>
           <td class="text-center">
-            <a href="/supplier/detail/{{this._id}}"><button type="" class="btn btn-info btnDetail">
+            <a href="/supplier/detail/{{this._id}}"><button type="" class="btn btn-info btnDetail" title="Chi tiết đơn hàng">
                 <i class="fas fa-info" aria-hidden="true"></i>
               </button>
             </a>
@@ -196,7 +197,7 @@
         }
 
         // handle for Send price button
-        if (stt =="6") {
+        if (stt == "6") {
           $(this).find(".btnReceive").show();
         }
         else {
@@ -218,16 +219,16 @@
             sttDescription.html("Chấp nhận báo giá");
             break;
           case '3':
-            sttDescription.html("Cho phép giao hàng");
+            sttDescription.html("Shipper đang nhận hàng để giao");
             break;
           case '4':
-            sttDescription.html("Báo giá giao hàng");
+            sttDescription.html("Shipper đang nhận hàng để giao");
             break;
           case '5':
-            sttDescription.html("Chấp nhận giao hàng");
+            sttDescription.html("Shipper đang nhận hàng để giao");
             break;
           case '6':
-            sttDescription.html("Chờ giao hàng");
+            sttDescription.html("Đang giao hàng");
             break;
           case '7':
             sttDescription.html("Đã nhận hàng");
@@ -236,8 +237,30 @@
             sttDescription.html("Đã hủy");
             break;
         }
-      })
 
+        var crDate = $(".hdnCreateDate").val();
+        $("#createDate").html(Date_to_String(crDate));
+
+        function Date_to_String(date_model) {
+
+          if (date_model == null || date_model.length == 0) {
+            return '';
+          }
+          else {
+            var formated_date = new Date(date_model);
+            var day = formated_date.getDate();
+            var month = formated_date.getMonth() + 1;
+            var year = formated_date.getFullYear();
+            var hour = formated_date.getHours();
+            var minute = formated_date.getMinutes();
+            var second = formated_date.getSeconds();
+
+            var return_format = day + ' - ' + month + ' - ' + year + ', ' + hour + ':' + minute + ':' + second;
+
+            return return_format;
+          }
+        }
+      })
     });
   </script>
 

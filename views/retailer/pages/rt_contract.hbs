@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Quản lí đơn hàng</title>
+  <title>Quản lí đơn mua hàng</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link type="text/css" href="../assets/css/styles.css" rel="stylesheet">
@@ -132,21 +132,21 @@
           <td>{{this.currency}}</td>
           <td id="sttDescription"></td>
           <td class="text-center">
-            <a href="/retailer/cancel/{{this._id}}"><button type="" class="btn btn-danger btnCancel">
+            <a href="/retailer/cancel/{{this._id}}"><button type="" class="btn btn-danger btnCancel" title="Hủy đơn hàng">
                 <i class="fas fa-trash" aria-hidden="true"></i>
               </button></a>
           </td>
           <td class="text-center">
-            <a href="/retailer/accept/{{this._id}}"><button type="" class="btn btn-success btnAccept">
+            <a href="/retailer/accept/{{this._id}}"><button type="" class="btn btn-success btnAccept" title="Chấp nhận báo giá">
                 <i class="fas fa-clipboard-check" aria-hidden="true"></i>
               </button></a>
           </td>
           <td class="text-center">
-            <a href="/retailer/done/{{this._id}}"><button type="" class="btn btn-warning btnReceive">
+            <a href="/retailer/done/{{this._id}}"><button type="" class="btn btn-warning btnReceive" title="Xác nhận nhận hàng thành công">
                 <i class="fas fa-box-open" aria-hidden="true"></i>
           </td>
           <td class="text-center">
-            <a href="/retailer/detail/{{this._id}}"><button type="" class="btn btn-info btnDetail">
+            <a href="/retailer/detail/{{this._id}}"><button type="" class="btn btn-info btnDetail" title="Chi tiết đơn hàng">
                 <i class="fas fa-info" aria-hidden="true"></i>
               </button>
             </a>
