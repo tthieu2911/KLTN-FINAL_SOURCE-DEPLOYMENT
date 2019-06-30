@@ -7,7 +7,7 @@ var userSchema = require('./../../data/models/user')
 
 // load dữ liệu cho trang index
 var load_user = async (req, res, next) => {
-    await userSchema.find({ username: { $ne: 'admin' } }, (err, docs) => {
+    await userSchema.find({ type: { $ne: 'admin' } }, (err, docs) => {
         var userChunks = [];
         var chunkSize = 1;
         for (var i = 0; i < docs.length; i += chunkSize) {
